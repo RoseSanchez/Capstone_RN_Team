@@ -6,15 +6,17 @@ const WebSocket = require("ws");
 const {Pool} = require('pg')
 app.use(cors())
 app.use(express.json())
-
+const promotersController = require('./controllers/PromotersController')
+const promoterController = promotersController.PromotersController
+const promoterControllerObj = new promoterController()
 // Postgresql DB connection
-const pool = new Pool({
-    // connectionString:"jdbc:postgresql://localhost:5432/postgres",
-    connectionString:"postgres://postgres:none@localhost:5432/<insert db name>",
-    ssl:false,
-    max: 20,
-    idleTimeoutMillis: 30000
-})
+// const pool = new Pool({
+//     // connectionString:"jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
+//     connectionString:"postgres://njupbwybsaqiqt:3935f060b092cdc8a630a2ba09c9b00e0ac1131c3fc28b01b77182cbb0e1d3f6@ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
+//     ssl:{rejectUnauthorized: false},
+//     max: 20,
+//     idleTimeoutMillis: 30000
+// })
 
 // run application server
 const myServer = app.listen(port, () => {
@@ -63,16 +65,16 @@ app.get('/', (req, res) => {
 })
 
 app.post('/create', async(req, res)=>{
-    try {
-        const db = await pool.connect()
-        db.query('INSERT INTO <insert table name> () VALUES ()', (err, response)=>{
-                console.log(response.rows)
-                res.send(response.rows)
-        })
-    } catch (error) {
-        console.log(error)
-    }
-    pool.end()
+    // try {
+        // const db = await pool.connect()
+    //     db.query('INSERT INTO <insert table name> () VALUES ()', (err, response)=>{
+    //             console.log(response.rows)
+    //             res.send(response.rows)
+    //     })
+    // } catch (error) {
+    //     console.log(error)
+    // }
+    // pool.end()
 })
 
 app.post('/delete', async(req, res)=>{
@@ -84,30 +86,39 @@ app.post('/update', (req, res)=>{
 })
 
 app.get('/selectSomething', async(req, res) => {
-    try {
-        const db = await pool.connect()
-        db.query('SELECT * FROM <insert table name>;', (err, response)=>{
-                res.send(response.rows)
-        })
-    } catch (error) {
-        console.log(error)
-    }
-    pool.end()
+    // try {
+    //     const db = await pool.connect()
+    //     db.query('SELECT * FROM <insert table name>;', (err, response)=>{
+    //             res.send(response.rows)
+    //     })
+    // } catch (error) {
+    //     console.log(error)
+    // }
+    // pool.end()
 })
 
-dbListeners = async ()=>{
-    const db = await pool.connect()
+app.get('/getPromoters', async(req, res)=>{
     try {
-        await db.query('LISTEN update')
-        await db.query('LISTEN insert')
-        console.log('Listening for changes in datbase...')
-
-        db.on('notification', (msg)=>{
-            console.log(`Recieved notification, ${msg.channel} in: ${msg.payload} table`)
-            wsServer.emit('insert')
-        })
+        const promoters = await promoterControllerObj.showAllPromoters()
+        res.send({"promoters":promoters.result})
     } catch (error) {
         console.log(error)
     }
-}
-dbListeners()
+})
+
+// dbListeners = async ()=>{
+//     const db = await pool.connect()
+//     try {
+//         await db.query('LISTEN update')
+//         await db.query('LISTEN insert')
+//         console.log('Listening for changes in datbase...')
+
+//         db.on('notification', (msg)=>{
+//             console.log(`Recieved notification, ${msg.channel} in: ${msg.payload} table`)
+//             wsServer.emit('insert')
+//         })
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+// dbListeners()
