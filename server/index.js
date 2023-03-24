@@ -97,10 +97,30 @@ app.get('/selectSomething', async(req, res) => {
     // pool.end()
 })
 
-app.get('/getPromoters', async(req, res)=>{
+app.get('/getAllPromoters', async(req, res)=>{
     try {
         const promoters = await promoterControllerObj.showAllPromoters()
         res.send({"promoters":promoters.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getPromoter', async(req, res)=>{
+    try {
+        const {id} = req.body
+        const promoter = await promoterControllerObj.showPromoter(id)
+        res.send({"promoter":promoter.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/createPromoter',async(req, res)=>{
+    try {
+        const {name, password, email, address} = req.body
+        const promoter = await promoterControllerObj.insertPromoter(name, password, email, address)
+        res.send({"newPromoter":promoter.result})
     } catch (error) {
         console.log(error)
     }

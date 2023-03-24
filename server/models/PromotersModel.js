@@ -18,17 +18,13 @@ class PromotersModel{
     //     return this.readPromoter();
     // }
 
-    createPromoter(){
-
-    }
-
-    readAllPromoters(){
+    createPromoter(name, password, email, address){
         return new Promise(async (resolve, reject) => {
-            let result;
             try {
                 const db = await this.pool.connect()
-                db.query('SELECT * FROM promoters;', (err, response)=>{
-                    result = response.rows
+                db.query(`insert into promoters (name, password, email, address) VALUES ('${name}', '${password}', '${email}', '${address}')`, (err, response)=>{
+                    let insertResult = response.rowCount
+                    let result = insertResult > 0 ? "success":"failed"
                     return resolve({
                         result: result,
                     });
@@ -39,8 +35,36 @@ class PromotersModel{
         });
     }
 
-    readPromoter(){
+    readAllPromoters(){
+        return new Promise(async (resolve, reject) => {
+            try {
+                const db = await this.pool.connect()
+                db.query('SELECT * FROM promoters;', (err, response)=>{
+                    let result = response.rows
+                    return resolve({
+                        result: result,
+                    });
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        });
+    }
 
+    readPromoter(id){
+        return new Promise(async (resolve, reject) => {
+            try {
+                const db = await this.pool.connect()
+                db.query(`SELECT * FROM promoters WHERE id=${id};`, (err, response)=>{
+                    let result = response.rows[0]
+                    return resolve({
+                        result: result,
+                    });
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        });
     }
 
     udpatePromoter(){
