@@ -1,6 +1,6 @@
 const {Pool} = require('pg')
 
-class PromotersModel{
+class ParticipantsModel{
     constructor(){
         // const connection_url = "jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5"
         const connection_url = "postgres://njupbwybsaqiqt:3935f060b092cdc8a630a2ba09c9b00e0ac1131c3fc28b01b77182cbb0e1d3f6@ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5"
@@ -18,11 +18,11 @@ class PromotersModel{
     //     return this.readPromoter();
     // }
 
-    createPromoter(name, password, email, address){
+    createParticipant(name, password, email, address){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`insert into promoters (name, password, email, address) VALUES ('${name}', '${password}', '${email}', '${address}')`, (err, response)=>{
+                db.query(`insert into participants () VALUES ('${""}')`, (err, response)=>{
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({
@@ -35,11 +35,11 @@ class PromotersModel{
         });
     }
 
-    readAllPromoters(){
+    readAllParticipant(){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query('SELECT * FROM promoters;', (err, response)=>{
+                db.query('SELECT * FROM participants;', (err, response)=>{
                     let result = response.rows
                     return resolve({
                         result: result,
@@ -51,11 +51,11 @@ class PromotersModel{
         });
     }
 
-    readPromoter(id){
+    readParticipant(id){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`SELECT * FROM promoters WHERE id=${id};`, (err, response)=>{
+                db.query(`SELECT * FROM participants WHERE id=${id};`, (err, response)=>{
                     let result = response.rows[0]
                     return resolve({
                         result: result,
@@ -67,51 +67,20 @@ class PromotersModel{
         });
     }
 
-    //     -- update promoters SET password='passedit' where id=1
-// delete FROM promoters where id=5
-// update promoters SET password='passedit', name='edit' where id=12
-
-    udpatePromoter(id, propsToEdit){
-        let propsToUpdate = ''
-
-        propsToEdit.forEach(prop =>{
-            if(prop.value){
-                propsToUpdate += `${prop.propName}='${prop.value}', `
-            }
-        })
-
-        console.log('props to update', propsToUpdate.slice(0,-2))
-        propsToUpdate = propsToUpdate.slice(0,-2)
-
+    udpateParticipant(){
         return new Promise(async(resolve, reject)=>{
             try{
-                const db = await this.pool.connect()
-                db.query(`update promoters SET ${propsToUpdate} where id=${id};`, (err, response)=>{
-                    console.log(response)
-                    let insertResult = response.rowCount
-                    let result = insertResult > 0 ? "success":"failed"
-                    return resolve({
-                        result: result,
-                    });
-                })
+                
             }catch(error){
                 console.log(error)
             }
         })
     }
 
-    deletePromoter(id){
+    deleteParticipant(){
         return new Promise(async(resolve, reject)=>{
             try{
-                const db = await this.pool.connect()
-                db.query(`delete FROM promoters where id=${id};`, (err, response)=>{
-                    console.log(response)
-                    let insertResult = response.rowCount
-                    let result = insertResult > 0 ? "success":"failed"
-                    return resolve({
-                        result: result,
-                    });
-                })
+                
             }catch(error){
                 console.log(error)
             }
@@ -120,5 +89,5 @@ class PromotersModel{
 
 }
 
-module.exports = {PromotersModel: PromotersModel}
+module.exports = {ParticipantsModel: ParticipantsModel}
 

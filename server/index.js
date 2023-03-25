@@ -6,9 +6,14 @@ const WebSocket = require("ws");
 const {Pool} = require('pg')
 app.use(cors())
 app.use(express.json())
+
 const promotersController = require('./controllers/PromotersController')
 const promoterController = promotersController.PromotersController
 const promoterControllerObj = new promoterController()
+
+const participantsController = require('./controllers/ParticipantsController')
+const participantController = participantsController.ParticipantsController
+const participantControllerObj = new participantController()
 // Postgresql DB connection
 // const pool = new Pool({
 //     // connectionString:"jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
@@ -119,8 +124,57 @@ app.get('/getPromoter', async(req, res)=>{
 app.post('/createPromoter',async(req, res)=>{
     try {
         const {name, password, email, address} = req.body
-        const promoter = await promoterControllerObj.insertPromoter(name, password, email, address)
-        res.send({"newPromoter":promoter.result})
+        const newPromoter = await promoterControllerObj.insertPromoter(name, password, email, address)
+        res.send({"newPromoter":newPromoter.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/deletePromoter',async(req, res)=>{
+    try {
+        const {id} = req.body
+        const deletedPromoter = await promoterControllerObj.removePromoter(id)
+        res.send({"deletedPromoter":deletedPromoter.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/updatePromoter',async(req, res)=>{
+    try {
+        const {id, name, password, email, address} = req.body
+        const updatedPromoter = await promoterControllerObj.editPromoter(id, name, password, email, address)
+        res.send({"updatedPromoter":updatedPromoter.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getAllParticipants', async(req, res)=>{
+    try {
+        const participants = await participantControllerObj.showAllParticipants()
+        res.send({"participants":participants.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getParticipant', async(req, res)=>{
+    try {
+        const {id} = req.body
+        const participant = await participantControllerObj.showParticipant(id)
+        res.send({"participant":participant.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/createPrarticipant',async(req, res)=>{
+    try {
+        const {} = req.body
+        const newParticipant = await participantControllerObj.insertParticipant(name, password, email, address)
+        res.send({"newParticipant":newParticipant.result})
     } catch (error) {
         console.log(error)
     }
