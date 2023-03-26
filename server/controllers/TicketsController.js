@@ -1,17 +1,17 @@
-const promotersModel = require('../models/PromotersModel')
-const promoterModel = promotersModel.PromotersModel
-const promoterModelObj = new promoterModel()
+const ticketsModel = require('../models/TicketsModel')
+const ticketModel = ticketsModel.TicketsModel
+const ticketModelObj = new ticketModel()
 
-class PromotersController {
+class TicketsController {
     constructor(){
-        this.model = promoterModelObj
+        this.model = ticketModelObj
     }
 
-    insertPromoter(name, password, email, address){
+    insertTicket(name, password, email, address){
         return new Promise(async(resolve, reject) => {
             try {
-                const newPromoter = await this.model.createPromoter(name, password, email, address)
-                let result = newPromoter.result
+                const newTicket = await this.model.createTicket(name, password, email, address)
+                let result = newTicket.result
                 return resolve({
                     result: result,
                 });
@@ -21,11 +21,11 @@ class PromotersController {
         });
     }
 
-    showAllPromoters(){
+    showAllTickets(){
         return new Promise(async(resolve, reject) => {
             try {
-                const promoters = await this.model.readAllPromoters()
-                let result = promoters.result
+                const tickets = await this.model.readAllTickets()
+                let result = tickets.result
                 return resolve({
                     result: result,
                 });
@@ -35,12 +35,12 @@ class PromotersController {
         });
     }
 
-    showPromoter(id){
+    showTicket(id){
         return new Promise(async(resolve, reject) => {
             let result
             try {
-                const promoter = await this.model.readPromoter(id)
-                result = promoter.result
+                const ticket = await this.model.readTicket(id)
+                result = ticket.result
                 return resolve({
                     result: result,
                 });
@@ -50,13 +50,13 @@ class PromotersController {
         });
     }
 
-    editPromoter(){
+    editTicket(){
 
     }
 
-    removePromoter(){
+    removeTicket(){
 
     }
 }
 
-module.exports = {PromotersController: PromotersController}
+module.exports = {TicketsController: TicketsController}

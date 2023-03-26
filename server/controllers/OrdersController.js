@@ -1,13 +1,13 @@
-const promotersModel = require('../models/PromotersModel')
-const promoterModel = promotersModel.PromotersModel
-const promoterModelObj = new promoterModel()
+const ordersModel = require('../models/OrdersModel')
+const orderModel = ordersModel.OrdersModel
+const orderModelObj = new ordersModel()
 
 class PromotersController {
     constructor(){
         this.model = promoterModelObj
     }
 
-    insertPromoter(name, password, email, address){
+    insertOrder(name, password, email, address){
         return new Promise(async(resolve, reject) => {
             try {
                 const newPromoter = await this.model.createPromoter(name, password, email, address)
