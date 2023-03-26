@@ -37,10 +37,9 @@ class PromotersController {
 
     showPromoter(id){
         return new Promise(async(resolve, reject) => {
-            let result
             try {
                 const promoter = await this.model.readPromoter(id)
-                result = promoter.result
+                let result = promoter.result
                 return resolve({
                     result: result,
                 });
@@ -50,12 +49,34 @@ class PromotersController {
         });
     }
 
-    editPromoter(){
-
+    editPromoter(id, name, password, email, address){
+        return new Promise(async(resolve, reject)=>{
+            try{
+                const propsToEdit = [{value: name, propName:"name"}, {value: password, propName:"password"}, {value: email, propName:"email"}, {value: address, propName:"address"}]
+                // console.log(propsToEdit)
+                const updatedPromoter = await this.model.udpatePromoter(id, propsToEdit)
+                let result = updatedPromoter.result
+                return resolve({
+                    result: result,
+                });
+            }catch(error){
+                console.log(error)
+            }
+        })
     }
 
-    removePromoter(){
-
+    removePromoter(id){
+        return new Promise(async(resolve, reject)=>{
+            try{
+                const deletedPromoter = await this.model.deletePromoter(id)
+                let result = deletedPromoter.result
+                return resolve({
+                    result: result,
+                });
+            }catch(error){
+                console.log(error)
+            }
+        })
     }
 }
 
