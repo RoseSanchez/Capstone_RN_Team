@@ -2,15 +2,15 @@ const ordersModel = require('../models/OrdersModel')
 const orderModel = ordersModel.OrdersModel
 const orderModelObj = new ordersModel()
 
-class PromotersController {
+class OrdersController {
     constructor(){
-        this.model = promoterModelObj
+        this.model = orderModelObj
     }
 
-    insertOrder(orderEmail, orderDetails){
+    insertOrder(orderEmail, orderDetails, participantIDs, ticketIDs){
         return new Promise(async(resolve, reject) => {
             try {
-                const newPromoter = await this.model.createPromoter(name, password, email, address)
+                const newPromoter = await this.model.createOrder(orderEmail, orderDetails,participantIDs,ticketIDs)
                 let result = newPromoter.result
                 return resolve({
                     result: result,
@@ -24,8 +24,8 @@ class PromotersController {
     showAllPromoters(){
         return new Promise(async(resolve, reject) => {
             try {
-                const promoters = await this.model.readAllPromoters()
-                let result = promoters.result
+                const orders = await this.model.readAllOrders()
+                let result = orders.result
                 return resolve({
                     result: result,
                 });
@@ -39,8 +39,8 @@ class PromotersController {
         return new Promise(async(resolve, reject) => {
             let result
             try {
-                const promoter = await this.model.readPromoter(id)
-                result = promoter.result
+                const orders = await this.model.readOrder(id)
+                result = orders.result
                 return resolve({
                     result: result,
                 });
@@ -50,13 +50,13 @@ class PromotersController {
         });
     }
 
-    editPromoter(){
+    editOrder(){
 
     }
 
-    removePromoter(){
+    removeOrder(){
 
     }
 }
 
-module.exports = {PromotersController: PromotersController}
+module.exports = {OrdersController: OrdersController}
