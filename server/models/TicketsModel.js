@@ -18,11 +18,11 @@ class TicketsModel{
     //     return this.readPromoter();
     // }
 
-    createTicket(nameOfEvent, nameOfParticipant, EventID, eventDate, eventPrice, eventLocation){
+    createTicket(orderID, participantID, eventID){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`insert into tickets (nameOfEvent, nameOfParticipant, EventID, eventDate, eventPrice, eventLocation) VALUES ('${name}', '${password}', '${email}', '${address}')`, (err, response)=>{
+                db.query(`insert into tickets (participantid, orderid,eventid) VALUES ('${orderID}', '${participantID}', '${eventID}')`, (err, response)=>{
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({
@@ -51,11 +51,11 @@ class TicketsModel{
         });
     }
 
-    readTicket(id){
+    readTicket(ticketID){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`SELECT * FROM tickets WHERE id=${id};`, (err, response)=>{
+                db.query(`SELECT * FROM tickets WHERE id=${ticketID};`, (err, response)=>{
                     let result = response.rows[0]
                     return resolve({
                         result: result,
@@ -96,7 +96,7 @@ class TicketsModel{
         })
     }
 
-    deleteTicket(){
+    deleteTicket(ticketID){
         return new Promise(async(resolve, reject)=>{
             try{
                 const db = await this.pool.connect()

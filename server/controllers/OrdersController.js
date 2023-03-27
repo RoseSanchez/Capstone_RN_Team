@@ -7,7 +7,7 @@ class PromotersController {
         this.model = promoterModelObj
     }
 
-    insertOrder(name, password, email, address){
+    insertOrder(orderEmail, orderDetails){
         return new Promise(async(resolve, reject) => {
             try {
                 const newPromoter = await this.model.createPromoter(name, password, email, address)

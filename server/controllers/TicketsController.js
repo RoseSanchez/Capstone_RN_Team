@@ -7,7 +7,7 @@ class TicketsController {
         this.model = ticketModelObj
     }
 
-    insertTicket(name, password, email, address){
+    insertTicket(orderID, participantID, eventID){
         return new Promise(async(resolve, reject) => {
             try {
                 const newTicket = await this.model.createTicket(name, password, email, address)
@@ -35,7 +35,7 @@ class TicketsController {
         });
     }
 
-    showTicket(id){
+    showTicket(ticketID){
         return new Promise(async(resolve, reject) => {
             let result
             try {
@@ -50,11 +50,11 @@ class TicketsController {
         });
     }
 
-    editTicket(){
+    editTicket(ticketID){
 
     }
 
-    removeTicket(){
+    removeTicket(ticketID){
 
     }
 }
