@@ -22,7 +22,7 @@ class TicketsModel{
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`insert into tickets (participantid, orderid,eventid) VALUES ('${orderID}', '${participantID}', '${eventID}')`, (err, response)=>{
+                db.query(`INSERT INTO tickets (participantid, orderid,eventid) VALUES ('${orderID}', '${participantID}', '${eventID}')`, (err, response)=>{
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({

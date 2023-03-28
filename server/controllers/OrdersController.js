@@ -50,11 +50,11 @@ class OrdersController {
         });
     }
 
-    editOrder(){
+    editOrder(id){
 
     }
 
-    removeOrder(){
+    removeOrder(id){
 
     }
 }

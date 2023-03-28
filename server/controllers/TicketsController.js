@@ -10,7 +10,7 @@ class TicketsController {
     insertTicket(orderID, participantID, eventID){
         return new Promise(async(resolve, reject) => {
             try {
-                const newTicket = await this.model.createTicket(name, password, email, address)
+                const newTicket = await this.model.createTicket(orderID, participantID, eventID)
                 let result = newTicket.result
                 return resolve({
                     result: result,
@@ -39,7 +39,7 @@ class TicketsController {
         return new Promise(async(resolve, reject) => {
             let result
             try {
-                const ticket = await this.model.readTicket(id)
+                const ticket = await this.model.readTicket(ticketID)
                 result = ticket.result
                 return resolve({
                     result: result,
