@@ -18,6 +18,25 @@ class PromotersModel{
     //     return this.readPromoter();
     // }
 
+    logInPromoter(email, password){
+        console.log('log in model call', email, password)
+        try {
+            return new Promise(async(resolve, reject)=>{
+                const db = await this.pool.connect()
+                db.query(`SELECT * FROM promoters WHERE email='${email}' and password='${password}';`, (err, response)=>{
+                    // console.log(response)
+                    let insertResult = response.rowCount
+                    let result = insertResult > 0 ? "success":"failed"
+                    return resolve({
+                        result: result,
+                    });
+                })
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     createPromoter(name, password, email, address){
         return new Promise(async (resolve, reject) => {
             try {
