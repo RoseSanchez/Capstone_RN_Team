@@ -100,7 +100,7 @@ class TicketsModel{
         return new Promise(async(resolve, reject)=>{
             try{
                 const db = await this.pool.connect()
-                db.query(`delete FROM tickets where id=${id};`, (err, response)=>{
+                db.query(`delete FROM tickets where id=${ticketID};`, (err, response)=>{
                     console.log(response)
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"

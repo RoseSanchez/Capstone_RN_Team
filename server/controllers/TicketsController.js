@@ -51,11 +51,33 @@ class TicketsController {
     }
 
     editTicket(ticketID){
-
+        return new Promise(async(resolve, reject)=>{
+            try{
+                const propsToEdit = [{value: orderID, propName:"orderid"}, {value: participantID, propName:"participantid"}, {value: eventID, propName:"eventid"}]
+                // console.log(propsToEdit)
+                const updatedTicket = await this.model.updatedTicket(id, propsToEdit)
+                let result = updatedTicket.result
+                return resolve({
+                    result: result,
+                });
+            }catch(error){
+                console.log(error)
+            }
+        })
     }
 
     removeTicket(ticketID){
-
+        return new Promise(async(resolve, reject)=>{
+            try{
+                const deletedTicket= await this.model.deleteTicket(ticketID)
+                let result = deletedTicket.result
+                return resolve({
+                    result: result,
+                });
+            }catch(error){
+                console.log(error)
+            }
+        })
     }
 }
 

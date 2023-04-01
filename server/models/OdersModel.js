@@ -116,5 +116,5 @@ class OrdersModel{
 
 }
 
-module.exports = {PromotersModel: PromotersModel}
+module.exports = {OrdersModel: OrdersModel}
 

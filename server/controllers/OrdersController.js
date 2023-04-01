@@ -7,10 +7,10 @@ class OrdersController {
         this.model = orderModelObj
     }
 
-    insertOrder(orderEmail, orderDetails, participantIDs, ticketIDs){
+    insertOrder(orderEmail, orderDetails){
         return new Promise(async(resolve, reject) => {
             try {
-                const newPromoter = await this.model.createOrder(orderEmail, orderDetails,participantIDs,ticketIDs)
+                const newPromoter = await this.model.createOrder(orderEmail, orderDetails)
                 let result = newPromoter.result
                 return resolve({
                     result: result,
@@ -51,11 +51,33 @@ class OrdersController {
     }
 
     editOrder(id){
-
+        return new Promise(async(resolve, reject)=>{
+            try{
+                const propsToEdit = [{value: orderEmail, propName:"orderemail"}, {value: orderDetails, propName:"orderdetails"}]
+                // console.log(propsToEdit)
+                const updatedOrder = await this.model.udpateOrder(id, propsToEdit)
+                let result = updatedOrder.result
+                return resolve({
+                    result: result,
+                });
+            }catch(error){
+                console.log(error)
+            }
+        })
     }
 
     removeOrder(id){
-
+        return new Promise(async(resolve, reject)=>{
+            try{
+                const deletedOrder = await this.model.deleteOrder(id)
+                let result = deletedOrder.result
+                return resolve({
+                    result: result,
+                });
+            }catch(error){
+                console.log(error)
+            }
+        })
     }
 }
 
