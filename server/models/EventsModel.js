@@ -18,11 +18,11 @@ class EventsModel{
     //     return this.readPromoter();
     // }
 
-    createEvent(name, password, email, address){
+    createEvent(promoterid, details, price, location, photo, date, title){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`insert into events () VALUES ('${""}')`, (err, response)=>{
+                db.query(`insert into events (promoterid, details, price, location, photo, date, title) VALUES ('${promoterid}', '${details}', '${price}', '${location}', '${photo}', '${date}', '${title}')`, (err, response)=>{
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({
@@ -67,7 +67,7 @@ class EventsModel{
         });
     }
 
-    udpateEvent(){
+    udpateEvent(id){
         return new Promise(async(resolve, reject)=>{
             try{
                 
@@ -77,7 +77,7 @@ class EventsModel{
         })
     }
 
-    deleteEvent(){
+    deleteEvent(id){
         return new Promise(async(resolve, reject)=>{
             try{
                 

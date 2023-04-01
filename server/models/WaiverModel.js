@@ -18,11 +18,11 @@ class WaiversModel{
     //     return this.readPromoter();
     // }
 
-    createWaiver(name, password, email, address){
+    createWaiver(partipantId, document, signed){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`insert into waivers () VALUES ('${""}')`, (err, response)=>{
+                db.query(`insert into waivers (partipantId, document, signed) VALUES ('${partipantId}', '${document}', '${signed}')`, (err, response)=>{
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({
@@ -67,7 +67,7 @@ class WaiversModel{
         });
     }
 
-    udpateWaiver(){
+    udpateWaiver(id){
         return new Promise(async(resolve, reject)=>{
             try{
                 
@@ -77,7 +77,7 @@ class WaiversModel{
         })
     }
 
-    deleteWaiver(){
+    deleteWaiver(id){
         return new Promise(async(resolve, reject)=>{
             try{
                 

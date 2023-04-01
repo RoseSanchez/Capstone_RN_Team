@@ -8,10 +8,10 @@ class WaiversController {
     }
 
     // update insert waiver parameters
-    insertWaiver(name, password, email, address){
+    insertWaiver(partipantId, document, signed){
         return new Promise(async(resolve, reject) => {
             try {
-                const newWaiver = await this.model.createWaiver(name, password, email, address)
+                const newWaiver = await this.model.createWaiver(partipantId, document, signed)
                 let result = newWaiver.result
                 return resolve({
                     result: result,
@@ -51,7 +51,7 @@ class WaiversController {
         });
     }
 
-    editWaiver(){
+    editWaiver(id){
         return new Promise(async(resolve, reject)=>{
             try{
                 
@@ -61,7 +61,7 @@ class WaiversController {
         })
     }
 
-    removeWaiver(){
+    removeWaiver(id){
         return new Promise(async(resolve, reject)=>{
             try{
                 

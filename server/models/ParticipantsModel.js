@@ -67,7 +67,7 @@ class ParticipantsModel{
         });
     }
 
-    udpateParticipant(){
+    udpateParticipant(id){
         return new Promise(async(resolve, reject)=>{
             try{
                 
@@ -77,7 +77,7 @@ class ParticipantsModel{
         })
     }
 
-    deleteParticipant(){
+    deleteParticipant(id){
         return new Promise(async(resolve, reject)=>{
             try{
                 
