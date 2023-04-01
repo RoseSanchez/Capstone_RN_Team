@@ -7,6 +7,20 @@ class PromotersController {
         this.model = promoterModelObj
     }
 
+    logIn(email, password){
+        return new Promise(async(resolve, reject)=>{
+            try {
+                const newPromoter = await this.model.logInPromoter(email, password)
+                let result = newPromoter.result
+                return resolve({
+                    result: result,
+                });
+            } catch (error) {
+                console.log(error)
+            }
+        })
+    }
+
     insertPromoter(name, password, email, address){
         return new Promise(async(resolve, reject) => {
             try {

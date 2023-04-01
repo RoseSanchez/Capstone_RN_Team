@@ -69,39 +69,6 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.post('/create', async(req, res)=>{
-    // try {
-        // const db = await pool.connect()
-    //     db.query('INSERT INTO <insert table name> () VALUES ()', (err, response)=>{
-    //             console.log(response.rows)
-    //             res.send(response.rows)
-    //     })
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    // pool.end()
-})
-
-app.post('/delete', async(req, res)=>{
-    // code here
-})
-
-app.post('/update', (req, res)=>{
-    // code here
-})
-
-app.get('/selectSomething', async(req, res) => {
-    // try {
-    //     const db = await pool.connect()
-    //     db.query('SELECT * FROM <insert table name>;', (err, response)=>{
-    //             res.send(response.rows)
-    //     })
-    // } catch (error) {
-    //     console.log(error)
-    // }
-    // pool.end()
-})
-
 app.get('/getAllPromoters', async(req, res)=>{
     try {
         const promoters = await promoterControllerObj.showAllPromoters()
@@ -121,7 +88,20 @@ app.get('/getPromoter', async(req, res)=>{
     }
 })
 
+app.post('/logInPromoter', async(req, res)=>{
+    console.log(req.body)
+    try {
+        const {email, password} = req.body
+        const promoter = await promoterControllerObj.logIn(email, password)
+        res.send({"promoter":promoter.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
 app.post('/createPromoter',async(req, res)=>{
+    console.log('create promoter call', req.body)
     try {
         const {name, password, email, address} = req.body
         const newPromoter = await promoterControllerObj.insertPromoter(name, password, email, address)
