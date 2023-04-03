@@ -1,4 +1,25 @@
-.App {
+.navBar{
+  background-color: #FF823C;
+  display: flex;
+  height: 5rem;
+  align-items: center;
+  justify-content: space-between;
+
+}
+
+.title{
+  font-weight: bold;
+  margin-left: 3rem;
+}
+
+.btn{
+  margin-right: 3rem !important;
+  font-weight: bold !important;
+  color: white !important;
+  background-color: #ff833c !important;
+}
+
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +56,4 @@
   to {
     transform: rotate(360deg);
   }
-}
+} */
