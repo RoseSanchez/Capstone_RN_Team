@@ -42,7 +42,8 @@ class PromotersModel{
             try {
                 const db = await this.pool.connect()
                 db.query(`insert into promoters (name, password, email, address) VALUES ('${name}', '${password}', '${email}', '${address}')`, (err, response)=>{
-                    let insertResult = response.rowCount
+                    console.log(response)
+                    let insertResult = response ? response.rowCount:0
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({
                         result: result,

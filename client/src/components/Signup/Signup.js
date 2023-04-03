@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
-import { Button, Input, Form } from 'semantic-ui-react'
+import { Button, Input, Form, Divider } from 'semantic-ui-react'
 import { signUp } from '../../api/Promoters/promotersRoutes';
+import styles from './Signup.module.css'
 
 const Signup = () => {
     const [userInfo, setUserInfo] = useState({name:"", password:"",email:"", address:""})
@@ -12,46 +13,62 @@ const Signup = () => {
         setUserInfo({name:"", password:"",email:"", address:""})
     }
     return(
-        <Form onSubmit={(e) => handleSubmit(e)}>
-            Signup
-            <Form.Field>
-                <label>Name</label>
-                <input placeholder='Name' 
-                    onChange={(e) =>
-                        setUserInfo({ ...userInfo, name: e.target.value })
-                    }
-                    value={userInfo.name}
-                />
-            </Form.Field>
-            <Form.Field>
-                <label>Email</label>
-                <input placeholder='Email' 
-                    onChange={(e) =>
-                        setUserInfo({ ...userInfo, email: e.target.value })
-                    }
-                    value={userInfo.email}
-                />
-            </Form.Field>
-            <Form.Field>
-                <label>Address</label>
-                <input placeholder='Address' 
-                    onChange={(e) =>
-                        setUserInfo({ ...userInfo, address: e.target.value })
-                    }
-                    value={userInfo.address}
-                />
-            </Form.Field>
-            <Form.Field>
-                <label>Password</label>
-                <input placeholder='Password' 
-                    onChange={(e) =>
-                        setUserInfo({ ...userInfo, password: e.target.value })
-                    }
-                    value={userInfo.password}
-                />
-            </Form.Field>
-        <Button type='submit'>Submit</Button>
-        </Form>
+        <div className={styles.container}>
+            <div className={styles.banner}>
+                PUR Cycling
+            </div>
+            <div className={styles.form}>
+            <p className={styles.title}>Signup</p>
+                <Form onSubmit={(e) => handleSubmit(e)}>
+                    <Form.Field>
+                        <div className={styles.inputs}>
+                            <label className={styles.labels}>Name</label>
+                            <input className={styles.inputFields} placeholder='Name' 
+                                onChange={(e) =>
+                                    setUserInfo({ ...userInfo, name: e.target.value })
+                                }
+                                value={userInfo.name}
+                            />
+                        </div>
+                    </Form.Field>
+                    <Form.Field>
+                        <div className={styles.inputs}>
+                            <label className={styles.labels}>Email</label>
+                            <input className={styles.inputFields} placeholder='Email' 
+                                onChange={(e) =>
+                                    setUserInfo({ ...userInfo, email: e.target.value })
+                                }
+                                value={userInfo.email}
+                            />
+                        </div>
+                    </Form.Field>
+                    <Form.Field>
+                        <div className={styles.inputs}>
+                            <label className={styles.labels}>Address</label>
+                            <input className={styles.inputFields} placeholder='Address' 
+                                onChange={(e) =>
+                                    setUserInfo({ ...userInfo, address: e.target.value })
+                                }
+                                value={userInfo.address}
+                            />
+                        </div>
+                    </Form.Field>
+                    <Form.Field>
+                        <div className={styles.inputs}>
+                            <label className={styles.labels}>Password</label>
+                            <input className={styles.inputFields} placeholder='Password' 
+                                onChange={(e) =>
+                                    setUserInfo({ ...userInfo, password: e.target.value })
+                                }
+                                value={userInfo.password}
+                            />
+                        </div>
+                    </Form.Field>
+                    <Button className={styles.sbmtBtn} type='submit'>SignUp</Button>
+                    <p>Already have an account ? <a href='/login'>LogIn</a></p>
+                </Form>
+            </div>
+        </div>
     )
 };
 
