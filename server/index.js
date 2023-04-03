@@ -14,6 +14,14 @@ const promoterControllerObj = new promoterController()
 const participantsController = require('./controllers/ParticipantsController')
 const participantController = participantsController.ParticipantsController
 const participantControllerObj = new participantController()
+
+const ordersController = require('./controllers/OrdersController')
+const orderController = ordersController.OrdersController
+const orderControllerObj = new orderController()
+
+const ticketsController = require('./controllers/TicketsController')
+const ticketController = ticketsController.TicketsController
+const ticketControllerObj = new ticketController()
 // Postgresql DB connection
 // const pool = new Pool({
 //     // connectionString:"jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
@@ -159,7 +167,59 @@ app.post('/createPrarticipant',async(req, res)=>{
         console.log(error)
     }
 })
+///////////////////////////////////////////
+//rose
+app.get('/getAllOrders', async(req, res)=>{
+    try {
+        const orders = await orderControllerObj.showAllOrders()
+        res.send({"orders":orders.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
 
+app.get('/getOrder', async(req, res)=>{
+    try {
+        const {id} = req.body
+        const order = await orderControllerObj.showOrder(id)
+        res.send({"order":order.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/createOrder',async(req, res)=>{
+    console.log('create oreder call', req.body)
+    try {
+        const {orderEmail, orderDetails} = req.body 
+        const newOrder = await promoterControllerObj.insertOrder(orderEmail, orderDetails)
+        res.send({"newOrder":newOder.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/deleteOrder',async(req, res)=>{
+    try {
+        const {id} = req.body
+        const deletedOrder = await orderControllerObj.removeOrder(id)
+        res.send({"deletedOrder":deletedOrder.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/updateOrder',async(req, res)=>{
+    try {
+        const {id, orderEmail, orderDetails} = req.body
+        const updatedOrder = await orderControllerObj.editOrder(id, orderEmail, orderDetails)
+        res.send({"updatedOrder":updatedOrder.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// enrose
 // dbListeners = async ()=>{
 //     const db = await pool.connect()
 //     try {
