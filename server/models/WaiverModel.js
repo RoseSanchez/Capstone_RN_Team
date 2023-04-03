@@ -1,6 +1,6 @@
 const {Pool} = require('pg')
 
-class ParticipantsModel{
+class WaiversModel{
     constructor(){
         // const connection_url = "jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5"
         const connection_url = "postgres://njupbwybsaqiqt:3935f060b092cdc8a630a2ba09c9b00e0ac1131c3fc28b01b77182cbb0e1d3f6@ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5"
@@ -18,11 +18,11 @@ class ParticipantsModel{
     //     return this.readPromoter();
     // }
 
-    createParticipant(name, password, email, address){
+    createWaiver(partipantId, document, signed){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`insert into participants () VALUES ('${""}')`, (err, response)=>{
+                db.query(`insert into waivers (partipantId, document, signed) VALUES ('${partipantId}', '${document}', '${signed}')`, (err, response)=>{
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({
@@ -35,11 +35,11 @@ class ParticipantsModel{
         });
     }
 
-    readAllParticipant(){
+    readAllWaiver(){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query('SELECT * FROM participants;', (err, response)=>{
+                db.query('SELECT * FROM waivers;', (err, response)=>{
                     let result = response.rows
                     return resolve({
                         result: result,
@@ -51,11 +51,11 @@ class ParticipantsModel{
         });
     }
 
-    readParticipant(id){
+    readWaiver(id){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`SELECT * FROM participants WHERE id=${id};`, (err, response)=>{
+                db.query(`SELECT * FROM waivers WHERE id=${id};`, (err, response)=>{
                     let result = response.rows[0]
                     return resolve({
                         result: result,
@@ -67,7 +67,7 @@ class ParticipantsModel{
         });
     }
 
-    udpateParticipant(id){
+    udpateWaiver(id){
         return new Promise(async(resolve, reject)=>{
             try{
                 
@@ -77,7 +77,7 @@ class ParticipantsModel{
         })
     }
 
-    deleteParticipant(id){
+    deleteWaiver(id){
         return new Promise(async(resolve, reject)=>{
             try{
                 
@@ -89,5 +89,5 @@ class ParticipantsModel{
 
 }
 
-module.exports = {ParticipantsModel: ParticipantsModel}
+module.exports = {WaiversModel: WaiversModel}
 
