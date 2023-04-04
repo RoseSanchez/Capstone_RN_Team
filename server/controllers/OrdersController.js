@@ -1,6 +1,6 @@
 const ordersModel = require('../models/OrdersModel')
 const orderModel = ordersModel.OrdersModel
-const orderModelObj = new ordersModel()
+const orderModelObj = new orderModel()
 
 class OrdersController {
     constructor(){
@@ -35,7 +35,7 @@ class OrdersController {
         });
     }
 
-    showPromoter(id){
+    showOrder(id){
         return new Promise(async(resolve, reject) => {
             let result
             try {
