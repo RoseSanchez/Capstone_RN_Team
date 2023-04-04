@@ -8,10 +8,10 @@ class EventsController {
     }
 
     // update insert event parameters
-    insertEvent(promoterid, details, price, location, photo, date, title){ 
+    insertEvent(promoterID, details, price, location, photo, date, title){ 
         return new Promise(async(resolve, reject) => {
             try {
-                const newEvent = await this.model.createEvent(promoterid, details, price, location, photo, date, title)
+                const newEvent = await this.model.createEvent(promoterID, details, price, location, photo, date, title)
                 let result = newEvent.result
                 return resolve({
                     result: result,
@@ -36,7 +36,7 @@ class EventsController {
         });
     }
 
-    showEvent(id){
+    showEvent(eventID){
         return new Promise(async(resolve, reject) => {
             let result
             try {
@@ -51,7 +51,7 @@ class EventsController {
         });
     }
 
-    editEvent(id){
+    editEvent(eventID){
         return new Promise(async(resolve, reject)=>{
             try{
                 
@@ -61,7 +61,7 @@ class EventsController {
         })
     }
 
-    removeEvent(id){
+    removeEvent(eventID){
         return new Promise(async(resolve, reject)=>{
             try{
                 

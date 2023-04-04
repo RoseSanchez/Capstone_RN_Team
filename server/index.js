@@ -22,6 +22,15 @@ const orderControllerObj = new orderController()
 const ticketsController = require('./controllers/TicketsController')
 const ticketController = ticketsController.TicketsController
 const ticketControllerObj = new ticketController()
+
+const EventsController = require('./controllers/EventsController')
+const EventController = eventsController.EventsController
+const EventControllerObj = new EventController()
+
+const waiversController = require('./controllers/WaiverController')
+const waiverController = waiversController.waiverController
+const waiverControllerObj = new waiverController()
+
 // Postgresql DB connection
 // const pool = new Pool({
 //     // connectionString:"jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
@@ -218,8 +227,109 @@ app.post('/updateOrder',async(req, res)=>{
         console.log(error)
     }
 })
-
 // enrose
+// Leonel
+
+app.get('/getAllEvents', async(req, res)=>{
+    try {
+        const events = await eventControllerObj.showAllEvents()
+        res.send({"events":events.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getEvent', async(req, res)=>{
+    try {
+        const {eventID} = req.body
+        const event = await eventControllerObj.showEvent(eventID)
+        res.send({"event":event.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/createEvent',async(req, res)=>{
+    console.log('create event call', req.body)
+    try {
+        const {promoterID, details, price, location, photo, date, title} = req.body
+        const newEvent = await eventControllerObj.insertEvent(promoterID, details, price, location, photo, date, title)
+        res.send({"newEvent":newEvent.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/deleteEvent',async(req, res)=>{
+    try {
+        const {eventID} = req.body
+        const deletedEvent = await eventControllerObj.removeEvent(eventID)
+        res.send({"deletedEvent":deletedEvent.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/updateEvent',async(req, res)=>{
+    try {
+        const {promoterID, details, price, location, photo, date, title} = req.body
+        const updatedEvent = await eventControllerObj.editEvent(promoterID, details, price, location, photo, date, title)
+        res.send({"updatedEvent":updatedEvent.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getAllWaivers', async(req, res)=>{
+    try {
+        const waivers = await waiverControllerObj.showAllWaivers()
+        res.send({"waivers":waivers.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getWaiver', async(req, res)=>{
+    try {
+        const {waiverID} = req.body
+        const waiver = await waiverControllerObj.showWaiver(waiverID)
+        res.send({"waiver":waiver.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/createWaiver',async(req, res)=>{
+    console.log('create waiver call', req.body)
+    try {
+        const {partipantID, document, signed} = req.body
+        const newWaiver = await waiverControllerObj.insertWaiver(partipantID, document, signed)
+        res.send({"newWaiver":newWaiver.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/deleteWaiver',async(req, res)=>{
+    try {
+        const {waiverID} = req.body
+        const deletedWaiver = await waiverControllerObj.removeWaiver(waiverID)
+        res.send({"deletedWaiver":deletedWaiver.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/updateWaiver',async(req, res)=>{
+    try {
+        const {partipantID, document, signed} = req.body
+        const updatedWaiver = await waiverControllerObj.editWaiver(partipantID, document, signed)
+        res.send({"updatedWaiver":updatedWaiver.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+//End Leonel
 // dbListeners = async ()=>{
 //     const db = await pool.connect()
 //     try {

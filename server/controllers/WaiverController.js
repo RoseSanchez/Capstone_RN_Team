@@ -1,4 +1,4 @@
-const waiversModel = require('../models/WaiversModel')
+const waiversModel = require('../models/WaiverModel')
 const waiverModel = waiversModel.WaiversModel
 const waiverModelObj = new waiverModel()
 
@@ -8,10 +8,10 @@ class WaiversController {
     }
 
     // update insert waiver parameters
-    insertWaiver(partipantId, document, signed){
+    insertWaiver(partipantID, document, signed){
         return new Promise(async(resolve, reject) => {
             try {
-                const newWaiver = await this.model.createWaiver(partipantId, document, signed)
+                const newWaiver = await this.model.createWaiver(partipantID, document, signed)
                 let result = newWaiver.result
                 return resolve({
                     result: result,
@@ -36,11 +36,11 @@ class WaiversController {
         });
     }
 
-    showWaiver(id){
+    showWaiver(waiverID){
         return new Promise(async(resolve, reject) => {
             let result
             try {
-                const waiver = await this.model.readWaiver(id)
+                const waiver = await this.model.readWaiver(waiverID)
                 result = waiver.result
                 return resolve({
                     result: result,
@@ -51,20 +51,29 @@ class WaiversController {
         });
     }
 
-    editWaiver(id){
+    editWaiver(waiverID){
         return new Promise(async(resolve, reject)=>{
-            try{
-                
+            try{ //partipantID, document, signed
+                const propsToEdit = [{value: orderID, partipantID:"partipantID"}, {value: document, propName:"document"}, {value: signed, propName:"signed"}]
+                const updatedWaiver = await this.model.updatedWaiver(waiverID, propsToEdit)
+                let result = updatedWaiver.result
+                return resolve({
+                    result: result,
+                });
             }catch(error){
                 console.log(error)
             }
         })
     }
 
-    removeWaiver(id){
+    removeWaiver(waiverID){
         return new Promise(async(resolve, reject)=>{
             try{
-                
+                const deletedWaiver= await this.model.deleteWaiver(waiverID)
+                let result = deletedWaiver.result
+                return resolve({
+                    result: result,
+                });
             }catch(error){
                 console.log(error)
             }
