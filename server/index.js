@@ -178,8 +178,8 @@ app.get('/getAllOrders', async(req, res)=>{
     }
 })
 
-app.post('/getOrder', async(req, res)=>{
-    console.log(req.body)
+app.get('/getOrder', async(req, res)=>{
+    console.log('getting order call', req.body)
     try {
         const {id} = req.body
         const order = await orderControllerObj.showOrder(id)
@@ -212,8 +212,8 @@ app.post('/deleteOrder',async(req, res)=>{
 
 app.post('/updateOrder',async(req, res)=>{
     try {
-        const {id, orderEmail, orderDetails} = req.body
-        const updatedOrder = await orderControllerObj.editOrder(id, orderEmail, orderDetails)
+        const {id, orderemail, paymentdetails} = req.body
+        const updatedOrder = await orderControllerObj.editOrder(id, orderemail, paymentdetails)
         res.send({"updatedOrder":updatedOrder.result})
     } catch (error) {
         console.log(error)

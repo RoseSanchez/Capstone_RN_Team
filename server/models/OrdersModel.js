@@ -67,7 +67,7 @@ class OrdersModel{
         });
     }
 
-    udpateOrder(id){
+    udpateOrder(id, propsToEdit){
         let propsToUpdate = ''
 
         propsToEdit.forEach(prop =>{
