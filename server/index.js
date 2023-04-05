@@ -14,6 +14,10 @@ const promoterControllerObj = new promoterController()
 const participantsController = require('./controllers/ParticipantsController')
 const participantController = participantsController.ParticipantsController
 const participantControllerObj = new participantController()
+
+const eventsController = require('./controllers/EventsController')
+const eventController = eventsController.EventsController
+const eventControllerObj = new eventController()
 // Postgresql DB connection
 // const pool = new Pool({
 //     // connectionString:"jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
@@ -155,6 +159,48 @@ app.post('/createPrarticipant',async(req, res)=>{
         const {} = req.body
         const newParticipant = await participantControllerObj.insertParticipant(name, password, email, address)
         res.send({"newParticipant":newParticipant.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getAllEvents', async(req, res)=>{
+    try {
+        const events = await eventControllerObj.showAllEvents()
+        res.send({"events":events.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/getEvent', async(req, res)=>{
+    try {
+        const {id} = req.body
+        console.log(id)
+        const event = await eventControllerObj.showEvent(id)
+        res.send({"event":event.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/getEventsByPomoter', async(req, res)=>{
+    try {
+        const {id} = req.body
+        console.log(id)
+        const event = await eventControllerObj.showEventsByPromoter(id)
+        res.send({"events":event.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/createEvent',async(req, res)=>{
+    console.log('create event endpoint call', req.body)
+    try {
+        const {promoterid, details, price, location, photo, date, title} = req.body
+        const newEvent = await eventControllerObj.insertEvent(promoterid, details, price, location, photo, date, title)
+        res.send({"newEvent":newEvent.result})
     } catch (error) {
         console.log(error)
     }

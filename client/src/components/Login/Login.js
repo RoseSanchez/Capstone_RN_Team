@@ -12,11 +12,12 @@ const Login = () => {
     const handleSubmit=async(e)=>{
         e.preventDefault()
         console.log(userInfo)
-        const result = await logIn(userInfo)
-        console.log(result.promoter)
-        console.log(result.promoter === "success" ? true:false)
-        if(result.promoter ==="success"){
-            login(userInfo)
+        const response = await logIn(userInfo)
+        const result = response.promoter
+        console.log(result)
+        console.log(result.status === "success" ? true:false)
+        if(result.status ==="success"){
+            login(result.promoter)
         }else{
             console.log(result)
         }

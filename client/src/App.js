@@ -12,7 +12,7 @@ import Event from "./components/Event/Event.js";
 function App() {
   const navigate = useNavigate()
   const pathName = window.location.pathname
-  console.log(pathName)
+  // console.log(pathName)
   return (
     <>
       {pathName !=="/login" && pathName!=="/signup"?(<nav className="navBar">
@@ -24,7 +24,7 @@ function App() {
         <Route path="/promoters" element={<ProtectedRoute><Promoters /></ProtectedRoute>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/event/id" element={<ProtectedRoute><Event/></ProtectedRoute>}/>
+        <Route path="/event/:id" element={<ProtectedRoute><Event/></ProtectedRoute>}/>
       </Routes>
     </>
   );
