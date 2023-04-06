@@ -9,6 +9,7 @@ class EventsController {
 
     // update insert event parameters
     insertEvent(promoterid, details, price, location, photo, date, title){ 
+        console.log(promoterid, details, price, location, photo, date, title)
         return new Promise(async(resolve, reject) => {
             try {
                 const newEvent = await this.model.createEvent(promoterid, details, price, location, photo, date, title)
@@ -41,6 +42,21 @@ class EventsController {
             let result
             try {
                 const event = await this.model.readEvent(id)
+                result = event.result
+                return resolve({
+                    result: result,
+                });
+            } catch (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    showEventsByPromoter(id){
+        return new Promise(async(resolve, reject) => {
+            let result
+            try {
+                const event = await this.model.readEventByPromoter(id)
                 result = event.result
                 return resolve({
                     result: result,

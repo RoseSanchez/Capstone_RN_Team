@@ -1,16 +1,104 @@
 import styles from './Promoters.module.css'
 import { Button, Grid, Card, Icon, Image, Modal, Header, Form } from 'semantic-ui-react'
 import mainLogo from '../../assets/eventPhoto.jpeg'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { createEvent, getAllEvents, getEventsByPromoter } from '../../api/Events/eventsRoutes'
 
 function Promoters() {
-  const events = [[{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}],[{name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}],[{name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}]]
+
+  const [eventsLst, setEvents] = useState([])
+  useEffect(()=>{
+    let events = [];
+    const evnts =async()=>{
+      
+      let tempLst = [];
+      let response = await getEventsByPromoter({id: Number(JSON.parse(localStorage.getItem('user')).id)})
+      let allEvents = response.events
+      console.log('evnts', allEvents)
+      allEvents.forEach((evnt, i)=>{
+        // console.log(evnt)
+        if(tempLst.length < 3){
+          tempLst.push(evnt)
+        }else{
+          events.push(tempLst)
+          tempLst = []
+          tempLst = tempLst.concat(evnt)
+        }
+        if(i === allEvents.length -1) events.push(tempLst)
+      })
+      // console.log("events", events)
+      setEvents(events)
+    }
+    evnts().catch(console.error)
+  }, [])
+  // let allEvents = []
+ 
+
+ 
+
+  // const evnts =async()=>{
+  //   let allEvents = await getAllEvents()
+  //   // console.log('evnts', allEvents)
+  //   allEvents.forEach((evnt, i)=>{
+  //     console.log(evnt)
+  //     if(tempLst.length < 3){
+  //       tempLst.push(evnt)
+  //     }else{
+  //       events.push(tempLst)
+  //       tempLst = []
+  //       tempLst.push(evnt)
+  //     }
+  //     if(i === allEvents.length -1) events.push(tempLst)
+  //   })
+  //   console.log("events", events)
+  //   setEvents(events)
+  // }
+  // evnts()
+
+  // console.log("allEventos", allEvents)
+
+
+
+
+  // const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
+  // const events = [[{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}],[{name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}],[{name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}]]
+
+
+  // allEvents.forEach((evnt, i)=>{
+  //   if(tempLst.length < 3){
+  //     tempLst.push(evnt)
+  //   }else{
+  //     events.push(tempLst)
+  //     tempLst = []
+  //     tempLst.push(evnt)
+  //   }
+  //   if(i === allEvents.length -1) events.push(tempLst)
+  // })
+
+
+  // console.log("all events", events)
   const [open, setOpen] = useState(false)
-  const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", date:"", flyer:""})
+  const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", date:"", photo:""})
   const navigate = useNavigate()
+
+  // console.log(JSON.parse(localStorage.getItem('user')).id)
+
+  const createEventCall=async(e)=>{
+    // e.preventDefault()
+    // console.log('create event call')
+    const eventBodySend = {...eventInfo, promoterid: JSON.parse(localStorage.getItem('user')).id}
+    // console.log(eventBodySend)
+    const result = await createEvent(eventBodySend)
+    console.log(result)
+    // console.log(result.newEvent)
+    window.location.replace(`event/${result.newEvent.event.id}`)
+    setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
+  }
+
   return (
     <div>
+    {/* {console.log(eventsLst)} */}
       {/* <nav className={styles.navBar}>
         <p className={styles.title}>PURCycling</p>
         <Button className={styles.sbmtBtn} type='submit'>SignUp</Button>
@@ -28,26 +116,29 @@ function Promoters() {
           {/* <Grid.Row> */}
             {
 
-              events.map(eventRow =>{
+              eventsLst.map(eventRow =>{
+                // console.log(eventRow)
                 return(
                   <Grid.Row className={styles.eventRow}>
                     {eventRow.map(event=>{
+                      // console.log(event)
                       return(
-                        <Card onClick={()=>{navigate('/event/id')}}>
+                        <Card onClick={()=>{navigate(`/event/${event.id}`)}}>
                           <img  src={mainLogo} alt="fireSpot"/>
                           <Card.Content>
                           <Card.Header>{event.name}</Card.Header>
                             <Card.Meta>
-                              <span className='date'>Joined in 2015</span>
+                              {/* <span className='date'>Joined in 2015</span> */}
+                              <span className='date'>{event.date}</span>
                             </Card.Meta>
                             <Card.Description>
-                              Matthew is a musician living in Nashville.
+                              {event.details}
                             </Card.Description>
                           </Card.Content>
                           <Card.Content extra>
                             <a>
                               <Icon name='user' />
-                              22 Friends
+                              number of current participants ?
                             </a>
                           </Card.Content>
                         </Card>
@@ -102,23 +193,28 @@ function Promoters() {
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:e.target.value})}} fluid label='Price' placeholder='Price' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:e.target.value})}} type='number' fluid label='Price' placeholder='Price' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, flyer:e.target.value})}} fluid label='Flyer' placeholder='Flyer' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' />
             </Form.Group>
           </Form>
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
         <Button color='black' onClick={() => setOpen(false)}>
-          Nope
+          Cancel
         </Button>
         <Button
-          content="Yep, that's me"
+          content="Create Event"
           labelPosition='right'
           icon='checkmark'
-          onClick={() => {console.log(eventInfo);setOpen(false)}}
+          onClick={() => {
+              createEventCall();
+              // console.log(eventInfo);
+              setOpen(false)
+            }
+          }
           positive
         />
       </Modal.Actions>
