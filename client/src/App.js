@@ -8,11 +8,12 @@ import { ProtectedRoute } from "./components/ProtectedRoute/ProtectedRoute.js";
 import Signup from "./components/Signup/Signup.js";
 import "./App.css"
 import Event from "./components/Event/Event.js";
+import Register from "./components/Regitser/Register.js"
 
 function App() {
   const navigate = useNavigate()
   const pathName = window.location.pathname
-  console.log(pathName)
+  // console.log(pathName)
   return (
     <>
       {pathName !=="/login" && pathName!=="/signup"?(<nav className="navBar">
@@ -20,11 +21,13 @@ function App() {
           <Button className="btn" onClick={()=>{navigate("signup")}}>SignUp</Button>
       </nav>):null}
       <Routes>
-        <Route path="/" element={<Participants />} />
+        <Route path="/" element={<></>} />
         <Route path="/promoters" element={<ProtectedRoute><Promoters /></ProtectedRoute>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/event/id" element={<ProtectedRoute><Event/></ProtectedRoute>}/>
+        <Route path="/event/:id" element={<ProtectedRoute><Event/></ProtectedRoute>}/>
+        <Route path="/participant" element={<Participants/>} />
+        <Route path="/registerParticipant/:eventId" element={<Register/>} />
       </Routes>
     </>
   );

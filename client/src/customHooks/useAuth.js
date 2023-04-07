@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
   // call this function when you want to authenticate the user
   const login = async (data) => {
     console.log("useAuth log in call")
+    // const userData = {...data, promoterId: promoterId}
     setUser(data);
     navigate("promoters");
   };

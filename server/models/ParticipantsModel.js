@@ -3,7 +3,7 @@ const {Pool} = require('pg')
 class ParticipantsModel{
     constructor(){
         // const connection_url = "jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5"
-        const connection_url = "postgres://njupbwybsaqiqt:3935f060b092cdc8a630a2ba09c9b00e0ac1131c3fc28b01b77182cbb0e1d3f6@ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5"
+        const connection_url = "postgres://qlxouxhpuqlcli:c416400a0bd65ef07cc531dbe05b05e643983c24c7019898e083bdffc214a672@ec2-23-20-211-19.compute-1.amazonaws.com:5432/d7mu35vh781rtv"
 
         this.pool = new Pool({
             connectionString:connection_url,
@@ -18,11 +18,14 @@ class ParticipantsModel{
     //     return this.readPromoter();
     // }
 
-    createParticipant(name, password, email, address){
+    createParticipant(name, email, phone, address, birthdate, category, gender){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`insert into participants () VALUES ('${""}')`, (err, response)=>{
+                console.log(name, email, phone, address, birthdate, category, gender)
+                db.query(`insert into participants (name, email, phone, address, birthdate, category, gender) VALUES ('${name}', '${email}', '${phone}', '${address}', '${birthdate}', '${category}', '${gender}')`, (err, response)=>{
+                    console.log(response)
+                    console.log(err)
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({

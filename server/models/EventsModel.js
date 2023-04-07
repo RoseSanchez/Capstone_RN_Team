@@ -3,7 +3,7 @@ const {Pool} = require('pg')
 class EventsModel{
     constructor(){
         // const connection_url = "jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5"
-        const connection_url = "postgres://njupbwybsaqiqt:3935f060b092cdc8a630a2ba09c9b00e0ac1131c3fc28b01b77182cbb0e1d3f6@ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5"
+        const connection_url = "postgres://qlxouxhpuqlcli:c416400a0bd65ef07cc531dbe05b05e643983c24c7019898e083bdffc214a672@ec2-23-20-211-19.compute-1.amazonaws.com:5432/d7mu35vh781rtv"
 
         this.pool = new Pool({
             connectionString:connection_url,
@@ -18,13 +18,12 @@ class EventsModel{
     //     return this.readPromoter();
     // }
 
-    createEvent(promoterid, details, price, location, photo, date, title){
+    readEventByPromoter(id){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`insert into events (promoterid, details, price, location, photo, date, title) VALUES ('${promoterid}', '${details}', '${price}', '${location}', '${photo}', '${date}', '${title}')`, (err, response)=>{
-                    let insertResult = response.rowCount
-                    let result = insertResult > 0 ? "success":"failed"
+                db.query(`SELECT * FROM events WHERE promoterid=${id};`, (err, response)=>{
+                    let result = response.rows
                     return resolve({
                         result: result,
                     });
@@ -35,7 +34,27 @@ class EventsModel{
         });
     }
 
-    readAllEvent(){
+    createEvent(promoterid, details, price, location, photo, date, title){
+        console.log(promoterid, details, price, location, photo, date, title)
+        return new Promise(async (resolve, reject) => {
+            try {
+                const db = await this.pool.connect()
+                db.query(`insert into events (promoterid, details, price, location, photo, date, title) VALUES (${promoterid}, '${details}', ${price}, '${location}', '${photo}', '${date}', '${title}') RETURNING id;`, (err, response)=>{
+                    console.log(response)
+                    let insertResult = response.rowCount
+                    let status = insertResult > 0 ? "success":"failed"
+                    let result = {event: response.rows[0], status: status}
+                    return resolve({
+                        result: result,
+                    });
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        });
+    }
+
+    readAllEvents(){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
