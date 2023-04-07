@@ -18,11 +18,11 @@ class OrdersModel{
     //     return this.readPromoter();
     // }
 
-    createOrder(orderEmail, orderDetails, participantID){
+    createOrder(orderEmail, orderDetails){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`INSERT INTO orders (orderemail, paymentdetails, participantid) VALUES ('${orderEmail}', '${orderDetails}', '${participantID}')`, (err, response)=>{
+                db.query(`INSERT INTO orders (orderemail, paymentdetails) VALUES ('${orderEmail}', '${orderDetails}')`, (err, response)=>{
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({
@@ -67,7 +67,7 @@ class OrdersModel{
         });
     }
 
-    udpateOrder(id){
+    udpateOrder(id, propsToEdit){
         let propsToUpdate = ''
 
         propsToEdit.forEach(prop =>{

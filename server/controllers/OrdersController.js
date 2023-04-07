@@ -1,6 +1,6 @@
 const ordersModel = require('../models/OrdersModel')
 const orderModel = ordersModel.OrdersModel
-const orderModelObj = new ordersModel()
+const orderModelObj = new orderModel()
 
 class OrdersController {
     constructor(){
@@ -21,7 +21,7 @@ class OrdersController {
         });
     }
 
-    showAllPromoters(){
+    showAllOrders(){
         return new Promise(async(resolve, reject) => {
             try {
                 const orders = await this.model.readAllOrders()
@@ -35,7 +35,7 @@ class OrdersController {
         });
     }
 
-    showPromoter(id){
+    showOrder(id){
         return new Promise(async(resolve, reject) => {
             let result
             try {
@@ -50,10 +50,10 @@ class OrdersController {
         });
     }
 
-    editOrder(id){
+    editOrder(id, orderemail, paymentdetails){
         return new Promise(async(resolve, reject)=>{
             try{
-                const propsToEdit = [{value: orderEmail, propName:"orderemail"}, {value: orderDetails, propName:"orderdetails"}]
+                const propsToEdit = [{value: orderemail, propName:"orderemail"}, {value: paymentdetails, propName:"paymentdetails"}]
                 // console.log(propsToEdit)
                 const updatedOrder = await this.model.udpateOrder(id, propsToEdit)
                 let result = updatedOrder.result
