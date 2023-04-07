@@ -27,14 +27,15 @@ const eventsController = require('./controllers/EventsController')
 const eventController = eventsController.EventsController
 const eventControllerObj = new eventController()
 
-// Postgresql DB connection
-// const pool = new Pool({
-//     // connectionString:"jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
-//     connectionString:"postgres://njupbwybsaqiqt:3935f060b092cdc8a630a2ba09c9b00e0ac1131c3fc28b01b77182cbb0e1d3f6@ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
-//     ssl:{rejectUnauthorized: false},
-//     max: 20,
-//     idleTimeoutMillis: 30000
-// })
+//Postgresql DB connection
+const pool = new Pool({
+    // connectionString:"jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
+    //connectionString:"postgres://njupbwybsaqiqt:3935f060b092cdc8a630a2ba09c9b00e0ac1131c3fc28b01b77182cbb0e1d3f6@ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
+    connectionString:"postgres://qlxouxhpuqlcli:c416400a0bd65ef07cc531dbe05b05e643983c24c7019898e083bdffc214a672@ec2-23-20-211-19.compute-1.amazonaws.com:5432/d7mu35vh781rtv",
+    ssl:{rejectUnauthorized: false},
+    max: 20,
+    idleTimeoutMillis: 30000
+})
 
 // run application server
 const myServer = app.listen(port, () => {
@@ -237,7 +238,7 @@ app.get('/getAllTickets', async(req, res)=>{
 app.get('/getTicket', async(req, res)=>{
     try {
         const {id} = req.body
-        const ticket = await ticketControllerObj.showticket(id)
+        const ticket = await ticketControllerObj.showTicket(id)
         res.send({"ticket":ticket.result})
     } catch (error) {
         console.log(error)
@@ -247,8 +248,8 @@ app.get('/getTicket', async(req, res)=>{
 app.post('/createTicket',async(req, res)=>{
     console.log('create ticket call', req.body)
     try {
-        const {orderID, participantID, eventID} = req.body 
-        const newTicket = await ticketControllerObj.insertTicket(orderID, participantID, eventID)
+        const {orderid, participantid, eventid} = req.body 
+        const newTicket = await ticketControllerObj.insertTicket(orderid, participantid, eventid)
         res.send({"newTicket":newTicket.result})
     } catch (error) {
         console.log(error)
@@ -267,9 +268,9 @@ app.post('/deleteTicket',async(req, res)=>{
 
 app.post('/updateTicket',async(req, res)=>{
     try {
-        const {id, orderID, participantID, eventID} = req.body
-        const updatedTicket = await orderControllerObj.editOrder(id, orderID, participantID, eventID)
-        res.send({"updatedOrder":updatedTicket.result})
+        const {id, participantid, orderid, eventid} = req.body
+        const updatedTicket = await ticketControllerObj.editTicket(id, participantid, orderid, eventid)
+        res.send({"updatedTicket":updatedTicket.result})
     } catch (error) {
         console.log(error)
     }
