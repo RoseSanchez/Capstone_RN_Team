@@ -188,6 +188,7 @@ app.get('/getAllOrders', async(req, res)=>{
 })
 
 app.get('/getOrder', async(req, res)=>{
+    console.log('getting order call', req.body)
     try {
         const {id} = req.body
         const order = await orderControllerObj.showOrder(id)
@@ -200,9 +201,9 @@ app.get('/getOrder', async(req, res)=>{
 app.post('/createOrder',async(req, res)=>{
     console.log('create oreder call', req.body)
     try {
-        const {orderEmail, orderDetails} = req.body 
-        const newOrder = await promoterControllerObj.insertOrder(orderEmail, orderDetails)
-        res.send({"newOrder":newOder.result})
+        const {orderemail, paymentdetails} = req.body 
+        const newOrder = await orderControllerObj.insertOrder(orderemail, paymentdetails)
+        res.send({"newOrder":newOrder.result})
     } catch (error) {
         console.log(error)
     }
@@ -220,14 +221,64 @@ app.post('/deleteOrder',async(req, res)=>{
 
 app.post('/updateOrder',async(req, res)=>{
     try {
-        const {id, orderEmail, orderDetails} = req.body
-        const updatedOrder = await orderControllerObj.editOrder(id, orderEmail, orderDetails)
+        const {id, orderemail, paymentdetails} = req.body
+        const updatedOrder = await orderControllerObj.editOrder(id, orderemail, paymentdetails)
         res.send({"updatedOrder":updatedOrder.result})
     } catch (error) {
         console.log(error)
     }
 })
-// enrose
+app.get('/getAllTickets', async(req, res)=>{
+    try {
+        const tickets = await ticketControllerObj.showAllTickets()
+        res.send({"tickets":tickets.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getTicket', async(req, res)=>{
+    try {
+        const {id} = req.body
+        const ticket = await ticketControllerObj.showticket(id)
+        res.send({"ticket":ticket.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/createTicket',async(req, res)=>{
+    console.log('create ticket call', req.body)
+    try {
+        const {orderID, participantID, eventID} = req.body 
+        const newTicket = await ticketControllerObj.insertTicket(orderID, participantID, eventID)
+        res.send({"newTicket":newTicket.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/deleteTicket',async(req, res)=>{
+    try {
+        const {id} = req.body
+        const deletedTicket = await ticketControllerObj.removeTicket(id)
+        res.send({"deletedTicket":deletedTicket.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/updateTicket',async(req, res)=>{
+    try {
+        const {id, orderID, participantID, eventID} = req.body
+        const updatedTicket = await orderControllerObj.editOrder(id, orderID, participantID, eventID)
+        res.send({"updatedOrder":updatedTicket.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+// end rose
 // Leonel
 
 app.get('/getAllEvents', async(req, res)=>{
