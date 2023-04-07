@@ -164,10 +164,11 @@ app.get('/getParticipant', async(req, res)=>{
     }
 })
 
-app.post('/createPrarticipant',async(req, res)=>{
+app.post('/createParticipant',async(req, res)=>{
+    console.log(req.body)
     try {
-        const {} = req.body
-        const newParticipant = await participantControllerObj.insertParticipant(name, password, email, address)
+        const {name, email, phone, address, birthdate, category, gender} = req.body
+        const newParticipant = await participantControllerObj.insertParticipant(name, email, phone, address, birthdate, category, gender)
         res.send({"newParticipant":newParticipant.result})
     } catch (error) {
         console.log(error)

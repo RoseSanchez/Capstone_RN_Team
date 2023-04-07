@@ -96,6 +96,8 @@ function Promoters() {
     setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
   }
 
+  console.log()
+
   return (
     <div>
     {/* {console.log(eventsLst)} */}
@@ -193,7 +195,7 @@ function Promoters() {
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:e.target.value})}} type='number' fluid label='Price' placeholder='Price' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' />

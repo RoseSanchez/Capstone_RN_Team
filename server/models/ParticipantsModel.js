@@ -18,11 +18,14 @@ class ParticipantsModel{
     //     return this.readPromoter();
     // }
 
-    createParticipant(name, password, email, address){
+    createParticipant(name, email, phone, address, birthdate, category, gender){
         return new Promise(async (resolve, reject) => {
             try {
                 const db = await this.pool.connect()
-                db.query(`insert into participants () VALUES ('${""}')`, (err, response)=>{
+                console.log(name, email, phone, address, birthdate, category, gender)
+                db.query(`insert into participants (name, email, phone, address, birthdate, category, gender) VALUES ('${name}', '${email}', '${phone}', '${address}', '${birthdate}', '${category}', '${gender}')`, (err, response)=>{
+                    console.log(response)
+                    console.log(err)
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({
