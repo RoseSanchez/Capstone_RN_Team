@@ -3,7 +3,7 @@ import { Button, Grid, Card, Icon, Image, Modal, Header, Form } from 'semantic-u
 import mainLogo from '../../assets/eventPhoto.jpeg'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { createEvent, getAllEvents, getEventsByPromoter } from '../../api/Events/eventsRoutes'
+import { createEvent, getEventsByPromoter, updateEvent } from '../../api/Events/eventsRoutes'
 
 function Promoters() {
 
@@ -95,6 +95,17 @@ function Promoters() {
     window.location.replace(`event/${result.newEvent.event.id}`)
     setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
   }
+  const updateEventCall=async(e)=>{
+    // e.preventDefault()
+    // console.log('create event call')
+    const eventBodySend = {...eventInfo, eventid: JSON.parse(localStorage.getItem('eventid')).id}
+    // console.log(eventBodySend)
+    const result = await updateEvent(eventBodySend)
+    console.log(result)
+    // console.log(result.newEvent)
+    window.location.replace(`event/${result.newEvent.event.id}`)
+    setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
+  }
 
   console.log()
 
@@ -143,6 +154,7 @@ function Promoters() {
                               number of current participants ?
                             </a>
                           </Card.Content>
+                          <Button onClick={()=>{setOpen(true)}} className={styles.sbmtBtn} type='submit'>Update</Button>
                         </Card>
                       )
                     })}
@@ -213,6 +225,52 @@ function Promoters() {
           icon='checkmark'
           onClick={() => {
               createEventCall();
+              // console.log(eventInfo);
+              setOpen(false)
+            }
+          }
+          positive
+        />
+      </Modal.Actions>
+    </Modal>
+    <Modal
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      open={open}
+      // trigger={<Button>Show Modal</Button>}
+    >
+      <Modal.Header>Update Event</Modal.Header>
+      <Modal.Content >
+        {/* <Image size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' wrapped /> */}
+        <Modal.Description>
+          {/* <Header>Default Profile Image</Header> */}
+          {/* <p>
+            We've found the following gravatar image associated with your e-mail
+            address.
+          </p>
+          <p>Is it okay to use this photo?</p> */}
+          <Form >
+            <Form.Group widths='equal' className={styles.eventForm}>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' />
+            </Form.Group>
+          </Form>
+        </Modal.Description>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button color='black' onClick={() => setOpen(false)}>
+          Cancel
+        </Button>
+        <Button
+          content="Update"
+          labelPosition='right'
+          icon='checkmark'
+          onClick={() => {
+              updateEventCall();
               // console.log(eventInfo);
               setOpen(false)
             }
