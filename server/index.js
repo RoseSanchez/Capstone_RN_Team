@@ -23,10 +23,6 @@ const ticketsController = require('./controllers/TicketsController')
 const ticketController = ticketsController.TicketsController
 const ticketControllerObj = new ticketController()
 
-const waiversController = require('./controllers/WaiverController')
-const waiverController = waiversController.waiverController
-const waiverControllerObj = new waiverController()
-
 const eventsController = require('./controllers/EventsController')
 const eventController = eventsController.EventsController
 const eventControllerObj = new eventController()
@@ -230,6 +226,7 @@ app.post('/updateOrder',async(req, res)=>{
         console.log(error)
     }
 })
+
 app.get('/getAllTickets', async(req, res)=>{
     try {
         const tickets = await ticketControllerObj.showAllTickets()
@@ -281,7 +278,6 @@ app.post('/updateTicket',async(req, res)=>{
 })
 
 // end rose
-// Leonel
 
 app.get('/getAllEvents', async(req, res)=>{
     try {
@@ -303,46 +299,6 @@ app.post('/getEvent', async(req, res)=>{
     }
 })
 
-app.post('/createEvent',async(req, res)=>{
-    console.log('create event call', req.body)
-    try {
-        const {promoterID, details, price, location, photo, date, title} = req.body
-        const newEvent = await eventControllerObj.insertEvent(promoterID, details, price, location, photo, date, title)
-        res.send({"newEvent":newEvent.result})
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-app.post('/deleteEvent',async(req, res)=>{
-    try {
-        const {eventID} = req.body
-        const deletedEvent = await eventControllerObj.removeEvent(eventID)
-        res.send({"deletedEvent":deletedEvent.result})
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-app.post('/updateEvent',async(req, res)=>{
-    try {
-        const {promoterID, details, price, location, photo, date, title} = req.body
-        const updatedEvent = await eventControllerObj.editEvent(promoterID, details, price, location, photo, date, title)
-        res.send({"updatedEvent":updatedEvent.result})
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-app.get('/getAllWaivers', async(req, res)=>{
-    try {
-        const waivers = await waiverControllerObj.showAllWaivers()
-        res.send({"waivers":waivers.result})
-    } catch (error) {
-        console.log(error)
-    }
-})
-
 app.post('/getEventsByPomoter', async(req, res)=>{
     try {
         const {id} = req.body
@@ -350,16 +306,6 @@ app.post('/getEventsByPomoter', async(req, res)=>{
         const event = await eventControllerObj.showEventsByPromoter(id)
         res.send({"events":event.result})
     } catch (error) {
-        console.log(error)
-    }
-})
-
-app.get('/getWaiver', async(req, res)=>{
-    try {
-        const {waiverID} = req.body
-        const waiver = await waiverControllerObj.showWaiver(waiverID)
-        res.send({"waiver":waiver.result})
-    }catch (error) {
         console.log(error)
     }
 })
@@ -375,38 +321,7 @@ app.post('/createEvent',async(req, res)=>{
     }
 })
 
-app.post('/createWaiver',async(req, res)=>{
-    console.log('create waiver call', req.body)
-    try {
-        const {partipantID, document, signed} = req.body
-        const newWaiver = await waiverControllerObj.insertWaiver(partipantID, document, signed)
-        res.send({"newWaiver":newWaiver.result})
-    } catch (error) {
-        console.log(error)
-    }
-})
 
-app.post('/deleteWaiver',async(req, res)=>{
-    try {
-        const {waiverID} = req.body
-        const deletedWaiver = await waiverControllerObj.removeWaiver(waiverID)
-        res.send({"deletedWaiver":deletedWaiver.result})
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-app.post('/updateWaiver',async(req, res)=>{
-    try {
-        const {partipantID, document, signed} = req.body
-        const updatedWaiver = await waiverControllerObj.editWaiver(partipantID, document, signed)
-        res.send({"updatedWaiver":updatedWaiver.result})
-    } catch (error) {
-        console.log(error)
-    }
-})
-    
-//End Leonel
 
 // dbListeners = async ()=>{
 //     const db = await pool.connect()
@@ -423,4 +338,4 @@ app.post('/updateWaiver',async(req, res)=>{
 //         console.log(error)
 //     }
 // }
-//
+// dbListeners()
