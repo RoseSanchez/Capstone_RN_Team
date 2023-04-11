@@ -288,7 +288,7 @@ app.get('/getAllEvents', async(req, res)=>{
     }
 })
 
-app.post('/getEvent', async(req, res)=>{
+app.get('/getEvent', async(req, res)=>{
     try {
         const {id} = req.body
         console.log(id)
@@ -299,7 +299,7 @@ app.post('/getEvent', async(req, res)=>{
     }
 })
 
-app.post('/getEventsByPomoter', async(req, res)=>{
+app.get('/getEventsByPomoter', async(req, res)=>{
     try {
         const {id} = req.body
         console.log(id)
@@ -324,13 +324,23 @@ app.post('/createEvent',async(req, res)=>{
 app.post('/updateEvent',async(req, res)=>{
     try {
         const {id, promoterid, details, price, location, photo, date, title} = req.body
-        const updatedEvent = await ticketControllerObj.editEvent(id, promoterid, details, price, location, photo, date, title)
+        console.log("update body", req.body)
+        const updatedEvent = await eventControllerObj.editEvent(id, promoterid, details, price, location, photo, date, title)
         res.send({"updatedEvent":updatedEvent.result})
     } catch (error) {
         console.log(error)
     }
 })
 
+app.post('/deleteEvent',async(req, res)=>{
+    try {
+        const {id} = req.body
+        const deletedEvent = await eventControllerObj.removeEvent(id)
+        res.send({"deletedEvent":deletedEvent.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 // dbListeners = async ()=>{
 //     const db = await pool.connect()

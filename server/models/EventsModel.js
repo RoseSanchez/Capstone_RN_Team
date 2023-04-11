@@ -86,10 +86,29 @@ class EventsModel{
         });
     }
 
-    udpateEvent(id){
+    udpateEvent(id, propsToEdit){
+        let propsToUpdate = ''
+
+        propsToEdit.forEach(prop =>{
+            if(prop.value){
+                propsToUpdate += `${prop.propName}='${prop.value}', `
+            }
+        })
+
+        console.log('props to update', propsToUpdate.slice(0,-2))
+        propsToUpdate = propsToUpdate.slice(0,-2)
+
         return new Promise(async(resolve, reject)=>{
             try{
-                
+                const db = await this.pool.connect()
+                db.query(`update events SET ${propsToUpdate} where id=${id};`, (err, response)=>{
+                    console.log(response)
+                    let insertResult = response.rowCount
+                    let result = insertResult > 0 ? "success":"failed"
+                    return resolve({
+                        result: result,
+                    });
+                })
             }catch(error){
                 console.log(error)
             }
@@ -99,12 +118,19 @@ class EventsModel{
     deleteEvent(id){
         return new Promise(async(resolve, reject)=>{
             try{
-                
+                const db = await this.pool.connect()
+                db.query(`delete FROM events where id=${id};`, (err, response)=>{
+                    console.log(response)
+                    let insertResult = response.rowCount
+                    let result = insertResult > 0 ? "success":"failed"
+                    return resolve({
+                        result: result,
+                    });
+                })
             }catch(error){
                 console.log(error)
             }
-        })
-    }
+        })    }
 
 }
 
