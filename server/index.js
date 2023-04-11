@@ -288,7 +288,7 @@ app.get('/getAllEvents', async(req, res)=>{
     }
 })
 
-app.get('/getEvent', async(req, res)=>{
+app.post('/getEvent', async(req, res)=>{
     try {
         const {id} = req.body
         console.log(id)
@@ -299,7 +299,7 @@ app.get('/getEvent', async(req, res)=>{
     }
 })
 
-app.get('/getEventsByPomoter', async(req, res)=>{
+app.post('/getEventsByPomoter', async(req, res)=>{
     try {
         const {id} = req.body
         console.log(id)
