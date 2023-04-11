@@ -3,7 +3,7 @@ import { Button, Grid, Card, Icon, Image, Modal, Header, Form } from 'semantic-u
 import mainLogo from '../../assets/eventPhoto.jpeg'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { createEvent, getEventsByPromoter, updateEvent } from '../../api/Events/eventsRoutes'
+import { createEvent, getEventsByPromoter, updateEvent, deleteEvent } from '../../api/Events/eventsRoutes'
 
 function Promoters() {
 
@@ -78,6 +78,7 @@ function Promoters() {
 
 
   // console.log("all events", events)
+  const [update, setUpdate] = useState(false)
   const [open, setOpen] = useState(false)
   const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", date:"", photo:""})
   const navigate = useNavigate()
@@ -105,6 +106,15 @@ function Promoters() {
     // console.log(result.newEvent)
     window.location.replace(`event/${result.newEvent.event.id}`)
     setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
+  }
+  const deleteEventCall=async(e)=>{
+    // e.preventDefault()
+    // console.log('create event call')
+    const eventBodySend = {...eventInfo, eventid: JSON.parse(localStorage.getItem('eventid')).id}
+    // console.log(eventBodySend)
+    const result = await deleteEvent(eventBodySend.eventid)
+    console.log(result)
+    // console.log(result.newEvent)
   }
 
   console.log()
@@ -136,10 +146,10 @@ function Promoters() {
                     {eventRow.map(event=>{
                       // console.log(event)
                       return(
-                        <Card onClick={()=>{navigate(`/event/${event.id}`)}}>
+                        <Card onClick={(e)=>{e.stopPropagation(); navigate(`/event/${event.id}`)}}>
                           <img  src={mainLogo} alt="fireSpot"/>
                           <Card.Content>
-                          <Card.Header>{event.name}</Card.Header>
+                          <Card.Header>{event.ti}</Card.Header>
                             <Card.Meta>
                               {/* <span className='date'>Joined in 2015</span> */}
                               <span className='date'>{event.date}</span>
@@ -154,7 +164,16 @@ function Promoters() {
                               number of current participants ?
                             </a>
                           </Card.Content>
-                          <Button onClick={()=>{setOpen(true)}} className={styles.sbmtBtn} type='submit'>Update</Button>
+                          <Grid columns ={2}>
+                            <Grid.Row>
+                              <Grid.Column>
+                          <Button onClick={(e)=>{ e.stopPropagation(); setUpdate(true)}} className={styles.sbmtBtn} type='submit'>Update</Button>
+                          </Grid.Column>
+                          <Grid.Column>
+                          <Button onClick={(e)=>{ e.stopPropagation(); deleteEventCall()}} className={styles.sbmtBtn} type='submit'>Delete</Button>
+                            </Grid.Column>
+                            </Grid.Row>
+                          </Grid>
                         </Card>
                       )
                     })}
@@ -234,9 +253,9 @@ function Promoters() {
       </Modal.Actions>
     </Modal>
     <Modal
-      onClose={() => setOpen(false)}
-      onOpen={() => setOpen(true)}
-      open={open}
+      onClose={() => setUpdate(false)}
+      onOpen={() => setUpdate(true)}
+      open={update}
       // trigger={<Button>Show Modal</Button>}
     >
       <Modal.Header>Update Event</Modal.Header>

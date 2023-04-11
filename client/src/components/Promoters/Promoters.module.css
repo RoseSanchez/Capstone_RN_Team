@@ -16,6 +16,7 @@
     margin-right: 19rem !important;
     font-weight: bold !important;
     color: white !important;
+    z-index: 0;
 }
 
 .title{
