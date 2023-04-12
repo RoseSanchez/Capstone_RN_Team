@@ -54,7 +54,7 @@ function Event() {
           <p>${event.price} | {" "}</p> 
           <p>{event.date}</p> 
         </div>
-        /*<img  src={defaultLocation} alt="fireSpot"/> */
+        <img  src={defaultLocation} alt="fireSpot"/>
         <Form >
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, name:e.target.value})}} fluid label='Name' placeholder='Name' />
