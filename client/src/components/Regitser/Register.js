@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-//import { useLoaderData, useParams } from "react-router-dom";
-import {useParams } from "react-router-dom";
-//import { Label, Form } from "semantic-ui-react";
-import { Form } from "semantic-ui-react";
+import { useLoaderData, useParams } from "react-router-dom";
+//import {useParams } from "react-router-dom";
+import { Label, Form } from "semantic-ui-react";
+//import { Form } from "semantic-ui-react";
 import { getEvent } from "../../api/Events/eventsRoutes";
 import defaultEventImg from "../../assets/default-image.png"
 import defaultLocation from "../../assets/default.png"
@@ -40,7 +40,7 @@ function Event() {
       setEvent(eventResponse.event)
     }
     event().catch(console.error)
-  },[])
+  })
   return (
     // console.log(event)
     // {event ? <>{event.details}</>:<>Loading Event</>}
@@ -54,7 +54,7 @@ function Event() {
           <p>${event.price} | {" "}</p> 
           <p>{event.date}</p> 
         </div>
-        <img  src={defaultLocation} alt="fireSpot"/> 
+        /*<img  src={defaultLocation} alt="fireSpot"/> */
         <Form >
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, name:e.target.value})}} fluid label='Name' placeholder='Name' />
