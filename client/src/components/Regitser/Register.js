@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
-import { Label, Form } from "semantic-ui-react";
+//import { useLoaderData, useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
+//import { Label, Form } from "semantic-ui-react";
+import { Form } from "semantic-ui-react";
 import { getEvent } from "../../api/Events/eventsRoutes";
 import defaultEventImg from "../../assets/default-image.png"
 import defaultLocation from "../../assets/default.png"
