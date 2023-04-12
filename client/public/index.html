@@ -1,5 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script type="text/javascript">
+
+    ATHM_Checkout = {
+
+        env: 'sandbox',
+        publicToken: 'sandboxtoken01875617264',
+
+        timeout: 600,
+
+        theme: 'btn',
+        lang: 'en',
+
+        total: 1.00,
+        tax: 1.00,
+        subtotal: 1.00,
+
+        metadata1: 'metadata1 test',
+        metadata2: 'metadata2 test',
+
+        items: [
+            {
+                "name":"First Item",
+                "description":"This is a description.",
+                "quantity":"1",
+                "price":"1.00",
+                "tax":"1.00",
+                "metadata":"metadata test"
+            },
+            {
+                "name":"Second Item",
+                "description":"This is another description.",
+                "quantity":"1",
+                "price":"1.00",
+                "tax":"1.00",
+                "metadata":"metadata test"
+            }
+        ]
+    }
+</script>
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
@@ -61,5 +100,8 @@
       >
       </stripe-buy-button>
     <!-- Stripe End -->
+    <div id="ATHMovil_Checkout_Button"></div>
   </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://www.athmovil.com/api/js/v3/athmovilV3.js"></script>
 </html>
