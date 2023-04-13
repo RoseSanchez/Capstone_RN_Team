@@ -53,7 +53,7 @@ eventsLst.map(eventRow =>{
         // console.log(event)
         return(
           <Card>
-            <img  src={mainLogo} alt="fireSpot"/>
+            <img  src={event.photo}/>
             <Card.Content>
             <Card.Header>{event.title}</Card.Header>
               <Card.Meta>

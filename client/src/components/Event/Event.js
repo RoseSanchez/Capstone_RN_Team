@@ -28,7 +28,7 @@ function Event() {
       <div className={styles.container}>
         <p className={styles.title}>{event.title}</p> 
         <button>show or export participants</button>
-        <img  src={defaultEventImg} alt="fireSpot"/>
+        <img  src={event.photo} alt="fireSpot"/>
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
         <div className={styles.details}>
           <p>${event.price} | {" "}</p> 

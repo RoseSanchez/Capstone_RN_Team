@@ -1,11 +1,31 @@
 const express = require('express')
-const app = express()
 const cors = require('cors')
 const port = 3333
 const WebSocket = require("ws");
 const {Pool} = require('pg')
+const bodyParser = require('body-parser')
+const multer = require('multer')
+const uploadImage = require('./herlpers/herlpers.js')
+
+const app = express()
 app.use(cors())
 app.use(express.json())
+
+const multerMid = multer({
+    storage: multer.memoryStorage(),
+    limits: {
+      // no larger than 5mb.
+      fileSize: 5 * 1024 * 1024,
+    },
+  })
+
+app.disable('x-powered-by')
+app.use(multerMid.single('file'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}))
+
+
+
 
 const promotersController = require('./controllers/PromotersController')
 const promoterController = promotersController.PromotersController
@@ -72,6 +92,32 @@ myServer.on('upgrade', async function upgrade(request, socket, head) {      //ha
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
+
+
+app.post('/uploads', async (req, res, next) => {
+    console.log(req)
+    try {
+      const myFile = req.file
+      const imageUrl = await uploadImage(myFile)
+      res
+        .status(200)
+        .json({
+          message: "Upload was successful",
+          data: imageUrl
+        })
+    } catch (error) {
+      next(error)
+    }
+  })
+  
+  app.use((err, req, res, next) => {
+    res.status(500).json({
+      error: err,
+      message: 'Internal server error!',
+    })
+    next()
+  })
+
 
 app.get('/getAllPromoters', async(req, res)=>{
     try {

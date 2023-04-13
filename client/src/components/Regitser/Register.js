@@ -9,25 +9,99 @@ import {createParticipant} from "../../api/Participants/participantsRoute.js"
 
 function Event() {
   const [participantInfo, setParticipantInfo] = useState()
+  const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"", address:"",birthdate:"", category:""}])
+  let participantsFormHTML = []
   const {eventId} = useParams()
   console.log(eventId)
   console.log(window.location.pathname)
   // console.log(useLoaderData())
 //   console.log(id)
   const [event, setEvent] = useState()
+  const [numOfParticipants, setNumOfParticipants] = useState(1)
+
+  const handleState = (index, value, attribute) =>{
+    // participantInfo[i] = {...participantInfo[i], :}
+  }
+
+  const renderParticipantsForm = ()=>{
+    for(let i = 0; i<numOfParticipants; i++){
+      participantsFormHTML.push(
+        <Form >
+            {/* <Form.Group widths='equal' className={styles.eventForm}>
+                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, name:e.target.value})}} fluid label='Name' placeholder='Name' />
+                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, email:e.target.value})}} fluid label='Email' placeholder='Email' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' />
+                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, phone:e.target.value})}} fluid label='Phone' placeholder='Phone' />
+                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, gender:e.target.value})}} fluid label='Gender' placeholder='Gender' />
+                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, birthdate:e.target.value})}} fluid label='Birthdate' placeholder='Birthdate' />
+                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, address:e.target.value})}} fluid label='Address' placeholder='Address' />
+                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, category:e.target.value})}} fluid label='Category' placeholder='Category' />
+            </Form.Group> */}
+            <Form.Group widths='equal' className={styles.eventForm}>
+                <Form.Input onChange={(e)=>{
+                  participantsInfo[i] = {...participantsInfo[i], name:e.target.value}
+                  // console.log(participantsInfo)
+                  setParticipantsInfo(participantsInfo)
+                }} fluid label='Name' placeholder='Name' />
+
+                <Form.Input onChange={(e)=>{
+                  participantsInfo[i] = {...participantsInfo[i], email:e.target.value}
+                  setParticipantsInfo(participantsInfo)
+                }} fluid label='Email' placeholder='Email' />
+
+                <Form.Input onChange={(e)=>{
+                  participantsInfo[i] = {...participantsInfo[i], phone:e.target.value}
+                  setParticipantsInfo(participantsInfo)
+                }} fluid label='Phone' placeholder='Phone' />
+
+                <Form.Input onChange={(e)=>{
+                  participantsInfo[i] = {...participantsInfo[i], gender:e.target.value}
+                  setParticipantsInfo(participantsInfo)
+                }} fluid label='Gender' placeholder='Gender' />
+
+                <Form.Input onChange={(e)=>{
+                  participantsInfo[i] = {...participantsInfo[i], birthdate:e.target.value}
+                  setParticipantsInfo(participantsInfo)
+                }} fluid label='Birthdate' placeholder='Birthdate' />
+
+                <Form.Input onChange={(e)=>{
+                  participantsInfo[i] = {...participantsInfo[i], address:e.target.value}
+                  setParticipantsInfo(participantsInfo)
+                }} fluid label='Address' placeholder='Address' />
+
+                <Form.Input onChange={(e)=>{
+                  participantsInfo[i] = {...participantsInfo[i], category:e.target.value}
+                  setParticipantsInfo(participantsInfo)
+                }} fluid label='Category' placeholder='Category' />
+            </Form.Group>
+            {/* <button onClick={(e)=>{handleSubmit(e)}}>submit</button> */}
+            <br/>
+          </Form>
+      )
+    }
+    return <>{participantsFormHTML}</>
+  }
 
   const handleSubmit =async(e)=>{
     e.preventDefault()
 
-    console.log(participantInfo)
-        const result = await createParticipant(participantInfo)
-        console.log(result.newPromoter)
-        setParticipantInfo({name:"",email:"",
-          phone:"",
-          gender:"",
-          birthdate:"",
-          address:"",
-          category:""})
+    console.log(participantsInfo)
+
+    participantsInfo.forEach(async participant => {
+      await createParticipant(participant)
+      // console.log(participant)
+    });
+
+    // setParticipantsInfo([{name:"", email:"", phone:"", address:"",birthdate:"", category:""}])
+    // console.log(participantInfo)
+    //     const result = await createParticipant(participantInfo)
+    //     console.log(result.newPromoter)
+    //     setParticipantInfo({name:"",email:"",
+    //       phone:"",
+    //       gender:"",
+    //       birthdate:"",
+    //       address:"",
+    //       category:""})
   }
 
   useEffect(()=>{
@@ -41,23 +115,34 @@ function Event() {
   },[])
   return (
     // console.log(event)
+    
     // {event ? <>{event.details}</>:<>Loading Event</>}
     event ? (<div className={styles.parent}>
+      {console.log(participantsInfo)}
       <div className={styles.container}>
         <p className={styles.title}>{event.title}</p> 
         <button>show or export participants</button>
-        <img  src={defaultEventImg} alt="fireSpot"/>
+        <img  src={event.photo}/>
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
         <div className={styles.details}>
           <p>${event.price} | {" "}</p> 
           <p>{event.date}</p> 
         </div>
         <img  src={defaultLocation} alt="fireSpot"/> 
-        <Form >
+        {renderParticipantsForm()}
+        <button onClick={(e)=>{handleSubmit(e)}}>submit</button>
+
+        <button onClick={()=>{
+                              setNumOfParticipants(numOfParticipants + 1); 
+                              setParticipantsInfo([...participantsInfo, {name:"", email:"", phone:"", address:"",birthdate:"", category:""}])
+                            }}
+                          >add participant</button>
+        <button onClick={()=>{setNumOfParticipants(numOfParticipants - 1)}}>delete participant</button>
+        {/* {numOfParticipants==1 ? <Form >
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, name:e.target.value})}} fluid label='Name' placeholder='Name' />
                 <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, email:e.target.value})}} fluid label='Email' placeholder='Email' />
-                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' /> */}
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' />
                 <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, phone:e.target.value})}} fluid label='Phone' placeholder='Phone' />
                 <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, gender:e.target.value})}} fluid label='Gender' placeholder='Gender' />
                 <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, birthdate:e.target.value})}} fluid label='Birthdate' placeholder='Birthdate' />
@@ -65,7 +150,7 @@ function Event() {
                 <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, category:e.target.value})}} fluid label='Category' placeholder='Category' />
             </Form.Group>
             <button onClick={(e)=>{handleSubmit(e)}}>submit</button>
-          </Form>
+          </Form>:null} */}
       </div>
       
     </div>):<>Loading Event</>

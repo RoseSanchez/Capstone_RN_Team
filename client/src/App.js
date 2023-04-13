@@ -21,12 +21,12 @@ function App() {
           <Button className="btn" onClick={()=>{navigate("signup")}}>SignUp</Button>
       </nav>):null}
       <Routes>
-        <Route path="/" element={<></>} />
+        {/* <Route path="/" element={<></>} /> */}
+        <Route path="/" element={<Participants/>} />
         <Route path="/promoters" element={<ProtectedRoute><Promoters /></ProtectedRoute>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/event/:id" element={<ProtectedRoute><Event/></ProtectedRoute>}/>
-        <Route path="/participant" element={<Participants/>} />
         <Route path="/registerParticipant/:eventId" element={<Register/>} />
       </Routes>
     </>

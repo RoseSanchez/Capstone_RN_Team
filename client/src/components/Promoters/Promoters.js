@@ -4,6 +4,8 @@ import mainLogo from '../../assets/eventPhoto.jpeg'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createEvent, getAllEvents, getEventsByPromoter } from '../../api/Events/eventsRoutes'
+import Dropzone from 'react-dropzone'
+import { uploadPhoto } from '../../api/photoUpload/photoUpload'
 
 function Promoters() {
 
@@ -87,10 +89,17 @@ function Promoters() {
   const createEventCall=async(e)=>{
     // e.preventDefault()
     // console.log('create event call')
-    const eventBodySend = {...eventInfo, promoterid: JSON.parse(localStorage.getItem('user')).id}
-    // console.log(eventBodySend)
+    
+   
+    console.log(eventInfo.photo[0])
+    const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
+    const photoURL = photoUploadResponse.data
+
+    const eventBodySend = {...eventInfo, photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
+
+     // console.log(eventBodySend)
     const result = await createEvent(eventBodySend)
-    console.log(result)
+    // console.log(result)
     // console.log(result.newEvent)
     window.location.replace(`event/${result.newEvent.event.id}`)
     setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
@@ -126,7 +135,9 @@ function Promoters() {
                       // console.log(event)
                       return(
                         <Card onClick={()=>{navigate(`/event/${event.id}`)}}>
-                          <img  src={mainLogo} alt="fireSpot"/>
+                          {/* <img  src={mainLogo} alt="fireSpot"/> */}
+                          {/* <img src='https://storage.googleapis.com/capstone-event-photos/default-image.png' /> */}
+                          <img src={event.photo}></img>
                           <Card.Content>
                           <Card.Header>{event.name}</Card.Header>
                             <Card.Meta>
@@ -198,7 +209,19 @@ function Promoters() {
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' />
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' />
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' /> */}
+                <Form.Input label='Photo'>
+                <Dropzone onDrop={acceptedFiles => {console.log(acceptedFiles); setEventInfo({...eventInfo, photo:acceptedFiles})}}>
+  {({getRootProps, getInputProps}) => (
+    <section className={`file-upload-container`}>
+      <div {...getRootProps({ className: 'dropzone' })}>
+        <input {...getInputProps()} />
+        <p>Drag 'n' drop some files here, or click to select files</p>
+      </div>
+    </section>
+  )}
+</Dropzone>
+                </Form.Input>
             </Form.Group>
           </Form>
         </Modal.Description>
