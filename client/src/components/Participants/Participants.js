@@ -69,7 +69,6 @@ eventsLst.map(eventRow =>{
             <Card.Content extra>
               <a>
                 <Icon name='user' />
-                {}
               </a>
             </Card.Content>
             <Button onClick={()=>{navigate(`/registerParticipant/${event.id}`)}} className={styles.sbmtBtn} type='submit'>Register</Button>

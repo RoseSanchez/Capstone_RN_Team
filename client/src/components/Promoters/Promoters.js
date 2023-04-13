@@ -3,7 +3,7 @@ import { Button, Grid, Card, Icon, Image, Modal, Header, Form } from 'semantic-u
 import mainLogo from '../../assets/eventPhoto.jpeg'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { createEvent, getEventsByPromoter, updateEvent, deleteEvent } from '../../api/Events/eventsRoutes'
+import { createEvent, getEventsByPromoter, updateEvent, deleteEvent, getEvent } from '../../api/Events/eventsRoutes'
 
 function Promoters() {
 
@@ -83,6 +83,8 @@ function Promoters() {
   const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", date:"", photo:""})
   const [eventDeleteInfo, setDeleteEventInfo] = useState({id:""})
   const navigate = useNavigate()
+  const [eventToEditID, setEventToEditID] = useState(null)
+  const [eventToDelID, setEventToDelID] = useState(null)
 
   // console.log(JSON.parse(localStorage.getItem('user')).id)
 
@@ -100,21 +102,23 @@ function Promoters() {
   const updateEventCall=async(e)=>{
     // e.preventDefault()
     // console.log('create event call')
-    const eventBodySend = {...eventInfo, eventid: JSON.parse(localStorage.getItem('user')).id}
+    const eventBodySend = {...eventInfo, eventid: eventToEditID}
     // console.log(eventBodySend)
     const result = await updateEvent(eventBodySend)
     console.log(result)
     // console.log(result.newEvent)
-    window.location.replace(`event/${result.newEvent.event.id}`)
+    // window.location.replace(`event/${result.newEvent.event.id}`)
     setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
+    window.location.reload(true)
   }
   const deleteEventCall=async(e)=>{
     // e.preventDefault()
     // console.log('create event call')
-    const eventBodySend = {...eventDeleteInfo, id: JSON.parse(localStorage.getItem())}
+    const eventBodySend = {id: eventToDelID}
     console.log(eventBodySend)
-    const result = await deleteEvent(eventBodySend.id)
+    const result = await deleteEvent(eventBodySend)
     console.log(result)
+    window.location.reload(true)
     // console.log(result.newEvent)
   }
 
@@ -150,7 +154,7 @@ function Promoters() {
                         <Card onClick={(e)=>{e.stopPropagation(); navigate(`/event/${event.id}`)}}>
                           <img  src={mainLogo} alt="fireSpot"/>
                           <Card.Content>
-                          <Card.Header>{event.ti}</Card.Header>
+                          <Card.Header>{event.title}</Card.Header>
                             <Card.Meta>
                               {/* <span className='date'>Joined in 2015</span> */}
                               <span className='date'>{event.date}</span>
@@ -162,16 +166,24 @@ function Promoters() {
                           <Card.Content extra>
                             <a>
                               <Icon name='user' />
-                              number of current participants ?
                             </a>
                           </Card.Content>
                           <Grid columns ={2}>
                             <Grid.Row>
                               <Grid.Column>
-                          <Button onClick={(e)=>{ e.stopPropagation(); setUpdate(true)}} className={styles.sbmtBtn} type='submit'>Update</Button>
+                          <Button onClick={async(e)=>{ 
+                                    e.stopPropagation(); 
+                                    
+                                    setEventToEditID(event.id);
+                                    const eventToBeEditedResponse = await getEvent({id: Number(event.id)})
+                                    setEventInfo(eventToBeEditedResponse.event)
+                                    setUpdate(true); 
+                                    }
+                                  } 
+                            className={styles.sbmtBtn} type='submit'>Update</Button>
                           </Grid.Column>
                           <Grid.Column>
-                          <Button onClick={(e)=>{ e.stopPropagation(); deleteEventCall()}} className={styles.sbmtBtn} type='submit'>Delete</Button>
+                          <Button onClick={(e)=>{ e.stopPropagation(); deleteEventCall(); setEventToDelID(event.id)}} className={styles.sbmtBtn} type='submit'>Delete</Button>
                             </Grid.Column>
                             </Grid.Row>
                           </Grid>
@@ -271,12 +283,12 @@ function Promoters() {
           <p>Is it okay to use this photo?</p> */}
           <Form >
             <Form.Group widths='equal' className={styles.eventForm}>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' />
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' value={eventInfo.title}/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' value={eventInfo.details}/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' value={eventInfo.price}/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' value={eventInfo.location}/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' value={eventInfo.date}/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' value={eventInfo.photo}/>
             </Form.Group>
           </Form>
         </Modal.Description>
