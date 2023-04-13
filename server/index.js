@@ -277,6 +277,16 @@ app.post('/updateTicket',async(req, res)=>{
     }
 })
 
+app.post('/numberOfParticipants', async(req,res)=>{
+    try {
+        const {eventid} = req.body
+        console.log(req.body)
+        const ticketNumber = await ticketControllerObj.sumTickets(eventid)
+        res.send({"ticketNumber":ticketNumber.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
 // end rose
 
 app.get('/getAllEvents', async(req, res)=>{
@@ -335,6 +345,7 @@ app.post('/updateEvent',async(req, res)=>{
 app.post('/deleteEvent',async(req, res)=>{
     try {
         const {id} = req.body
+        console.log("delete body ",req.body)
         const deletedEvent = await eventControllerObj.removeEvent(id)
         res.send({"deletedEvent":deletedEvent.result})
     } catch (error) {

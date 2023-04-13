@@ -4,6 +4,7 @@ import styles from './Participants.module.css'
 import { useNavigate, useParams } from "react-router-dom";
 import mainLogo from '../../assets/eventPhoto.jpeg'
 import { getAllEvents } from "../../api/Events/eventsRoutes";
+import { numberOfParticipants } from "../../api/Participants/participantsRoute";
 
 function Participants() {
   const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
@@ -68,7 +69,7 @@ eventsLst.map(eventRow =>{
             <Card.Content extra>
               <a>
                 <Icon name='user' />
-                number of current participants ?
+                {}
               </a>
             </Card.Content>
             <Button onClick={()=>{navigate(`/registerParticipant/${event.id}`)}} className={styles.sbmtBtn} type='submit'>Register</Button>

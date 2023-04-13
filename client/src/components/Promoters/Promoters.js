@@ -81,6 +81,7 @@ function Promoters() {
   const [update, setUpdate] = useState(false)
   const [open, setOpen] = useState(false)
   const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", date:"", photo:""})
+  const [eventDeleteInfo, setDeleteEventInfo] = useState({id:""})
   const navigate = useNavigate()
 
   // console.log(JSON.parse(localStorage.getItem('user')).id)
@@ -99,7 +100,7 @@ function Promoters() {
   const updateEventCall=async(e)=>{
     // e.preventDefault()
     // console.log('create event call')
-    const eventBodySend = {...eventInfo, eventid: JSON.parse(localStorage.getItem('eventid')).id}
+    const eventBodySend = {...eventInfo, eventid: JSON.parse(localStorage.getItem('user')).id}
     // console.log(eventBodySend)
     const result = await updateEvent(eventBodySend)
     console.log(result)
@@ -110,9 +111,9 @@ function Promoters() {
   const deleteEventCall=async(e)=>{
     // e.preventDefault()
     // console.log('create event call')
-    const eventBodySend = {...eventInfo, eventid: JSON.parse(localStorage.getItem('eventid')).id}
-    // console.log(eventBodySend)
-    const result = await deleteEvent(eventBodySend.eventid)
+    const eventBodySend = {...eventDeleteInfo, id: JSON.parse(localStorage.getItem())}
+    console.log(eventBodySend)
+    const result = await deleteEvent(eventBodySend.id)
     console.log(result)
     // console.log(result.newEvent)
   }
@@ -281,7 +282,7 @@ function Promoters() {
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button color='black' onClick={() => setOpen(false)}>
+        <Button color='black' onClick={() => setUpdate(false)}>
           Cancel
         </Button>
         <Button
@@ -290,8 +291,8 @@ function Promoters() {
           icon='checkmark'
           onClick={() => {
               updateEventCall();
-              // console.log(eventInfo);
-              setOpen(false)
+              console.log(eventInfo);
+              setUpdate(false)
             }
           }
           positive

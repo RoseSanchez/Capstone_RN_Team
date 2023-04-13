@@ -114,6 +114,21 @@ class TicketsModel{
         })
     }
 
+    numberOfTickets(ticketid){
+        return new Promise(async (resolve, reject) => {
+            try {
+                const db = await this.pool.connect()
+                db.query(`select count(id) from (select * from tickets where eventid =${ticketid}) as total`, (err, response)=>{
+                    let result = response.rows[0]
+                    return resolve({
+                        result: result,
+                    });
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        });
+    }
 }
 
 module.exports = {TicketsModel: TicketsModel}
