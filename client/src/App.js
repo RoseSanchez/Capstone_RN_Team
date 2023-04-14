@@ -18,7 +18,10 @@ function App() {
     <>
       {pathName !=="/login" && pathName!=="/signup"?(<nav className="navBar">
           <p className="title">PURCycling</p>
-          <Button className="btn" onClick={()=>{navigate("signup")}}>SignUp</Button>
+          <div className="btns">
+            <Button className="btn" onClick={()=>{navigate("signup")}}>SignUp</Button>
+            <Button className="myevntsbtn" onClick={()=>{navigate("promoters")}}>MyEvents</Button>
+          </div>
       </nav>):null}
       <Routes>
         {/* <Route path="/" element={<></>} /> */}

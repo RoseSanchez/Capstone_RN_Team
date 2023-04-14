@@ -16,7 +16,7 @@ function Promoters() {
       
       let tempLst = [];
       let response = await getEventsByPromoter({id: Number(JSON.parse(localStorage.getItem('user')).id)})
-      let allEvents = response.events
+      let allEvents = response.events.reverse()
       console.log('evnts', allEvents)
       allEvents.forEach((evnt, i)=>{
         // console.log(evnt)

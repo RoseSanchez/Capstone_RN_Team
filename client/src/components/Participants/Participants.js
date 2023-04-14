@@ -19,7 +19,7 @@ function Participants() {
       // let response = await getEventsByPromoter({id: Number(JSON.parse(localStorage.getItem('user')).id)})
       // let response = allEvenherots
       const response = await getAllEvents()
-      let allEvents = response.events
+      let allEvents = response.events.reverse()
       // const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
 
       console.log('evnts', allEvents)
