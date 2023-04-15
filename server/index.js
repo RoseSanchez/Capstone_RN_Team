@@ -128,7 +128,7 @@ app.get('/getAllPromoters', async(req, res)=>{
     }
 })
 
-app.get('/getPromoter', async(req, res)=>{
+app.post('/getPromoter', async(req, res)=>{
     try {
         const {id} = req.body
         const promoter = await promoterControllerObj.showPromoter(id)
@@ -174,6 +174,7 @@ app.post('/deletePromoter',async(req, res)=>{
 app.post('/updatePromoter',async(req, res)=>{
     try {
         const {id, name, password, email, address} = req.body
+        console.log(req.body)
         const updatedPromoter = await promoterControllerObj.editPromoter(id, name, password, email, address)
         res.send({"updatedPromoter":updatedPromoter.result})
     } catch (error) {

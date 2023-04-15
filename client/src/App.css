@@ -21,12 +21,25 @@
 
 .myevntsbtn{
   font-weight: bold !important;
+  margin-right: 1rem !important;
   color: white !important;
   background-color: #ff833c !important;
 }
 
 .btns{
   margin-right: 0.75rem !important;
+}
+
+.signout{
+    margin-right: 1rem !important;
+  color: white !important;
+  background-color: #ff833c !important;
+}
+
+.profile{
+  margin-right: 1rem !important;
+  color: white !important;
+  background-color: #ff833c !important;
 }
 
 /* .App {

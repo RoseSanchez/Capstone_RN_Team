@@ -28,3 +28,33 @@ export const logIn = async (logInBodySend) => {
         console.log(error)
     }
 }
+
+export const getPromoterById = async (promoterBodySend)=>{
+    try {
+        console.log('from api call', promoterBodySend)
+        const promoterResponse = await axios.post("http://localhost:3333" + "/getPromoter",
+        promoterBodySend,
+            { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
+        )
+        const data = promoterResponse.data
+        console.log(data)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const updatePromoter = async (promoterBodySend)=>{
+    try {
+        console.log('from api call', promoterBodySend)
+        const promoterResponse = await axios.post("http://localhost:3333" + "/updatePromoter",
+        promoterBodySend,
+            { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
+        )
+        const data = promoterResponse.data
+        console.log(data)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
