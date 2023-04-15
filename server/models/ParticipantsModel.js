@@ -97,7 +97,7 @@ class ParticipantsModel{
         return new Promise(async (resolve, reject) => {
             try {
                 // const db = await this.pool.connect()
-                (await this.db).query(`select name, email, category, phone, address, gender, birthdate from participants natural inner join tickets where eventid=${eventid};`, (err, response)=>{
+                (await this.db).query(`SELECT participantid,birthdate, email, name, category, phone, address, gender from  participants inner join tickets on participants.id = tickets.participantid where eventid=${eventid};`, (err, response)=>{
                     let result = response.rows
                     return resolve({
                         result: result,
