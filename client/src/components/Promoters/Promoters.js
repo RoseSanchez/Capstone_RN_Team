@@ -3,9 +3,7 @@ import { Button, Grid, Card, Icon, Image, Modal, Header, Form } from 'semantic-u
 import mainLogo from '../../assets/eventPhoto.jpeg'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { createEvent, getAllEvents, getEventsByPromoter } from '../../api/Events/eventsRoutes'
-import Dropzone from 'react-dropzone'
-import { uploadPhoto } from '../../api/photoUpload/photoUpload'
+import { createEvent, getEventsByPromoter, updateEvent, deleteEvent, getEvent } from '../../api/Events/eventsRoutes'
 
 function Promoters() {
 
@@ -80,9 +78,13 @@ function Promoters() {
 
 
   // console.log("all events", events)
+  const [update, setUpdate] = useState(false)
   const [open, setOpen] = useState(false)
   const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", date:"", photo:""})
+  const [eventDeleteInfo, setDeleteEventInfo] = useState({id:""})
   const navigate = useNavigate()
+  const [eventToEditID, setEventToEditID] = useState(null)
+  const [eventToDelID, setEventToDelID] = useState(null)
 
   // console.log(JSON.parse(localStorage.getItem('user')).id)
 
@@ -103,6 +105,28 @@ function Promoters() {
     // console.log(result.newEvent)
     window.location.replace(`event/${result.newEvent.event.id}`)
     setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
+  }
+  const updateEventCall=async(e)=>{
+    // e.preventDefault()
+    // console.log('create event call')
+    const eventBodySend = {...eventInfo, eventid: eventToEditID}
+    // console.log(eventBodySend)
+    const result = await updateEvent(eventBodySend)
+    console.log(result)
+    // console.log(result.newEvent)
+    // window.location.replace(`event/${result.newEvent.event.id}`)
+    setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
+    window.location.reload(true)
+  }
+  const deleteEventCall=async(e)=>{
+    // e.preventDefault()
+    // console.log('create event call')
+    const eventBodySend = {id: eventToDelID}
+    console.log(eventBodySend)
+    const result = await deleteEvent(eventBodySend)
+    console.log(result)
+    window.location.reload(true)
+    // console.log(result.newEvent)
   }
 
   console.log()
@@ -134,12 +158,12 @@ function Promoters() {
                     {eventRow.map(event=>{
                       // console.log(event)
                       return(
-                        <Card onClick={()=>{navigate(`/event/${event.id}`)}}>
+                        <Card onClick={(e)=>{e.stopPropagation();navigate(`/event/${event.id}`)}}>
                           {/* <img  src={mainLogo} alt="fireSpot"/> */}
                           {/* <img src='https://storage.googleapis.com/capstone-event-photos/default-image.png' /> */}
                           <img src={event.photo}></img>
                           <Card.Content>
-                          <Card.Header>{event.name}</Card.Header>
+                          <Card.Header>{event.title}</Card.Header>
                             <Card.Meta>
                               {/* <span className='date'>Joined in 2015</span> */}
                               <span className='date'>{event.date}</span>
@@ -151,9 +175,27 @@ function Promoters() {
                           <Card.Content extra>
                             <a>
                               <Icon name='user' />
-                              number of current participants ?
                             </a>
                           </Card.Content>
+                          <Grid columns ={2}>
+                            <Grid.Row>
+                              <Grid.Column>
+                          <Button onClick={async(e)=>{ 
+                                    e.stopPropagation(); 
+                                    
+                                    setEventToEditID(event.id);
+                                    const eventToBeEditedResponse = await getEvent({id: Number(event.id)})
+                                    setEventInfo(eventToBeEditedResponse.event)
+                                    setUpdate(true); 
+                                    }
+                                  } 
+                            className={styles.sbmtBtn} type='submit'>Update</Button>
+                          </Grid.Column>
+                          <Grid.Column>
+                          <Button onClick={(e)=>{ e.stopPropagation(); deleteEventCall(); setEventToDelID(event.id)}} className={styles.sbmtBtn} type='submit'>Delete</Button>
+                            </Grid.Column>
+                            </Grid.Row>
+                          </Grid>
                         </Card>
                       )
                     })}
@@ -238,6 +280,52 @@ function Promoters() {
               createEventCall();
               // console.log(eventInfo);
               setOpen(false)
+            }
+          }
+          positive
+        />
+      </Modal.Actions>
+    </Modal>
+    <Modal
+      onClose={() => setUpdate(false)}
+      onOpen={() => setUpdate(true)}
+      open={update}
+      // trigger={<Button>Show Modal</Button>}
+    >
+      <Modal.Header>Update Event</Modal.Header>
+      <Modal.Content >
+        {/* <Image size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' wrapped /> */}
+        <Modal.Description>
+          {/* <Header>Default Profile Image</Header> */}
+          {/* <p>
+            We've found the following gravatar image associated with your e-mail
+            address.
+          </p>
+          <p>Is it okay to use this photo?</p> */}
+          <Form >
+            <Form.Group widths='equal' className={styles.eventForm}>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' value={eventInfo.title}/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' value={eventInfo.details}/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' value={eventInfo.price}/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' value={eventInfo.location}/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' value={eventInfo.date}/>
+                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' value={eventInfo.photo}/>
+            </Form.Group>
+          </Form>
+        </Modal.Description>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button color='black' onClick={() => setUpdate(false)}>
+          Cancel
+        </Button>
+        <Button
+          content="Update"
+          labelPosition='right'
+          icon='checkmark'
+          onClick={() => {
+              updateEventCall();
+              console.log(eventInfo);
+              setUpdate(false)
             }
           }
           positive

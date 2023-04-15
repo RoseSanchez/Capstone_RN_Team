@@ -5,9 +5,11 @@ import { getEvent } from "../../api/Events/eventsRoutes";
 import defaultEventImg from "../../assets/default-image.png"
 import defaultLocation from "../../assets/default.png"
 import styles from "./Event.module.css"
+import { numberOfParticipants } from "../../api/Participants/participantsRoute";
 
 function Event() {
   const [eventInfo, setEventInfo] = useState()
+  const [numberParticipants, setnumberOfParticipants] = useState()
   const {id} = useParams()
   console.log(window.location.pathname)
   // console.log(useLoaderData())
@@ -16,8 +18,11 @@ function Event() {
   useEffect(()=>{
     const event =async()=>{
       const eventResponse = await getEvent({id: Number(id)})
+      const numberOfParts = await numberOfParticipants({eventid: Number(id)})
+      console.log(numberOfParts)
       console.log(eventResponse)
       setEvent(eventResponse.event)
+      setnumberOfParticipants(numberOfParts.ticketNumber.count)
     }
     event().catch(console.error)
   },[])
@@ -33,6 +38,7 @@ function Event() {
         <div className={styles.details}>
           <p>${event.price} | {" "}</p> 
           <p>{event.date}</p> 
+          <p> | Participants: {numberParticipants}</p>
         </div>
         <img  src={defaultLocation} alt="fireSpot"/> 
       </div>

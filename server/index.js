@@ -35,17 +35,27 @@ const participantsController = require('./controllers/ParticipantsController')
 const participantController = participantsController.ParticipantsController
 const participantControllerObj = new participantController()
 
+const ordersController = require('./controllers/OrdersController')
+const orderController = ordersController.OrdersController
+const orderControllerObj = new orderController()
+
+const ticketsController = require('./controllers/TicketsController')
+const ticketController = ticketsController.TicketsController
+const ticketControllerObj = new ticketController()
+
 const eventsController = require('./controllers/EventsController')
 const eventController = eventsController.EventsController
 const eventControllerObj = new eventController()
-// Postgresql DB connection
-// const pool = new Pool({
-//     // connectionString:"jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
-//     connectionString:"postgres://njupbwybsaqiqt:3935f060b092cdc8a630a2ba09c9b00e0ac1131c3fc28b01b77182cbb0e1d3f6@ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
-//     ssl:{rejectUnauthorized: false},
-//     max: 20,
-//     idleTimeoutMillis: 30000
-// })
+
+//Postgresql DB connection
+const pool = new Pool({
+    // connectionString:"jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
+    //connectionString:"postgres://njupbwybsaqiqt:3935f060b092cdc8a630a2ba09c9b00e0ac1131c3fc28b01b77182cbb0e1d3f6@ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5",
+    connectionString:"postgres://qlxouxhpuqlcli:c416400a0bd65ef07cc531dbe05b05e643983c24c7019898e083bdffc214a672@ec2-23-20-211-19.compute-1.amazonaws.com:5432/d7mu35vh781rtv",
+    ssl:{rejectUnauthorized: false},
+    max: 20,
+    idleTimeoutMillis: 30000
+})
 
 // run application server
 const myServer = app.listen(port, () => {
@@ -211,6 +221,120 @@ app.post('/createParticipant',async(req, res)=>{
         console.log(error)
     }
 })
+///////////////////////////////////////////
+//rose
+app.get('/getAllOrders', async(req, res)=>{
+    try {
+        const orders = await orderControllerObj.showAllOrders()
+        res.send({"orders":orders.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getOrder', async(req, res)=>{
+    console.log('getting order call', req.body)
+    try {
+        const {id} = req.body
+        const order = await orderControllerObj.showOrder(id)
+        res.send({"order":order.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/createOrder',async(req, res)=>{
+    console.log('create oreder call', req.body)
+    try {
+        const {orderemail, paymentdetails} = req.body 
+        const newOrder = await orderControllerObj.insertOrder(orderemail, paymentdetails)
+        res.send({"newOrder":newOrder.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/deleteOrder',async(req, res)=>{
+    try {
+        const {id} = req.body
+        const deletedOrder = await orderControllerObj.removeOrder(id)
+        res.send({"deletedOrder":deletedOrder.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/updateOrder',async(req, res)=>{
+    try {
+        const {id, orderemail, paymentdetails} = req.body
+        const updatedOrder = await orderControllerObj.editOrder(id, orderemail, paymentdetails)
+        res.send({"updatedOrder":updatedOrder.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getAllTickets', async(req, res)=>{
+    try {
+        const tickets = await ticketControllerObj.showAllTickets()
+        res.send({"tickets":tickets.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getTicket', async(req, res)=>{
+    try {
+        const {id} = req.body
+        const ticket = await ticketControllerObj.showTicket(id)
+        res.send({"ticket":ticket.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/createTicket',async(req, res)=>{
+    console.log('create ticket call', req.body)
+    try {
+        const {orderid, participantid, eventid} = req.body 
+        const newTicket = await ticketControllerObj.insertTicket(orderid, participantid, eventid)
+        res.send({"newTicket":newTicket.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/deleteTicket',async(req, res)=>{
+    try {
+        const {id} = req.body
+        const deletedTicket = await ticketControllerObj.removeTicket(id)
+        res.send({"deletedTicket":deletedTicket.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/updateTicket',async(req, res)=>{
+    try {
+        const {id, participantid, orderid, eventid} = req.body
+        const updatedTicket = await ticketControllerObj.editTicket(id, participantid, orderid, eventid)
+        res.send({"updatedTicket":updatedTicket.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/numberOfParticipants', async(req,res)=>{
+    try {
+        const {eventid} = req.body
+        console.log(req.body)
+        const ticketNumber = await ticketControllerObj.sumTickets(eventid)
+        res.send({"ticketNumber":ticketNumber.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+// end rose
 
 app.get('/getAllEvents', async(req, res)=>{
     try {
@@ -249,6 +373,28 @@ app.post('/createEvent',async(req, res)=>{
         const {promoterid, details, price, location, photo, date, title} = req.body
         const newEvent = await eventControllerObj.insertEvent(promoterid, details, price, location, photo, date, title)
         res.send({"newEvent":newEvent.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/updateEvent',async(req, res)=>{
+    try {
+        const {id, promoterid, details, price, location, photo, date, title} = req.body
+        console.log("update body", req.body)
+        const updatedEvent = await eventControllerObj.editEvent(id, promoterid, details, price, location, photo, date, title)
+        res.send({"updatedEvent":updatedEvent.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/deleteEvent',async(req, res)=>{
+    try {
+        const {id} = req.body
+        console.log("delete body ",req.body)
+        const deletedEvent = await eventControllerObj.removeEvent(id)
+        res.send({"deletedEvent":deletedEvent.result})
     } catch (error) {
         console.log(error)
     }
