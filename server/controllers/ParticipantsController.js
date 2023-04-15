@@ -70,6 +70,20 @@ class ParticipantsController {
             }
         })
     }
+
+    showParticipantsByEvent(eventid){
+        return new Promise(async(resolve, reject)=>{
+            try{
+                const participants = await this.model.getParticipantsByEvent(eventid)
+                let result = participants.result
+                return resolve({
+                    result: result,
+                });
+            }catch(error){
+                console.log(error)
+            }
+        })
+    }
 }
 
 module.exports = {ParticipantsController: ParticipantsController}

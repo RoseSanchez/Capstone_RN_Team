@@ -4,6 +4,8 @@ import mainLogo from '../../assets/eventPhoto.jpeg'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createEvent, getEventsByPromoter, updateEvent, deleteEvent, getEvent } from '../../api/Events/eventsRoutes'
+import { uploadPhoto } from '../../api/photoUpload/photoUpload'
+import Dropzone from 'react-dropzone'
 
 function Promoters() {
 
