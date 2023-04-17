@@ -1,11 +1,43 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Card, Icon, Button } from "semantic-ui-react";
-import styles from './Participants.module.css'
+import styles from './Calendar.module.css'
 import { useNavigate, useParams } from "react-router-dom";
 import mainLogo from '../../assets/eventPhoto.jpeg'
-import { getAllEvents } from "../../api/Events/eventsRoutes";
+import { getEventsByDate } from "../../api/Events/eventsRoutes";
+import Calendar from "react-calendar";
+import 'react-calendar/dist/Calendar.css'; 
+import moment from 'moment'
 
-function Participants() {
+function CalendarP() {
+
+  const [dateState, setDateState] = useState(new Date())
+  const changeDate = async (e) => {
+    let events = [];
+    setDateState(e)
+    let tempLst = [];
+    const response = await getEventsByDate({"timestamp": (moment(e).format('YYYY-MM-DD'))})
+      
+    console.log("what iis day",(moment(dateState).format('YYYY-MM-DD')))
+    console.log("response",response)
+    let allEvents = response? response.events.reverse():null
+    
+    // const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
+
+    console.log('evnts', allEvents)
+    allEvents.forEach((evnt, i)=>{
+      // console.log(evnt)
+      if(tempLst.length < 3){
+        tempLst.push(evnt)
+      }else{
+        events.push(tempLst)
+        tempLst = []
+        tempLst = tempLst.concat(evnt)
+      }
+      if(i === allEvents.length -1) events.push(tempLst)
+    })
+    console.log("events", events)
+    setEvents(events)
+  }
   const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
 
   const [eventsLst, setEvents] = useState([])
@@ -18,8 +50,12 @@ function Participants() {
       let tempLst = [];
       // let response = await getEventsByPromoter({id: Number(JSON.parse(localStorage.getItem('user')).id)})
       // let response = allEvenherots
-      const response = await getAllEvents()
-      let allEvents = response.events.reverse()
+      const response = await getEventsByDate({"timestamp": (moment(dateState).format('YYYY-MM-DD'))})
+      
+      console.log("what iis day",(moment(dateState).format('YYYY-MM-DD')))
+      console.log("response",response)
+      let allEvents = response? response.events.reverse():null
+      
       // const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
 
       console.log('evnts', allEvents)
@@ -39,8 +75,17 @@ function Participants() {
     }
     evnts().catch(console.error)
   }, [])
-    return (
-      <div>
+
+
+  return (
+    <Grid>
+    <div>
+      <Calendar 
+      value={dateState}
+      onChange={changeDate }
+      />
+    <p>Current selected date  <b>{moment(dateState).format('MMMM Do YYYY')}</b></p>
+    <div> events should show up here
         {console.log(eventsLst)}
         {
           
@@ -80,8 +125,9 @@ eventsLst.map(eventRow =>{
 })
 }
       </div>
-    );
-  }
-  
-  export default Participants;
-  
+    </div>
+    </Grid>
+    
+  )
+}
+  export default CalendarP;

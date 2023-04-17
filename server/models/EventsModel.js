@@ -139,7 +139,24 @@ class EventsModel{
             }
         })    }
 
+        readEventbyDate(timestamp){
+            return new Promise(async (resolve, reject) => {
+                try {
+                    (await this.db).query(`select * from events where date > '${timestamp} 00:00:00.000' and date < '${timestamp} 23:59:59.998';`, (err, response)=>{
+                        console.log("query returns:",response)
+                        let result = response.rows
+                        return resolve({
+                            result: result,
+                        });
+                    })
+                } catch (error) {
+                    console.log(error)
+                }
+            });
+        }
 }
+
+
 
 module.exports = {EventsModel: EventsModel}
 

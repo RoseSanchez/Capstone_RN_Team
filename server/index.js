@@ -399,6 +399,17 @@ app.post('/deleteEvent',async(req, res)=>{
         console.log(error)
     }
 })
+app.post('/getEventsByDate', async(req,res)=>{
+    try {
+        const {timestamp} = req.body
+        console.log( "timestamp",req.body)
+        const NumberEvents = await eventControllerObj.showEventsByDate(timestamp)
+        console.log(NumberEvents)
+        res.send({"events":NumberEvents.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
 
 // dbListeners = async ()=>{
 //     const db = await pool.connect()

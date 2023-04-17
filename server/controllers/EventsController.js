@@ -96,6 +96,21 @@ class EventsController {
             }
         })
     }
+
+    showEventsByDate(timestamp){
+        return new Promise(async(resolve, reject) => {
+            let result
+            try {
+                const event = await this.model.readEventbyDate(timestamp)
+                result = event.result
+                return resolve({
+                    result: result,
+                });
+            } catch (error) {
+                console.log(error)
+            }
+        });
+    }
 }
 
 module.exports = {EventsController: EventsController}

@@ -41,6 +41,11 @@
   color: white !important;
   background-color: #ff833c !important;
 }
+.calendarbtn{
+  margin-right: 1rem !important;
+  color: white !important;
+  background-color: #ff833c !important;
+}
 
 /* .App {
   text-align: center;
