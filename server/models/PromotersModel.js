@@ -1,5 +1,5 @@
 const {Pool} = require('pg')
-const { DB } = require('../dbconfig')
+const { DB } = require('../dbconfig/index.js')
 
 class PromotersModel{
     constructor(){

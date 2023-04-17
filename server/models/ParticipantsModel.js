@@ -25,11 +25,12 @@ class ParticipantsModel{
             try {
                 // const db = await this.pool.connect()
                 // console.log(name, email, phone, address, birthdate, category, gender)
-                (await this.db).query(`insert into participants (name, email, phone, address, birthdate, category, gender) VALUES ('${name}', '${email}', '${phone}', '${address}', '${birthdate}', '${category}', '${gender}')`, (err, response)=>{
+                (await this.db).query(`insert into participants (name, email, phone, address, birthdate, category, gender) VALUES ('${name}', '${email}', '${phone}', '${address}', '${birthdate}', '${category}', '${gender}') RETURNING id`, (err, response)=>{
                     // console.log(response)
                     // console.log(err)
                     let insertResult = response.rowCount
-                    let result = insertResult > 0 ? "success":"failed"
+                    let status = insertResult > 0 ? "success":"failed"
+                    let result = {participant: response.rows[0], status: status}
                     return resolve({
                         result: result,
                     });
@@ -90,6 +91,22 @@ class ParticipantsModel{
                 console.log(error)
             }
         })
+    }
+
+    getParticipantsByEvent(eventid){
+        return new Promise(async (resolve, reject) => {
+            try {
+                // const db = await this.pool.connect()
+                (await this.db).query(`SELECT participantid,birthdate, email, name, category, phone, address, gender from  participants inner join tickets on participants.id = tickets.participantid where eventid=${eventid};`, (err, response)=>{
+                    let result = response.rows
+                    return resolve({
+                        result: result,
+                    });
+                })
+            } catch (error) {
+                console.log(error)
+            }
+        });
     }
 
 }

@@ -6,8 +6,12 @@ import defaultEventImg from "../../assets/default-image.png"
 import defaultLocation from "../../assets/default.png"
 import styles from "./Register.module.css"
 import {createParticipant} from "../../api/Participants/participantsRoute.js"
+import { createTicket } from "../../api/Tickets/ticketsRoutes";
+import { createOrder } from "../../api/Orders/ordersRoutes";
+
 
 function Event() {
+  const [orderCreator, setOrderCreator] = useState('')
   const [participantInfo, setParticipantInfo] = useState()
   const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"", address:"",birthdate:"", category:""}])
   let participantsFormHTML = []
@@ -82,26 +86,28 @@ function Event() {
     return <>{participantsFormHTML}</>
   }
 
+
   const handleSubmit =async(e)=>{
+    let listOfParticipantId = []
     e.preventDefault()
 
     console.log(participantsInfo)
+    console.log(orderCreator)
 
     participantsInfo.forEach(async participant => {
-      await createParticipant(participant)
-      // console.log(participant)
+      const participantResponse = await createParticipant(participant)
+      console.log((participantResponse))
+      listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
     });
+    // create order
+    const orderResponse = await createOrder({orderemail: orderCreator, paymentdetails:""})
+    console.log(listOfParticipantId)
 
-    // setParticipantsInfo([{name:"", email:"", phone:"", address:"",birthdate:"", category:""}])
-    // console.log(participantInfo)
-    //     const result = await createParticipant(participantInfo)
-    //     console.log(result.newPromoter)
-    //     setParticipantInfo({name:"",email:"",
-    //       phone:"",
-    //       gender:"",
-    //       birthdate:"",
-    //       address:"",
-    //       category:""})
+    const orderId = orderResponse.newOrder.order.id
+    listOfParticipantId.forEach(async id=>{
+      await createTicket({participantid: id, orderid: orderId, eventid: Number(eventId)})
+    })
+    // create tickets
   }
 
   useEffect(()=>{
@@ -129,6 +135,7 @@ function Event() {
           <p>{event.date}</p> 
         </div>
         <img  src={defaultLocation} alt="fireSpot"/> 
+        <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' />
         {renderParticipantsForm()}
         <button onClick={(e)=>{handleSubmit(e)}}>submit</button>
 

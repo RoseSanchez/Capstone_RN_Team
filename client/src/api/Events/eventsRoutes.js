@@ -14,6 +14,21 @@ export const createEvent = async (eventBodySend) => {
     }
 }
 
+export const getAllParticipantsByEvent=async(bodySend)=>{
+    try {
+        console.log('from api call', bodySend)
+        const queryResponse = await axios.post("http://localhost:3333" + "/participantsByEvent",
+        bodySend,
+            { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
+        )
+        const data = queryResponse.data
+        console.log(data)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export const getAllEvents = async () => {
     try {
         // console.log('get all from api call')
