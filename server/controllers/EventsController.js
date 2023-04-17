@@ -71,7 +71,7 @@ class EventsController {
         return new Promise(async(resolve, reject)=>{
             try{
                 const propsToEdit = [{value: id, propName:"id"}, {value: promoterid, propName:"promoterid"}, {value: details, propName:"details"}, {value: price, propName:"price"}, {value: location, propName:"location"},{value: photo, propName:"photo"}, {value: date, propName:"date"}, {value: title, propName:"title"}]
-                 console.log(propsToEdit)
+                 console.log("props to edit",propsToEdit)
                 const updatedEvent = await this.model.udpateEvent(id, propsToEdit)
                 let result = updatedEvent.result
                 return resolve({

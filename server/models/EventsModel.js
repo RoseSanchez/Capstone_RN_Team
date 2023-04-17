@@ -95,21 +95,21 @@ class EventsModel{
 
     udpateEvent(id, propsToEdit){
         let propsToUpdate = ''
-
+        console.log('props to update', propsToEdit)
         propsToEdit.forEach(prop =>{
             if(prop.value){
                 propsToUpdate += `${prop.propName}='${prop.value}', `
             }
         })
 
-        console.log('props to update', propsToUpdate.slice(0,-2))
+        console.log('props to update after for each', propsToUpdate)
         propsToUpdate = propsToUpdate.slice(0,-2)
 
         return new Promise(async(resolve, reject)=>{
             try{
                 const db = await this.pool.connect()
                 db.query(`update events SET ${propsToUpdate} where id=${id};`, (err, response)=>{
-                    console.log(response)
+                    console.log("response from db",response)
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({

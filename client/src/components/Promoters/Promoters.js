@@ -111,7 +111,7 @@ function Promoters() {
   const updateEventCall=async(e)=>{
     // e.preventDefault()
     // console.log('create event call')
-    const eventBodySend = {...eventInfo, eventid: eventToEditID}
+    const eventBodySend = {...eventInfo, id: eventToEditID}
     // console.log(eventBodySend)
     const result = await updateEvent(eventBodySend)
     console.log(result)
