@@ -1,10 +1,10 @@
 import styles from './Promoters.module.css'
 import { Button, Grid, Card, Icon, Image, Modal, Header, Form } from 'semantic-ui-react'
 import mainLogo from '../../assets/eventPhoto.jpeg'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Dropzone } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createEvent, getEventsByPromoter, updateEvent, deleteEvent, getEvent } from '../../api/Events/eventsRoutes'
-
+import {uploadPhoto} from '../../api/photoUpload/photoUpload'
 function Promoters() {
 
   const [eventsLst, setEvents] = useState([])
