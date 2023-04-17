@@ -107,8 +107,8 @@ class EventsModel{
 
         return new Promise(async(resolve, reject)=>{
             try{
-                const db = await this.pool.connect()
-                db.query(`update events SET ${propsToUpdate} where id=${id};`, (err, response)=>{
+                //const db = await this.pool.DB
+                (await this.db).query(`update events SET ${propsToUpdate} where id=${id};`, (err, response)=>{
                     console.log("response from db",response)
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
@@ -126,7 +126,7 @@ class EventsModel{
         return new Promise(async(resolve, reject)=>{
             try{
                 const db = await this.pool.connect()
-                db.query(`delete FROM events where id=${id};`, (err, response)=>{
+                (await this.db)(`delete FROM events where id=${id};`, (err, response)=>{
                     console.log(response)
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
