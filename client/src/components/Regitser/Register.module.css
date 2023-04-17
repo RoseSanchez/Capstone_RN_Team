@@ -31,3 +31,10 @@
     /* background-color: red !important; */
     width: 30rem !important;
 }
+
+.emailCreator{
+    width: 50% !important;
+    font-weight: bold !important;
+    margin-bottom: 3rem !important;
+    margin-top: 3rem !important;
+}

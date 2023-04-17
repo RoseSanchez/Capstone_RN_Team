@@ -400,6 +400,17 @@ app.post('/deleteEvent',async(req, res)=>{
     }
 })
 
+app.post('/participantsByEvent', async(req, res)=>{
+    try {
+        const {eventid} = req.body
+        console.log("participantsByEvent ",req.body)
+        const participants = await participantControllerObj.showParticipantsByEvent(eventid)
+        res.send({"participants":participants.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
 // dbListeners = async ()=>{
 //     const db = await pool.connect()
 //     try {
