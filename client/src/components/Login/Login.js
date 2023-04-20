@@ -1,3 +1,5 @@
+//   This component is a form that allows user input to login user as a promoter
+
 import React, { useState } from 'react'
 import { Button, Input, Form } from 'semantic-ui-react'
 import { logIn } from '../../api/Promoters/promotersRoutes';
@@ -7,6 +9,7 @@ import mainLogo from '../../assets/Logo.jpeg'
 
 
 const Login = () => {
+    //   user info state initialization, this will be used to store and update user info
     const [userInfo, setUserInfo] = useState({email:"", password:""})
     const {login} = useAuth()
     const handleSubmit=async(e)=>{
@@ -23,6 +26,8 @@ const Login = () => {
         }
         setUserInfo({email:"", password:""})
     }
+
+    //   renders form element
     return(
         <div className={styles.container}>
             <div className={styles.banner}>

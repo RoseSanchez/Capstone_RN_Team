@@ -8,6 +8,13 @@ import styles from "./Event.module.css"
 import { numberOfParticipants } from "../../api/Participants/participantsRoute";
 import CsvDownloader from 'react-csv-downloader';
 import { getAllParticipantsByEvent } from "../../api/Events/eventsRoutes";
+import MyMapComponent from "../Map/MyMapComponent";
+import TestMap from '../Map/TestMap.js'
+import Image from "../Image/Image";
+// const { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, useJsApiLoader } = require("@react-google-maps/api");
+import { GoogleMap, useJsApiLoader, Marker, DirectionsRenderer, DirectionsService } from '@react-google-maps/api';
+
+
 
 
 function Event() {
@@ -18,6 +25,84 @@ function Event() {
   // console.log(useLoaderData())
   console.log(id)
   const [event, setEvent] = useState()
+  const [position, setPosition] = useState({lat:0, lng:0})
+  let geocoder
+
+  useEffect(()=>{
+    // geocoder = new google.maps.Geocoder();
+    // geocoder = window.google ? window.google.maps.Geocoder():null
+    let lat;
+    let lng
+  
+    const successCallback = async(position) => {
+      // console.log("position",position);
+      lat = String(position.coords.latitude) 
+      lng = String(position.coords.longitude)
+      // const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true&key=AIzaSyB99llZJYiSuVsR2Ga9p8RSvYwIQU6Kvtc`)
+      // console.log(response)
+    };
+    
+    const errorCallback = (error) => {
+      console.log(error);
+    };
+  
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    console.log('use effect', lat, lng)
+    // const getCityName=async()=>{
+    //   const response = await fetch(`http://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&sensor=true&key=AIzaSyB99llZJYiSuVsR2Ga9p8RSvYwIQU6Kvtc`)
+    //   console.log(response)
+    // }
+    // getCityName()
+
+  })
+
+  const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.REACT_APP_MAP_KEY
+  })
+
+  // let lat;
+  // let lng
+
+  // const successCallback = (position) => {
+  //   console.log("position",position);
+  //   lat = position.coords.latitude
+  //   lng = position.coords.longitude
+  // };
+  
+  // const errorCallback = (error) => {
+  //   console.log(error);
+  // };
+
+  // navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+  // const geocoder = new window.google.maps.Geocoder()
+  
+//  let city
+//   let latlng = new window.google.maps.LatLng(lat, lng)
+//   geocoder.geocode({'latLng': latlng }, function(results, status){
+//     if(status===window.google.maps.GeocoderStatus.OK){
+//       console.log(results)
+//       if(results[1]){
+//         console.log(results[0].formatted_address)
+//         for (var i=0; i<results[0].address_components.length; i++) {
+//           for (var b=0;b<results[0].address_components[i].types.length;b++) {
+
+//           //there are different types that might hold a city admin_area_lvl_1 usually does in come cases looking for sublocality type will be more appropriate
+//               if (results[0].address_components[i].types[b] === "administrative_area_level_1") {
+//                   //this is the object you are looking for
+//                   city= results[0].address_components[i];
+//                   break;
+//               }
+//           }
+//       }
+//       console.log(city.short_name + " " + city.long_name)
+//       }else{
+//         console.log('results not found')
+//       }
+//     }else{
+//       console.log('geocoder failed')
+//     }
+//   })
 
   const asyncGetParticipants=async()=>{
 
@@ -56,18 +141,37 @@ function Event() {
     event ? (<div className={styles.parent}>
       <div className={styles.container}>
         <p className={styles.title}>{event.title}</p> 
-        <button>show or export participants</button>
-        <img  src={event.photo} alt="fireSpot"/>
-        <CsvDownloader className='export-container' datas={asyncGetParticipants} filename='participants-export.csv' >
-              <i className="fa fa-download"></i> Export to CSV
-          </CsvDownloader>
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
         <div className={styles.details}>
           <p>${event.price} | {" "}</p> 
           <p>{event.date}</p> 
           <p> | Participants: {numberParticipants}</p>
+          <button>
+          <CsvDownloader className='export-container' datas={asyncGetParticipants} filename='participants-export.csv' >
+              <i className="fa fa-download"></i> Export to CSV
+          </CsvDownloader>
+          </button>
         </div>
-        <img  src={defaultLocation} alt="fireSpot"/> 
+        
+        {/* <button>show or export participants</button> */}
+        <Image src={event.photo} width={800} height={800}/>
+
+        {/* <img  src={event.photo} alt="fireSpot"/> */}
+        {/* <CsvDownloader className='export-container' datas={asyncGetParticipants} filename='participants-export.csv' >
+              <i className="fa fa-download"></i> Export to CSV
+          </CsvDownloader> */}
+        {/* <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
+        <div className={styles.details}>
+          <p>${event.price} | {" "}</p> 
+          <p>{event.date}</p> 
+          <p> | Participants: {numberParticipants}</p>
+        </div> */}
+        {/* <div style={{display:"none"}}>
+        {isLoaded ? <TestMap setPosition={setPosition} location={event.location}/>:<></>}
+        </div>*/}
+        {isLoaded ?<MyMapComponent position={position} location={event.location}/>:<></>} 
+        
+        {/* <img  src={defaultLocation} alt="fireSpot"/>  */}
       </div>
     </div>):<>Loading Event</>
   );

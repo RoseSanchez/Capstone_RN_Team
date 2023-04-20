@@ -1,3 +1,5 @@
+//   this component show all the event for participants to register
+
 import { useEffect, useState } from "react";
 import { Grid, Card, Icon, Button } from "semantic-ui-react";
 import styles from './Participants.module.css'
@@ -7,21 +9,18 @@ import { getAllEvents } from "../../api/Events/eventsRoutes";
 import { numberOfParticipants } from "../../api/Participants/participantsRoute";
 
 function Participants() {
-  const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
 
   const [eventsLst, setEvents] = useState([])
   const navigate = useNavigate()
 
+    // use effect hook used to fetch all events data before rendering component
   useEffect(()=>{
     let events = [];
     const evnts =async()=>{
       
       let tempLst = [];
-      // let response = await getEventsByPromoter({id: Number(JSON.parse(localStorage.getItem('user')).id)})
-      // let response = allEvenherots
       const response = await getAllEvents()
       let allEvents = response.events.reverse()
-      // const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
 
       console.log('evnts', allEvents)
       allEvents.forEach((evnt, i)=>{

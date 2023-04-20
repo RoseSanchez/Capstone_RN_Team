@@ -1,3 +1,5 @@
+  // shows promoter information and allow to edit such information
+
 import React, { useEffect, useState } from 'react'
 import { getPromoterById, updatePromoter } from '../../api/Promoters/promotersRoutes';
 import { Card, Button, Modal, Form } from 'semantic-ui-react';
@@ -14,6 +16,7 @@ const PromoterProfile = ({id}) => {
     const [open, setOpen] = useState(false)
 
 
+      // use effect hook used to load promoter data before rendering component
     useEffect(()=>{
         async function getPromoter(){
             const promoterResponse = await getPromoterById({id: JSON.parse(localStorage.getItem('user')).id})
@@ -83,6 +86,7 @@ const PromoterProfile = ({id}) => {
           onClick={async() => {
             //   updateProfileEventCall();
             //   console.log(editInfo);
+              // call update promoter endpoint function
                 const updateResponse = await updatePromoter({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
 
                 console.log({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
