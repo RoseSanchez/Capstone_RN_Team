@@ -6,6 +6,13 @@ const {Pool} = require('pg')
 const bodyParser = require('body-parser')
 const multer = require('multer')
 const uploadImage = require('./herlpers/herlpers.js')
+const email = require("./email/sendEmail.js")
+require('dotenv').config()
+// const axios = require('axios')
+
+const sendEmailObj = email.sendEmail
+// sendEmailObj()
+
 
 const app = express()
 app.use(cors())
@@ -309,6 +316,25 @@ app.post('/deleteParticipant',async(req, res)=>{
         console.log(error)
     }
 })
+
+
+// app.post('/sendEmail', (req, res)=>{
+//     const data = {
+//         "service_id": "service_hw40h0i",
+//         "user_id": "user_tCG7P6Pcyov5HwHEE9KTc",
+//         "template_id": "template_sh1fsrn",
+//         "template_params":{
+//             "destination":"jggm9090@gmail.com",
+//             "name":"Prueba",
+//             "message": "prueba",
+//             "from_name":"Jose"
+//         }
+//     }
+//     axios.post()
+
+
+// })
+
 ///////////////////////////////////////////
 //rose
 app.get('/getAllOrders', async(req, res)=>{

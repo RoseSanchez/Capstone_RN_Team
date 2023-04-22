@@ -7,7 +7,7 @@ const serviceKey = JSON.parse(JSON.stringify(config))
 const { Storage } = Cloud
 const storage = new Storage({
   keyFilename: serviceKey,
-  projectId: 'tough-mechanic-370015',
+  projectId: 'skilful-firefly-338623',
 })
 
 module.exports = storage

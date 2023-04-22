@@ -1,5 +1,7 @@
 const util = require('util')
 const gc = require('../config')
+require('dotenv').config()
+// const bucket = gc.bucket("capstone-photos") // should be your bucket name
 const bucket = gc.bucket(process.env.bucket_name) // should be your bucket name
 
 const {format} = util
