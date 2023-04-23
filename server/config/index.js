@@ -7,7 +7,7 @@ const serviceKey = JSON.parse(JSON.stringify(config))
 const { Storage } = Cloud
 const storage = new Storage({
   keyFilename: serviceKey,
-  projectId: 'skilful-firefly-338623',
+  projectId: process.env.REACT_APP_project_id,
 })
 
 module.exports = storage

@@ -317,24 +317,6 @@ app.post('/deleteParticipant',async(req, res)=>{
     }
 })
 
-
-// app.post('/sendEmail', (req, res)=>{
-//     const data = {
-//         "service_id": "service_hw40h0i",
-//         "user_id": "user_tCG7P6Pcyov5HwHEE9KTc",
-//         "template_id": "template_sh1fsrn",
-//         "template_params":{
-//             "destination":"jggm9090@gmail.com",
-//             "name":"Prueba",
-//             "message": "prueba",
-//             "from_name":"Jose"
-//         }
-//     }
-//     axios.post()
-
-
-// })
-
 ///////////////////////////////////////////
 //rose
 app.get('/getAllOrders', async(req, res)=>{

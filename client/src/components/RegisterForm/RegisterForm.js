@@ -22,32 +22,7 @@ import { sendEmail } from '../../api/Email/sendEmail';
 
 
 function RegisterForm() {
-  // const [isSubmit, setIsSubmit] = useState(false);
 
-  // const sendEmail = (e) => {
-    // e.preventDefault();
-
-  //   emailjs
-  //     .sendForm(
-  //       'service_hw40h0i',
-  //       'template_sh1fsrn',
-  //       e.target,
-  //       'user_tCG7P6Pcyov5HwHEE9KTc'
-  //     )
-  //     .then(
-  //       (result) => {
-  //         console.log(result.text);
-  //       },
-  //       (error) => {
-  //         console.log(error.text);
-  //       }
-  //     );
-  //   e.target.reset();
-  //   // setIsSubmit(true);
-  //   setTimeout(() => {
-  //     // setIsSubmit(false);
-  //   }, 5000);
-  // };
   const [orderCreator, setOrderCreator] = useState('')
   const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"",gender:"", address:"",birthdate:new Date(), category:""}])
   // const [position, setPosition] = useState({lat:0, lng:0})
@@ -63,10 +38,6 @@ function RegisterForm() {
   const [event, setEvent] = useState()
   const [numOfParticipants, setNumOfParticipants] = useState(1)
 
-  //   const { isLoaded } = useJsApiLoader({
-  //   id: 'google-map-script',
-  //   googleMapsApiKey: process.env.REACT_APP_MAP_KEY
-  // })
 
   const onDateChange=(e, i)=>{
     console.log(new Date(e))
@@ -142,9 +113,9 @@ function RegisterForm() {
   const handleSubmit =async(e)=>{
     let participantInfoEmail = ""
     let emailData = {
-      "service_id": "service_hw40h0i",
-      "user_id": "user_tCG7P6Pcyov5HwHEE9KTc",
-      "template_id": "template_sh1fsrn",
+      "service_id": process.env.REACT_APP_service_id,
+      "user_id": process.env.REACT_APP_user_id,
+      "template_id": process.env.REACT_APP_template_id,
       "template_params":{
           "destination":`"${orderCreator}"`,
           "name":`"${orderCreator}"`,
@@ -167,18 +138,7 @@ function RegisterForm() {
                               category: ${participant.category}\n\n`
       const participantResponse = await createParticipant(participant)
       
-                              // {
-                              //   "service_id": "service_hw40h0i",
-                              //   "user_id": "user_tCG7P6Pcyov5HwHEE9KTc",
-                              //   "template_id": "template_sh1fsrn",
-                              //   "template_params":{
-                              //       "destination":"jggm9090@gmail.com",
-                              //       "name":"Prueba",
-                              //       "message": "prueba",
-                              //       "from_name":"Jose",
-                              //       "participants":"name: part1, addres:part1 \n name: part2, addres:part2"
-                              //   }
-      // console.log((participantResponse))
+                             
       listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
     });
     console.log(participantInfoEmail)
