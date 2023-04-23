@@ -6,12 +6,10 @@ const {Pool} = require('pg')
 const bodyParser = require('body-parser')
 const multer = require('multer')
 const uploadImage = require('./herlpers/herlpers.js')
-const email = require("./email/sendEmail.js")
 require('dotenv').config()
 // const axios = require('axios')
 
-const sendEmailObj = email.sendEmail
-// sendEmailObj()
+
 
 
 const app = express()
@@ -57,8 +55,8 @@ const eventControllerObj = new eventController()
 
 
 // run application server
-const myServer = app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
+const myServer = app.listen(process.env.PORT, () => {
+    console.log(`Example app listening on port ${process.env.PORT}`)
 })
 
 const wsServer = new WebSocket.Server({
