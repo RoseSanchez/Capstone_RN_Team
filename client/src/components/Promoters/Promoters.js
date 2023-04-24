@@ -86,7 +86,7 @@ function Promoters() {
   const [eventDeleteInfo, setDeleteEventInfo] = useState({id:""})
   const navigate = useNavigate()
   const [eventToEditID, setEventToEditID] = useState(null)
-  const [eventToDelID, setEventToDelID] = useState(null)
+  const [eventToDelID, setEventToDelID] = useState()
 
   // console.log(JSON.parse(localStorage.getItem('user')).id)
 
@@ -120,10 +120,10 @@ function Promoters() {
     setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
     window.location.reload(true)
   }
-  const deleteEventCall=async(e)=>{
+  const deleteEventCall=async(eventid)=>{
     // e.preventDefault()
     // console.log('create event call')
-    const eventBodySend = {id: eventToDelID}
+    const eventBodySend = {id: eventid }
     console.log(eventBodySend)
     const result = await deleteEvent(eventBodySend)
     console.log(result)
@@ -194,7 +194,18 @@ function Promoters() {
                             className={styles.sbmtBtn} type='submit'>Update</Button>
                           </Grid.Column>
                           <Grid.Column>
-                          <Button onClick={(e)=>{ e.stopPropagation(); deleteEventCall(); setEventToDelID(event.id)}} className={styles.sbmtBtn} type='submit'>Delete</Button>
+                          <Button onClick={async(e)=>{ 
+                                      e.stopPropagation(); 
+                                      // deleteEventCall(event.id) 
+                                      const eventBodySend = {id: event.id }
+                                      console.log(eventBodySend)
+                                      const result = await deleteEvent(eventBodySend)
+                                      console.log(result)
+                                      setEventToDelID(event.id); 
+                                      window.location.reload(true)
+                                      }} 
+
+                                      className={styles.sbmtBtn} type='submit'>Delete</Button>
                             </Grid.Column>
                             </Grid.Row>
                           </Grid>

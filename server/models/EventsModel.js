@@ -93,6 +93,13 @@ class EventsModel{
         });
     }
 
+    /**
+     * Finds and sets the given list of properties  assigned to the event whos id is given
+     *
+     * @param {*} id - id number of the event to be queried for deletion.
+     * @param {*} propsToEdit - list of properties that compose an event.
+     */
+
     udpateEvent(id, propsToEdit){
         let propsToUpdate = ''
         console.log('props to update', propsToEdit)
@@ -122,12 +129,18 @@ class EventsModel{
         })
     }
 
+    /**
+     * Finds and removes the event with the given id
+     *
+     * @param {*} id - id number of the event to be queried for deletion.
+     */
+
     deleteEvent(id){
         return new Promise(async(resolve, reject)=>{
             try{
-                const db = await this.pool.connect()
-                (await this.db)(`delete FROM events where id=${id};`, (err, response)=>{
-                    console.log(response)
+                //const db = await this.pool.connect()
+                (await this.db).query(`delete FROM events where id=${id};`, (err, response)=>{
+                    console.log('query response', response)
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({
@@ -139,10 +152,16 @@ class EventsModel{
             }
         })    }
 
+    /**
+     * Returns a list with all the events happening on a given date.
+     *
+     * @param {*} timestamp - string with date of the event in YYYY-MM-DD format
+     */
+
         readEventbyDate(timestamp){
             return new Promise(async (resolve, reject) => {
                 try {
-                    (await this.db).query(`select * from events where date > '${timestamp} 00:00:00.000' and date < '${timestamp} 23:59:59.998';`, (err, response)=>{
+                    (await this.db).query(`select * from events where date >= '${timestamp} 00:00:00.000' and date < '${timestamp} 23:59:59.998';`, (err, response)=>{
                         console.log("query returns:",response)
                         let result = response.rows
                         return resolve({

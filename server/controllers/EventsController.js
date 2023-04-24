@@ -51,7 +51,12 @@ class EventsController {
             }
         });
     }
-
+    /**
+    * Recieves the id of the event promoter whos events we want to find,
+    * and delivers them to the event model.
+    *
+    * @param {*} id - id number of the promoter whos events we want to find.
+    */
     showEventsByPromoter(id){
         return new Promise(async(resolve, reject) => {
             let result
@@ -66,7 +71,18 @@ class EventsController {
             }
         });
     }
-
+    /**
+     * Takes the properties of the event and stores them in the appropriate format,
+     * and delivers them to the event model.
+     *
+     * @param {*} id - id number of the event to be queried.
+     * @param {*} promoterid - id number of the event creator.
+     * @param {*} details - details givent by the event creator.
+     * @param {*} price - cost of the ticket per event participant.
+     * @param {*} location - location where the event will take place.
+     * @param {*} photo - string containing the google storage api for the uploaded image.
+     * @param {*} date - string containing the date where the event will take place in YYYY-MM-DD HH:MM:SS.MS format
+     */
     editEvent(id, promoterid, details, price, location, photo, date, title){
         return new Promise(async(resolve, reject)=>{
             try{
@@ -82,7 +98,12 @@ class EventsController {
             }
         })
     }
-
+    /**
+     * Recieves the id of the event to be deleted,
+     * and delivers them to the event model.
+     *
+     * @param {*} id - id number of the event to be queried for deletion.
+     */
     removeEvent(id){
         return new Promise(async(resolve, reject)=>{
             try{
@@ -96,7 +117,12 @@ class EventsController {
             }
         })
     }
-
+    /**
+     * Recieves the timestamp the day of the events we want to look for,
+     * and delivers them to the event model.
+     *
+     * @param {*} timestamp - string timestamp to be queried for.
+     */
     showEventsByDate(timestamp){
         return new Promise(async(resolve, reject) => {
             let result

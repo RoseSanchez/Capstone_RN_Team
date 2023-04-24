@@ -223,6 +223,11 @@ app.post('/createParticipant',async(req, res)=>{
 })
 ///////////////////////////////////////////
 //rose
+/**
+ * End point that recieves the calls backs from the the frontend,
+ * 
+ * 
+ */
 app.get('/getAllOrders', async(req, res)=>{
     try {
         const orders = await orderControllerObj.showAllOrders()
