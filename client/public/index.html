@@ -94,7 +94,52 @@
     <!-- ATH Movil Start -->
     <div id="ATHMovil_Checkout_Button" style="width: 20% ; padding: 2% 4%;" ></div>
     <!-- ATH Movil End -->
+    <!-- PayPal Start -->
+    <script data-sdk-integration-source="integrationbuilder_ac"></script>
+    <div id="paypal-button-container"></div>
+    <script src="https://www.paypal.com/sdk/js?client-id=<test>"></script>
+    <script>
+      const fundingSources = [
+        paypal.FUNDING.PAYPAL
+      ];
+
+      for (const fundingSource of fundingSources) {
+        
+        paypal
+        .Buttons({
+           fundingSource,
+          
+           style: {
+             layout: 'vertical',
+             shape: '{{ buttonShape }}'
+           },
+       
+           createOrder: function (data, actions) {
+             const createOrderPayload = {
+               purchase_units: [
+                 {
+                   amount: {
+                     value: "25.00",
+                   },
+                 },
+               ],
+             };
+       
+             return actions.order.create(createOrderPayload);
+           },
+           
+           onApprove: function (data, actions) {
+             
+           },
+        })
+        .render("#paypal-button-container");
+       }
+
+    </script>
+    <!-- PayPal End -->
   </body>
+  <!-- ATH Movil Start -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://www.athmovil.com/api/js/v3/athmovilV3.js"></script>
+  <!-- ATH Movil End -->
 </html>
