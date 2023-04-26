@@ -79,6 +79,19 @@ class TicketsController {
             }
         })
     }
+    sumTickets(ticketid){
+        return new Promise(async(resolve, reject)=>{
+            try{
+                const ticketSum= await this.model.numberOfTickets(ticketid)
+                let result = ticketSum.result
+                return resolve({
+                    result: result,
+                });
+            }catch(error){
+                console.log(error)
+            }
+        })
+    }
 }
 
 module.exports = {TicketsController: TicketsController}

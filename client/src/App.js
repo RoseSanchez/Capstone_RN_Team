@@ -9,6 +9,8 @@ import Signup from "./components/Signup/Signup.js";
 import "./App.css"
 import Event from "./components/Event/Event.js";
 import Register from "./components/Regitser/Register.js"
+import PromoterProfile from "./components/PromoterProfile/PromoterProfile.js";
+import RegisterForm from "./components/RegisterForm/RegisterForm.js";
 
 function App() {
   const navigate = useNavigate()
@@ -18,16 +20,23 @@ function App() {
     <>
       {pathName !=="/login" && pathName!=="/signup"?(<nav className="navBar">
           <p className="title">PURCycling</p>
-          <Button className="btn" onClick={()=>{navigate("signup")}}>SignUp</Button>
+          <div className="btns">
+            <Button className="btn" onClick={()=>{navigate("signup")}}>SignUp</Button>
+            <Button className="myevntsbtn" onClick={()=>{navigate("promoters")}}>MyEvents</Button>
+            <Button className="profile" onClick={()=>{navigate("profile")}}>Profile</Button>
+            <Button className="signout" onClick={()=>{localStorage.clear(); window.location.reload()}}>SignOut</Button>
+          </div>
       </nav>):null}
       <Routes>
-        <Route path="/" element={<></>} />
+        {/* <Route path="/" element={<></>} /> */}
+        <Route path="/" element={<Participants/>} />
+        <Route path="/profile" element={<PromoterProfile/>} />
         <Route path="/promoters" element={<ProtectedRoute><Promoters /></ProtectedRoute>} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/event/:id" element={<ProtectedRoute><Event/></ProtectedRoute>}/>
-        <Route path="/participant" element={<Participants/>} />
         <Route path="/registerParticipant/:eventId" element={<Register/>} />
+        <Route path="/registerParticipant/:eventId/registerForm" element={<RegisterForm/>} />
       </Routes>
     </>
   );

@@ -1,16 +1,18 @@
-const {Pool} = require('pg')
+const {Pool} = require('pg');
+const { DB } = require('../dbconfig');
 
 class WaiversModel{
     constructor(){
         // const connection_url = "jdbc:postgresql://ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5"
-        const connection_url = "postgres://qlxouxhpuqlcli:c416400a0bd65ef07cc531dbe05b05e643983c24c7019898e083bdffc214a672@ec2-23-20-211-19.compute-1.amazonaws.com:5432/d7mu35vh781rtv"
+        // const connection_url = "postgres://njupbwybsaqiqt:3935f060b092cdc8a630a2ba09c9b00e0ac1131c3fc28b01b77182cbb0e1d3f6@ec2-34-197-91-131.compute-1.amazonaws.com:5432/deurl2dd6unmb5"
 
-        this.pool = new Pool({
-            connectionString:connection_url,
-            ssl:{rejectUnauthorized: false},
-            max: 20,
-            idleTimeoutMillis: 30000
-        });
+        // this.pool = new Pool({
+        //     connectionString:connection_url,
+        //     ssl:{rejectUnauthorized: false},
+        //     max: 20,
+        //     idleTimeoutMillis: 30000
+        // });
+        this.db = DB
     }
 
     // getters
@@ -21,8 +23,8 @@ class WaiversModel{
     createWaiver(partipantId, document, signed){
         return new Promise(async (resolve, reject) => {
             try {
-                const db = await this.pool.connect()
-                db.query(`insert into waivers (partipantId, document, signed) VALUES ('${partipantId}', '${document}', '${signed}')`, (err, response)=>{
+                // const db = await this.pool.connect()
+                (await this.db).query(`insert into waivers (partipantId, document, signed) VALUES ('${partipantId}', '${document}', '${signed}')`, (err, response)=>{
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"
                     return resolve({
@@ -38,8 +40,8 @@ class WaiversModel{
     readAllWaiver(){
         return new Promise(async (resolve, reject) => {
             try {
-                const db = await this.pool.connect()
-                db.query('SELECT * FROM waivers;', (err, response)=>{
+                // const db = await this.pool.connect()
+                (await this.db).query('SELECT * FROM waivers;', (err, response)=>{
                     let result = response.rows
                     return resolve({
                         result: result,
@@ -54,8 +56,8 @@ class WaiversModel{
     readWaiver(id){
         return new Promise(async (resolve, reject) => {
             try {
-                const db = await this.pool.connect()
-                db.query(`SELECT * FROM waivers WHERE id=${id};`, (err, response)=>{
+                // const db = await this.pool.connect()
+                (await this.db).query(`SELECT * FROM waivers WHERE id=${id};`, (err, response)=>{
                     let result = response.rows[0]
                     return resolve({
                         result: result,

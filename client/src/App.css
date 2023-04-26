@@ -1,5 +1,5 @@
 .navBar{
-  background-color: #FF823C;
+  background-color: #ff833cc3;
   display: flex;
   height: 5rem;
   align-items: center;
@@ -13,8 +13,31 @@
 }
 
 .btn{
-  margin-right: 3rem !important;
+  margin-right: 1rem !important;
   font-weight: bold !important;
+  color: white !important;
+  background-color: #ff833c !important;
+}
+
+.myevntsbtn{
+  font-weight: bold !important;
+  margin-right: 1rem !important;
+  color: white !important;
+  background-color: #ff833c !important;
+}
+
+.btns{
+  margin-right: 0.75rem !important;
+}
+
+.signout{
+    margin-right: 1rem !important;
+  color: white !important;
+  background-color: #ff833c !important;
+}
+
+.profile{
+  margin-right: 1rem !important;
   color: white !important;
   background-color: #ff833c !important;
 }
