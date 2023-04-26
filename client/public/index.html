@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <script type="text/javascript">
-
+    //ATH Movil Start
     ATHM_Checkout = {
 
         env: 'sandbox',
@@ -12,32 +12,23 @@
         theme: 'btn',
         lang: 'en',
 
-        total: 1.00,
-        tax: 1.00,
-        subtotal: 1.00,
+        total: 25.00,
 
         metadata1: 'metadata1 test',
         metadata2: 'metadata2 test',
 
         items: [
             {
-                "name":"First Item",
-                "description":"This is a description.",
+                "name":"Sample Event",
+                "description":"This is the description to a sample event",
                 "quantity":"1",
-                "price":"1.00",
-                "tax":"1.00",
-                "metadata":"metadata test"
+                "price":"25.00",
+                "tax":"0.00",
+                "metadata":"null"
             },
-            {
-                "name":"Second Item",
-                "description":"This is another description.",
-                "quantity":"1",
-                "price":"1.00",
-                "tax":"1.00",
-                "metadata":"metadata test"
-            }
         ]
     }
+    //ATH MOVIL END
 </script>
   <head>
     <meta charset="utf-8" />
@@ -83,7 +74,7 @@
     <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
-    <a class="a2a_button_email"></a>
+    <a class="a2a_button_email"></a> 
     <a class="a2a_button_whatsapp"></a>
     <a class="a2a_button_facebook_messenger"></a>
     <a class="a2a_button_copy_link"></a>
@@ -100,7 +91,9 @@
       >
       </stripe-buy-button>
     <!-- Stripe End -->
-    <div id="ATHMovil_Checkout_Button"></div>
+    <!-- ATH Movil Start -->
+    <div id="ATHMovil_Checkout_Button" style="width: 20% ; padding: 2% 4%;" ></div>
+    <!-- ATH Movil End -->
   </body>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://www.athmovil.com/api/js/v3/athmovilV3.js"></script>
