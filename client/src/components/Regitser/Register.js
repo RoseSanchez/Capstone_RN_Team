@@ -167,8 +167,10 @@ const [date, time] = datetime.split('T');
     event ? (<div className={styles.parent}>
       {/* {console.log(participantsInfo)} */}
       <div className={styles.container}>
-        <p className={styles.title}>{event.title}</p> 
+        <p className={styles.title}>{event.title}</p>
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
+
+        
         
         <div className={styles.details}>
           <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Price:{" "}</p> ${event.price}</p> 

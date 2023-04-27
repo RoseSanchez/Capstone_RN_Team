@@ -131,11 +131,17 @@ const [date, time] = datetime.split('T');
     // {event ? <>{event.details}</>:<>Loading Event</>}
     event ? (<div className={styles.parent}>
       <div className={styles.container}>
-        <p className={styles.title}>{event.title}</p> 
+        <p className={styles.title}>{event.title}</p>
         <div className={styles.dtls}>
         {/* <p className={styles.title}>{event.title}</p>  */}
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
-        
+
+        <a href={`https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`}> facebook</a>
+        <a href={`https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2capstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`}> twitter</a>
+        <a href={`https://www.addtoany.com/add_to/email?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`}> email</a>
+        <a href={`https://www.addtoany.com/add_to/whatsapp?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`}> whatsapp</a>
+        <a href={`https://www.addtoany.com/add_to/facebook_messenger?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`}> messenger</a>
+
         <div className={styles.details}>
           <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Price:{" "}</p> ${event.price}</p> 
           
