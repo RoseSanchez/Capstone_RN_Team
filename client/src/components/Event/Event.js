@@ -142,15 +142,15 @@ const [date, time] = datetime.split('T');
         />
         </div>
         
-        <a href={`https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`} className='fa fa-facebook'>acebook </a>
+        <a href={`https://www.addtoany.com/add_to/facebook?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-facebook'>acebook </a>
         
-        <a href={`https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2capstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`} className='fa fa-twitter'>Twitter </a>
+        <a href={`https://www.addtoany.com/add_to/twitter?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-twitter'>Twitter </a>
         
-        <a href={`https://www.addtoany.com/add_to/google_gmail?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`} className='fa fa-google'>mail </a>
+        <a href={`https://www.addtoany.com/add_to/google_gmail?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-google'>mail </a>
         
-        <a href={`https://www.addtoany.com/add_to/whatsapp?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`} className='fa fa-whatsapp'>WhatsApp </a>
+        <a href={`https://www.addtoany.com/add_to/whatsapp?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-whatsapp'>WhatsApp </a>
         
-        <a href={`https://www.addtoany.com/add_to/facebook_messenger?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`} className='fa fa-facebook-square'>Messegener </a>
+        <a href={`https://www.addtoany.com/add_to/facebook_messenger?linkurl=https://capstone-view.herokuapp.com/registerParticipant/${id}%2F&linkname=${event.title}`} className='fa fa-facebook-square'>Messegener </a>
 
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
 
