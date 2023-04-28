@@ -134,13 +134,25 @@ const [date, time] = datetime.split('T');
         <p className={styles.title}>{event.title}</p>
         <div className={styles.dtls}>
         {/* <p className={styles.title}>{event.title}</p>  */}
-        <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
 
-        <a href={`https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`}> facebook</a>
-        <a href={`https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2capstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`}> twitter</a>
-        <a href={`https://www.addtoany.com/add_to/email?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`}> email</a>
-        <a href={`https://www.addtoany.com/add_to/whatsapp?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`}> whatsapp</a>
-        <a href={`https://www.addtoany.com/add_to/facebook_messenger?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`}> messenger</a>
+        <div className='container' id='contact'>
+        <link
+          rel='stylesheet'
+          href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+        />
+        </div>
+        
+        <a href={`https://www.addtoany.com/add_to/facebook?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`} className='fa fa-facebook'>acebook </a>
+        
+        <a href={`https://www.addtoany.com/add_to/twitter?linkurl=https%3A%2F%2capstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`} className='fa fa-twitter'>Twitter </a>
+        
+        <a href={`https://www.addtoany.com/add_to/google_gmail?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`} className='fa fa-google'>mail </a>
+        
+        <a href={`https://www.addtoany.com/add_to/whatsapp?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`} className='fa fa-whatsapp'>WhatsApp </a>
+        
+        <a href={`https://www.addtoany.com/add_to/facebook_messenger?linkurl=https%3A%2F%2Fcapstone-view.herokuapp.com${window.location.pathname}%2F&linkname=Example%20Page`} className='fa fa-facebook-square'>Messegener </a>
+
+        <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
 
         <div className={styles.details}>
           <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Price:{" "}</p> ${event.price}</p> 
