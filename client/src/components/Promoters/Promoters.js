@@ -81,6 +81,7 @@ function Promoters() {
 
   // console.log("all events", events)
   const [update, setUpdate] = useState(false)
+  const [isDelete, setIsDelete] = useState(false)
   const [open, setOpen] = useState(false)
   const [eventInfo, setEventInfo] = useState({title:"", details:"", price:"", location:"", date:"", photo:""})
   const [eventDeleteInfo, setDeleteEventInfo] = useState({id:""})
@@ -191,21 +192,17 @@ function Promoters() {
                                     setUpdate(true); 
                                     }
                                   } 
-                            className={styles.sbmtBtn} type='submit'>Update</Button>
+                            className={styles.sbmtBtn} type='submit'>Edit Event</Button>
                           </Grid.Column>
                           <Grid.Column>
-                          <Button onClick={async(e)=>{ 
-                                      e.stopPropagation(); 
-                                      // deleteEventCall(event.id) 
-                                      const eventBodySend = {id: event.id }
-                                      console.log(eventBodySend)
-                                      const result = await deleteEvent(eventBodySend)
-                                      console.log(result)
-                                      setEventToDelID(event.id); 
-                                      window.location.reload(true)
-                                      }} 
-
-                                      className={styles.sbmtBtn} type='submit'>Delete</Button>
+                            <Button onClick={async(e)=>{
+                              e.stopPropagation(); 
+                              //const eventBodySend = {id: event.id }
+                              setEventToDelID(event.id);
+                              //console.log(eventBodySend)
+                              setIsDelete(true);
+                            }} 
+                            className={styles.sbmtBtn} type='submit'>Delete Event</Button>
                             </Grid.Column>
                             </Grid.Row>
                           </Grid>
@@ -242,6 +239,33 @@ function Promoters() {
             }
           {/* </Grid.Row> */}
           <Modal
+      onClose={() => setIsDelete(false)}
+      onOpen={() => setIsDelete(true)}
+      open={isDelete}
+      // trigger={<Button>Show Modal</Button>}
+    >
+      <Modal.Header>Are you sure you want to delete this event?</Modal.Header>
+      <Modal.Actions>
+        <Button color='black' onClick={() => setIsDelete(false)}>
+          No
+        </Button>
+        <Button
+          content="yes"
+          labelPosition='right'
+          icon='checkmark'
+          onClick={async(e) => {
+            console.log(eventToDelID)
+            const eventBodySend = {id: eventToDelID }
+            const result = await deleteEvent(eventBodySend)
+            console.log(result)
+            window.location.reload(true)
+            }
+          }
+          positive
+        />
+      </Modal.Actions>
+    </Modal>
+          <Modal
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
@@ -260,10 +284,15 @@ function Promoters() {
           <Form >
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' />
+                <p> 255 Character limit.</p>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' />
+                <p> 1000 Character limit.</p>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' />
+                <p> Format example: 23.52</p>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' />
+                <p> Format example: ???</p>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' />
+                <p> Format: YYYY-MM-DD Hour:Minute Example: 2023-12-30 5:30 </p>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' /> */}
                 <Form.Input label='Photo'>
                 <Dropzone onDrop={acceptedFiles => {console.log(acceptedFiles); setEventInfo({...eventInfo, photo:acceptedFiles})}}>
@@ -305,7 +334,7 @@ function Promoters() {
       open={update}
       // trigger={<Button>Show Modal</Button>}
     >
-      <Modal.Header>Update Event</Modal.Header>
+      <Modal.Header>Edit Event</Modal.Header>
       <Modal.Content >
         {/* <Image size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' wrapped /> */}
         <Modal.Description>

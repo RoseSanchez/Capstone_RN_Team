@@ -11,6 +11,7 @@ import moment from 'moment'
 function CalendarP() {
 
   const [dateState, setDateState] = useState(new Date())
+  const [eventExists, setEventExists] = useState(new Date())
   const changeDate = async (e) => {
     let events = [];
     setDateState(e)
@@ -18,7 +19,7 @@ function CalendarP() {
     const response = await getEventsByDate({"timestamp": (moment(e).format('YYYY-MM-DD'))})
       
     console.log("what iis day",(moment(dateState).format('YYYY-MM-DD')))
-    console.log("response",response)
+    console.log("response",response.events.length)
     let allEvents = response? response.events.reverse():null
     
     // const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
@@ -37,6 +38,10 @@ function CalendarP() {
     })
     console.log("events", events)
     setEvents(events)
+  }
+  const doesHaveEvent = async (e) =>{
+  const response = await getEventsByDate({"timestamp": (moment(e).format('YYYY-MM-DD'))})
+   return response.events.length
   }
   const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
 
@@ -78,11 +83,16 @@ function CalendarP() {
 
 
   return (
-    <Grid>
-    <div>
+    <Grid textAlign="center" style={{"margin-top": "auto"}}>
+    <div >
       <Calendar 
       value={dateState}
       onChange={changeDate }
+      tileClassName={({ date, view }) => {
+        if(doesHaveEvent(date) == 0){
+         return 'highlight' /*style={{"margin-top": "auto"}}*/
+        }
+      }}
       />
     <p>Current selected date  <b>{moment(dateState).format('MMMM Do YYYY')}</b></p>
     <div> events should show up here
