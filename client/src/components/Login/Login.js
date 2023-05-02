@@ -1,28 +1,37 @@
+//   This component is a form that allows user input to login user as a promoter
+
 import React, { useState } from 'react'
-import { Button, Input, Form } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
 import { logIn } from '../../api/Promoters/promotersRoutes';
 import { useAuth } from '../../customHooks/useAuth';
 import styles from './Login.module.css'
-import mainLogo from '../../assets/Logo.jpeg'
 
 
 const Login = () => {
+    //   user info state initialization, this will be used to store and update user info
     const [userInfo, setUserInfo] = useState({email:"", password:""})
     const {login} = useAuth()
     const handleSubmit=async(e)=>{
         e.preventDefault()
-        console.log(userInfo)
-        const response = await logIn(userInfo)
-        const result = response.promoter
-        console.log(result)
-        console.log(result.status === "success" ? true:false)
-        if(result.status ==="success"){
-            login(result.promoter)
-        }else{
-            console.log(result)
+        const {email, password} = userInfo
+        if(email && password){
+            if(password.length<=20 && email.length<=254){
+                console.log(userInfo)
+                const response = await logIn(userInfo)
+                const result = response.promoter
+                console.log(result)
+                console.log(result.status === "success" ? true:false)
+                if(result.status ==="success"){
+                    login(result.promoter)
+                }else{
+                    console.log(result)
+                }
+                setUserInfo({email:"", password:""})
+            }
         }
-        setUserInfo({email:"", password:""})
     }
+
+    //   renders form element
     return(
         <div className={styles.container}>
             <div className={styles.banner}>

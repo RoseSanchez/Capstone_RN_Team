@@ -1,19 +1,20 @@
+  // shows promoter information and allow to edit such information
+
 import React, { useEffect, useState } from 'react'
 import { getPromoterById, updatePromoter } from '../../api/Promoters/promotersRoutes';
 import { Card, Button, Modal, Form } from 'semantic-ui-react';
 import styles from './PromoterProfile.module.css'
-import { useNavigate } from 'react-router-dom';
 
 const PromoterProfile = ({id}) => {
     const [userInfo, setUserInfo] = useState({name:"", password:"",email:"", address:""})
     const [editInfo, setEditInfo] = useState({name:"", password:"",email:"", address:""})
 
     
-    const navigate = useNavigate()
 
     const [open, setOpen] = useState(false)
 
 
+      // use effect hook used to load promoter data before rendering component
     useEffect(()=>{
         async function getPromoter(){
             const promoterResponse = await getPromoterById({id: JSON.parse(localStorage.getItem('user')).id})
@@ -24,13 +25,7 @@ const PromoterProfile = ({id}) => {
         getPromoter()
     },[])
 
-    const updateProfileEventCall=async(e)=>{
-        e.preventDefault()
-        console.log('update profile call')
-        // console.log({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
-        // const updateResponse = await updatePromoter(editInfo)
-        // setEditInfo({name:"", password:"",email:"", address:""})
-    }
+
     return(
         <div className={styles.container}>
             <Card className={styles.card}>
@@ -83,7 +78,8 @@ const PromoterProfile = ({id}) => {
           onClick={async() => {
             //   updateProfileEventCall();
             //   console.log(editInfo);
-                const updateResponse = await updatePromoter({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
+              // call update promoter endpoint function
+                await updatePromoter({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
 
                 console.log({...editInfo, id: JSON.parse(localStorage.getItem('user')).id})
                 setEditInfo({name:"", password:"",email:"", address:""})

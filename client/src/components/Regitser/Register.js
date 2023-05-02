@@ -1,115 +1,146 @@
+// this component show event information to participants and provides a form to registed as many participants the client wants
+
+
+// import DatePicker from 'react-date-picker';
 import { useEffect, useState } from "react";
-import { useLoaderData, useParams } from "react-router-dom";
-import { Label, Form } from "semantic-ui-react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Modal, Button } from "semantic-ui-react";
 import { getEvent } from "../../api/Events/eventsRoutes";
-import defaultEventImg from "../../assets/default-image.png"
-import defaultLocation from "../../assets/default.png"
 import styles from "./Register.module.css"
-import {createParticipant} from "../../api/Participants/participantsRoute.js"
-import { createTicket } from "../../api/Tickets/ticketsRoutes";
-import { createOrder } from "../../api/Orders/ordersRoutes";
+// import {createParticipant} from "../../api/Participants/participantsRoute.js"
+// import { createTicket } from "../../api/Tickets/ticketsRoutes";
+// import { createOrder } from "../../api/Orders/ordersRoutes";
+import MyMapComponent from "../Map/MyMapComponent";
+import Image from "../Image/Image.js";
+
+// const { useJsApiLoader } = require("@react-google-maps/api");
+import { useJsApiLoader } from '@react-google-maps/api';
+
+
+// const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
+
 
 
 function Event() {
-  const [orderCreator, setOrderCreator] = useState('')
-  const [participantInfo, setParticipantInfo] = useState()
-  const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"", address:"",birthdate:"", category:""}])
-  let participantsFormHTML = []
+  // const [orderCreator, setOrderCreator] = useState('')
+  // const [participantsInfo, setParticipantsInfo] = useState([{name:"", email:"", phone:"",gender:"", address:"",birthdate:new Date(), category:""}])
+  // const [position, setPosition] = useState({lat:0, lng:0})
+  const position = {lat:0, lng:0}
+  // const [changeState, setChangeState] = useState(false)
+  const [open, setOpen] = useState(false)
+  const navigate = useNavigate()
+
+
+
+ 
   const {eventId} = useParams()
   console.log(eventId)
   console.log(window.location.pathname)
-  // console.log(useLoaderData())
-//   console.log(id)
   const [event, setEvent] = useState()
-  const [numOfParticipants, setNumOfParticipants] = useState(1)
+  // const [numOfParticipants, setNumOfParticipants] = useState(1)
 
-  const handleState = (index, value, attribute) =>{
-    // participantInfo[i] = {...participantInfo[i], :}
-  }
+    const { isLoaded } = useJsApiLoader({
+    id: 'google-map-script',
+    googleMapsApiKey: process.env.REACT_APP_MAP_KEY
+  })
 
-  const renderParticipantsForm = ()=>{
-    for(let i = 0; i<numOfParticipants; i++){
-      participantsFormHTML.push(
-        <Form >
-            {/* <Form.Group widths='equal' className={styles.eventForm}>
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, name:e.target.value})}} fluid label='Name' placeholder='Name' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, email:e.target.value})}} fluid label='Email' placeholder='Email' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, phone:e.target.value})}} fluid label='Phone' placeholder='Phone' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, gender:e.target.value})}} fluid label='Gender' placeholder='Gender' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, birthdate:e.target.value})}} fluid label='Birthdate' placeholder='Birthdate' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, address:e.target.value})}} fluid label='Address' placeholder='Address' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, category:e.target.value})}} fluid label='Category' placeholder='Category' />
-            </Form.Group> */}
-            <Form.Group widths='equal' className={styles.eventForm}>
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], name:e.target.value}
-                  // console.log(participantsInfo)
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Name' placeholder='Name' />
+  // const onDateChange=(e, i)=>{
+  //   console.log(new Date(e))
+    
+  //   participantsInfo[i] = {...participantsInfo[i], birthdate: e}
+  //                 console.log(participantsInfo)
+  //   setParticipantsInfo(participantsInfo)
+  //   setChangeState(!changeState)
+  // }
 
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], email:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Email' placeholder='Email' />
+  //  his will show as many forms as the numbers of participants in order to register such participants
+  // const renderParticipantsForm = ()=>{
+  //   let participantsFormHTML = []
+  //   for(let i = 0; i<numOfParticipants; i++){
+  //     participantsFormHTML.push(
+  //       <div >
+  //           <Form.Group widths='equal' className={styles.eventForm}>
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], name:e.target.value}
+  //                 // console.log(participantsInfo)
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Name' placeholder='Name' />
 
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], phone:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Phone' placeholder='Phone' />
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], email:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Email' placeholder='Email' />
 
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], gender:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Gender' placeholder='Gender' />
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], phone:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Phone' placeholder='Phone' />
 
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], birthdate:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Birthdate' placeholder='Birthdate' />
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], gender:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Gender' placeholder='Gender' />
 
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], address:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Address' placeholder='Address' />
+  //         <div style={{display:"flex", flexDirection:"column"}}>
+  //         <label style={{fontWeight:"bold"}}>Birthdate</label>
+  //         {console.log(participantsInfo[i].birthdate)}
+  //         <DatePicker onChange={(e)=>onDateChange(e, i)} value={participantsInfo[i].birthdate}/>
+  //         </div>
+  //               {/* 
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], birthdate:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Birthdate' placeholder='Birthdate' /> */}
 
-                <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], category:e.target.value}
-                  setParticipantsInfo(participantsInfo)
-                }} fluid label='Category' placeholder='Category' />
-            </Form.Group>
-            {/* <button onClick={(e)=>{handleSubmit(e)}}>submit</button> */}
-            <br/>
-          </Form>
-      )
-    }
-    return <>{participantsFormHTML}</>
-  }
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], address:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Address' placeholder='Address' />
+
+  //               <Form.Input onChange={(e)=>{
+  //                 participantsInfo[i] = {...participantsInfo[i], category:e.target.value}
+  //                 setParticipantsInfo(participantsInfo)
+  //               }} fluid label='Category' placeholder='Category' />
+  //           </Form.Group>
+  //           {/* <button onClick={(e)=>{handleSubmit(e)}}>submit</button> */}
+  //           <br/>
+  //         </div>
+  //     )
+  //   }
+  //   return <>{participantsFormHTML}</>
+  // }
 
 
-  const handleSubmit =async(e)=>{
-    let listOfParticipantId = []
-    e.preventDefault()
+  //   participants creation, first it creates participants and collect their ids
+  //   then it create the order and collect its id
+  //   finally it create the tickets for the participants and the order
+  // const handleSubmit =async(e)=>{
+  //   let listOfParticipantId = []
+  //   e.preventDefault()
 
-    console.log(participantsInfo)
-    console.log(orderCreator)
+  //   console.log(participantsInfo)
+  //   console.log(orderCreator)
 
-    participantsInfo.forEach(async participant => {
-      const participantResponse = await createParticipant(participant)
-      console.log((participantResponse))
-      listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
-    });
-    // create order
-    const orderResponse = await createOrder({orderemail: orderCreator, paymentdetails:""})
-    console.log(listOfParticipantId)
+  //   participantsInfo.forEach(async participant => {
+  //     const participantResponse = await createParticipant(participant)
+  //     console.log((participantResponse))
+  //     listOfParticipantId = listOfParticipantId.concat(participantResponse.newParticipant.participant.id)
+  //   });
+  //   // create order
+  //   const orderResponse = await createOrder({orderemail: orderCreator, paymentdetails:""})
+  //   console.log(listOfParticipantId)
 
-    const orderId = orderResponse.newOrder.order.id
-    listOfParticipantId.forEach(async id=>{
-      await createTicket({participantid: id, orderid: orderId, eventid: Number(eventId)})
-    })
-    // create tickets
-  }
+  //   const orderId = orderResponse.newOrder.order.id
+  //   listOfParticipantId.forEach(async id=>{
+  //     await createTicket({participantid: id, orderid: orderId, eventid: Number(eventId)})
+  //   })
+  //   setNumOfParticipants(1)
+  //   setParticipantsInfo([{name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
+  //   window.location.reload()
+  //   // create tickets
+  // }
 
+  //  use effect hook used to load event data before rendering component
   useEffect(()=>{
     const event =async()=>{
       const eventResponse = await getEvent({id: Number(eventId)})
@@ -118,47 +149,100 @@ function Event() {
       setEvent(eventResponse.event)
     }
     event().catch(console.error)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
+    const datetime = event ? event.date:"";
+const [date, time] = datetime.split('T');
+
+// console.log('Date:', date); // Date: 2023-04-13
+// console.log('Time:', time.slice(0, -5)); // Time: 08:00:00
   return (
     // console.log(event)
+
+
+
     
     // {event ? <>{event.details}</>:<>Loading Event</>}
     event ? (<div className={styles.parent}>
-      {console.log(participantsInfo)}
+      {/* {console.log(participantsInfo)} */}
       <div className={styles.container}>
         <p className={styles.title}>{event.title}</p> 
-        <button>show or export participants</button>
-        <img  src={event.photo}/>
         <p style={{alignSelf:"flex-start", fontWeight:"bold", fontSize:"2rem"}}>Details</p>
+        
         <div className={styles.details}>
-          <p>${event.price} | {" "}</p> 
-          <p>{event.date}</p> 
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Price:{" "}</p> ${event.price}</p> 
+          
         </div>
-        <img  src={defaultLocation} alt="fireSpot"/> 
-        <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' />
-        {renderParticipantsForm()}
-        <button onClick={(e)=>{handleSubmit(e)}}>submit</button>
+        <div className={styles.details}>
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date}</p> 
+          
+        </div>
+        <div className={styles.details}>
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Time:</p> {time.slice(0, -5)}</p> 
+          
+        </div>
+        <div style={{marginBottom: "1rem", marginTop:"1rem"}} className={styles.details}>
+        <Button className={styles.rgtsBtn} onClick={()=>{navigate(`registerForm`)}}>Register</Button>
+        </div>
+        
+
+        <Image src={event.photo} width={800} height={800}/>
+        {/* <img  src={event.photo} alt="some"/> */}
+        
+        {isLoaded ?<MyMapComponent position={position} location={event.location}/>:<></>}
+        {/* <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' /> */}
+        {/* {renderParticipantsForm()} */}
+        {/* <button onClick={(e)=>{handleSubmit(e)}}>submit</button>
 
         <button onClick={()=>{
                               setNumOfParticipants(numOfParticipants + 1); 
-                              setParticipantsInfo([...participantsInfo, {name:"", email:"", phone:"", address:"",birthdate:"", category:""}])
+                              setParticipantsInfo([...participantsInfo, {name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
                             }}
                           >add participant</button>
-        <button onClick={()=>{setNumOfParticipants(numOfParticipants - 1)}}>delete participant</button>
-        {/* {numOfParticipants==1 ? <Form >
-            <Form.Group widths='equal' className={styles.eventForm}>
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, name:e.target.value})}} fluid label='Name' placeholder='Name' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, email:e.target.value})}} fluid label='Email' placeholder='Email' />
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, phone:e.target.value})}} fluid label='Phone' placeholder='Phone' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, gender:e.target.value})}} fluid label='Gender' placeholder='Gender' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, birthdate:e.target.value})}} fluid label='Birthdate' placeholder='Birthdate' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, address:e.target.value})}} fluid label='Address' placeholder='Address' />
-                <Form.Input onChange={(e)=>{setParticipantInfo({...participantInfo, category:e.target.value})}} fluid label='Category' placeholder='Category' />
-            </Form.Group>
-            <button onClick={(e)=>{handleSubmit(e)}}>submit</button>
-          </Form>:null} */}
+        <button onClick={()=>{setNumOfParticipants(numOfParticipants - 1)}}>delete participant</button> */}
       </div>
+      <Modal
+      onClose={() => setOpen(false)}
+      onOpen={() => setOpen(true)}
+      open={open}
+      // trigger={<Button>Show Modal</Button>}
+    >
+      <Modal.Header>Create Event</Modal.Header>
+      <Modal.Content >
+        {/* <Image size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' wrapped /> */}
+        <Modal.Description>
+          {/* <Header>Default Profile Image</Header> */}
+          {/* <p>
+            We've found the following gravatar image associated with your e-mail
+            address.
+          </p>
+          <p>Is it okay to use this photo?</p> */}
+          {/* <div style={{display:"flex", flexDirection:"column"}}>
+          <label style={{fontWeight:"bold"}}>Date</label>
+          <DatePicker onChange={(e)=>onDateChange(e)} value={eventInfo.date}/>
+          </div> */}
+          {/* {renderParticipantsForm()} */}
+        </Modal.Description>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button color='black' onClick={() => setOpen(false)}>
+          Cancel
+        </Button>
+        <Button
+          content="Create Event"
+          labelPosition='right'
+          icon='checkmark'
+          onClick={() => {
+              // createEventCall();
+              // console.log(eventInfo);
+              setOpen(false)
+            }
+          }
+          positive
+        />
+      </Modal.Actions>
+    </Modal>
       
     </div>):<>Loading Event</>
   );
