@@ -1,5 +1,2 @@
 client/.env
 server/.env
-client/public/index.html
-client/src/components/PromoterProfile/PromoterProfile.js
-client/public/indexBU.html
