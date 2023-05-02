@@ -52,7 +52,9 @@ const eventsController = require('./controllers/EventsController')
 const eventController = eventsController.EventsController
 const eventControllerObj = new eventController()
 
-
+const waiversController = require('./controllers/WaiversController.js')
+const waiverController = waiversController.WaiversController
+const waiverControllerObj = new waiverController()
 
 // run application server
 const myServer = app.listen(process.env.PORT, () => {
@@ -500,6 +502,59 @@ app.post('/participantsByEvent', async(req, res)=>{
         console.log("participantsByEvent ",req.body)
         const participants = await participantControllerObj.showParticipantsByEvent(eventid)
         res.send({"participants":participants.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.get('/getAllWaivers', async(req, res)=>{
+    try {
+        const waivers = await waiverControllerObj.showAllWaivers()
+        res.send({"waivers":waivers.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/getWaiver', async(req, res)=>{
+    try {
+        const {participantid} = req.body
+        console.log(participantid)
+        const waiver = await waiverControllerObj.showWaiver(participantid)
+        res.send({"waiver":waiver.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/createWaiver',async(req, res)=>{
+    console.log('create waiver call', req.body)
+    try {
+        const {esignature, participantid} = req.body 
+        const newWaiver = await waiverControllerObj.insertWaiver(esignature, participantid)
+        res.send({"newWaiver":newWaiver.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/updateWaiver',async(req, res)=>{
+    try {
+        const {esignature, participantid} = req.body
+        console.log("update request:",req.body)
+        const updatedWaiver = await waiverControllerObj.editWaiver(esignature, participantid)
+        res.send({"updatedWaiver":updatedWaiver.result})
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+app.post('/deleteWaiver',async(req, res)=>{
+    try {
+        const {participantid} = req.body
+        console.log("Delete request:",participantid.body)
+        const deletedWaiver = await waiverControllerObj.removeWaiver(participantid)
+        res.send({"deletedWaiver":deletedWaiver.result})
     } catch (error) {
         console.log(error)
     }
