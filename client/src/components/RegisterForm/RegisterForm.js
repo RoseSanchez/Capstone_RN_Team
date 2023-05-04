@@ -13,6 +13,9 @@ import { createOrder } from "../../api/Orders/ordersRoutes";
 // import emailjs from "emailjs"
 import { sendEmail } from '../../api/Email/sendEmail';
 
+
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
+
 // const { useJsApiLoader } = require("@react-google-maps/api");
 // import { useJsApiLoader } from '@react-google-maps/api';
 
@@ -172,7 +175,11 @@ function RegisterForm() {
     event().catch(console.error)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
+
   return (
+
+    
     // console.log(event)
     
     // {event ? <>{event.details}</>:<>Loading Event</>}
@@ -207,6 +214,38 @@ function RegisterForm() {
         <div className={styles.btnContainer}>
         <Button className={styles.btns} onClick={(e)=>{setOpen(true)}}>submit</Button>
         </div>
+
+          {/* ATHMOVIL START! */}
+          <div id="ATHMovil_Checkout_Button"></div>
+          {/* ATHMOVIL END! INCOMPLETE*/}
+          
+          
+
+          {/* PAYPAL START! */}
+          <PayPalScriptProvider options={{ "client-id": "test" }}>
+            <PayPalButtons
+                createOrder={(data, actions) => {
+                    return actions.order.create({
+                        purchase_units: [
+                            {
+                                amount: {
+                                    value: event.price,
+                                },
+                            },
+                        ],
+                    });
+                }}
+                onApprove={(data, actions) => {
+                    return actions.order.capture().then((details) => {
+                        const name = details.payer.name.given_name;
+                        alert(`Transaction completed by ${name}`);
+                    });
+                }}
+            />
+          </PayPalScriptProvider>
+          {/* PAYPAL END! */}
+
+
         {/* <button onClick={()=>{
                               setNumOfParticipants(numOfParticipants + 1); 
                               setParticipantsInfo([...participantsInfo, {name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
@@ -268,5 +307,12 @@ function RegisterForm() {
     </div>):<>Loading Event</>
   );
 }
+
+
+
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://www.athmovil.com/api/js/v3/athmovilV3.js"></script>
+</html>
 
 export default RegisterForm;
