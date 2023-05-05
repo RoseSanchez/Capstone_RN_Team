@@ -99,6 +99,10 @@ function Promoters() {
                                                           // date:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
                                                           date: new Date(), 
                                                           photo:""})
+  const [eventToUpdateInfo, seteventToUpdateInfo] = useState({title:"", details:"", price:"", location:"", 
+                                                          // date:`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`,
+                                                          date: new Date(), 
+                                                          photo:""})
   const navigate = useNavigate()
   const [eventToEditID, setEventToEditID] = useState(null)
   const [eventToDelID, setEventToDelID] = useState()
@@ -225,18 +229,18 @@ function Promoters() {
     // console.log(result.newEvent)
     // window.location.replace(`event/${result.newEvent.event.id}`)
     setEventInfo({title:"", details:"", price:"", location:"", date:"", photo:""})
-    window.location.reload(true)
+    //window.location.reload(true)
   }
-  const deleteEventCall=async(eventid)=>{
-    // e.preventDefault()
-    // console.log('create event call')
-    const eventBodySend = {id: eventid }
-    console.log(eventBodySend)
-    const result = await deleteEvent(eventBodySend)
-    console.log(result)
-    window.location.reload(true)
-    // console.log(result.newEvent)
-  }
+  // const deleteEventCall=async(eventid)=>{
+  //   // e.preventDefault()
+  //   // console.log('create event call')
+  //   const eventBodySend = {id: eventid }
+  //   console.log(eventBodySend)
+  //   const result = await deleteEvent(eventBodySend)
+  //   console.log(result)
+  //   window.location.reload(true)
+  //   // console.log(result.newEvent)
+  // }
 
   const handlePriceChange = (e)=>{
 
@@ -301,7 +305,7 @@ function Promoters() {
                                     
                                     setEventToEditID(event.id);
                                     const eventToBeEditedResponse = await getEvent({id: Number(event.id)})
-                                    setEventInfo(eventToBeEditedResponse.event)
+                                    seteventToUpdateInfo(eventToBeEditedResponse.event)
                                     setUpdate(true); 
                                     }
                                   } 
@@ -402,9 +406,9 @@ function Promoters() {
 
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' />
-                <p> 255 Character limit.</p>
+                <p> 1000 Character limit.</p>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' />
-                
+                <p> 1000 Character limit.</p>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' /> */}
                 <Form.Input onChange={(e)=>{handlePriceChange(e)}} fluid label='Price' placeholder='Price' value={eventInfo.price}/>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' /> */}
@@ -498,14 +502,40 @@ function Promoters() {
             address.
           </p>
           <p>Is it okay to use this photo?</p> */}
+          <div style={{display:"flex", flexDirection:"column"}}>
+          <label style={{fontWeight:"bold"}}>Date</label>
+          <DatePicker onChange={(e)=>onDateChange(e)} value={eventInfo.date}/>
+          </div>
           <Form >
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' value={eventInfo.title}/>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' value={eventInfo.details}/>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' value={eventInfo.price}/>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' value={eventInfo.location}/>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' value={eventInfo.date}/>
-                <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' value={eventInfo.photo}/>
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' value={eventInfo.location}/> */}
+                <label style={{fontWeight:"bold"}}>Location</label>
+                <Dropdown
+                  placeholder='Select City'
+                  fluid
+                  search
+                  selection
+                  options={countryOptions}
+                  onChange={(e)=>{console.log(e.target.textContent); setEventInfo({...eventInfo, location: e.target.textContent})}}
+                />
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, date:e.target.value})}} fluid label='Date' placeholder='Date' value={eventInfo.date}/> */}
+                {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, photo:e.target.value})}} fluid label='Photo' placeholder='Photo' value={eventInfo.photo}/> */}
+                <Form.Input label='Photo'>
+                {/* <Dropzone onDrop={acceptedFiles => {console.log(acceptedFiles); setEventInfo({...eventInfo, photo:acceptedFiles})}}>
+                  {({getRootProps, getInputProps}) => (
+                    <section >
+                      <div {...getRootProps()}>
+                        <input {...getInputProps()} />
+                        <p>Drag 'n' drop some files here, or click to select files</p>
+                      </div>
+                    </section>
+                  )}
+                </Dropzone> */}
+                <StyledDropzone eventInfo={eventInfo} setEventInfo={setEventInfo}/>
+                </Form.Input>
             </Form.Group>
           </Form>
         </Modal.Description>
@@ -518,9 +548,70 @@ function Promoters() {
           content="Update"
           labelPosition='right'
           icon='checkmark'
-          onClick={() => {
-              updateEventCall();
-              console.log(eventInfo);
+          onClick={async() => {
+
+            const{date, details, location, photo ,price, title}= eventToUpdateInfo
+            let eventBodySend = {id:eventToEditID }
+            if(date || details || location || photo || price || title){
+              if(details.length<=1000 || location.length<=200 || title.length<=1000){
+                console.log("Location",eventToUpdateInfo)
+                
+                if(date){
+                  eventBodySend = {...eventBodySend,date: date}
+                }
+                if(details){
+                  eventBodySend = {...eventBodySend,details: details}
+                }
+                if(location){
+                  const geoCodeResponse = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}, Puerto Rico&key=${process.env.REACT_APP_MAP_KEY}`).then(response => response.json())
+                 const { lat, lng } = geoCodeResponse.results[0].geometry.location
+                 console.log("Locationg geo code",geoCodeResponse.results[0].geometry.location)
+                 eventBodySend = {...eventBodySend, location: JSON.stringify({lat: lat, lng:lng})}
+
+                }
+                 let photoURL
+                if(photo){
+                  // console.log("what aare",photo)
+                  // const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
+                  // photoURL = photoUploadResponse.data
+                  // eventBodySend = {...eventBodySend,photo: photoURL}
+                }
+                if(price){
+                  eventBodySend = {...eventBodySend,price: price}
+                }
+                if(title){
+                  eventBodySend = {...eventBodySend,title: title}
+                }
+
+
+                
+                // console.log("event thingies",photoUploadResponse.data)
+                // if(photoUploadResponse.data == undefined){
+                  
+                //   const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng})}
+                //   console.log("Event body send",eventBodySend)
+                //   const result = await updateEventCall(eventBodySend);
+                //   window.location.replace(`event/${result.newEvent.event.id}`)
+                //   setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
+                //}else{
+                
+                 //console.log("thingies body",eventBodySend)
+                // console.log("Event body send",eventBodySend)
+                // const eventBodySend = {...eventInfo, location: JSON.stringify({lat: lat, lng:lng}), photo: photoURL,promoterid: JSON.parse(localStorage.getItem('user')).id}
+            
+                // console.log(eventBodySend)
+                //const result = await updateEventCall(eventBodySend);
+                const result = await updateEvent(eventBodySend)
+                 console.log(result)
+                // console.log(result.newEvent)
+                //window.location.replace(`event/${result.newEvent.event.id}`)
+                //window.location.reload(true)
+                //setEventInfo({title:"", details:"", price:"", location:"", date:new Date(), photo:""})
+              //}
+              }
+            }
+              
+              //console.log(eventInfo);
               setUpdate(false)
             }
           }
