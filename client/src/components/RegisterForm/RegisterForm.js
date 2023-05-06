@@ -13,7 +13,7 @@ import { createOrder } from "../../api/Orders/ordersRoutes";
 // import emailjs from "emailjs"
 import { sendEmail } from '../../api/Email/sendEmail';
 
-
+// import {ATH}
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 // const { useJsApiLoader } = require("@react-google-maps/api");
@@ -41,6 +41,7 @@ function RegisterForm() {
   const [event, setEvent] = useState()
   const [numOfParticipants, setNumOfParticipants] = useState(1)
 
+  const [disabled, setDisabled] = useState(true)
 
   const onDateChange=(e, i)=>{
     console.log(new Date(e))
@@ -215,37 +216,6 @@ function RegisterForm() {
         <Button className={styles.btns} onClick={(e)=>{setOpen(true)}}>submit</Button>
         </div>
 
-          {/* ATHMOVIL START! */}
-          <div id="ATHMovil_Checkout_Button"></div>
-          {/* ATHMOVIL END! INCOMPLETE*/}
-          
-          
-
-          {/* PAYPAL START! */}
-          <PayPalScriptProvider options={{ "client-id": "test" }}>
-            <PayPalButtons
-                createOrder={(data, actions) => {
-                    return actions.order.create({
-                        purchase_units: [
-                            {
-                                amount: {
-                                    value: event.price,
-                                },
-                            },
-                        ],
-                    });
-                }}
-                onApprove={(data, actions) => {
-                    return actions.order.capture().then((details) => {
-                        const name = details.payer.name.given_name;
-                        alert(`Transaction completed by ${name}`);
-                    });
-                }}
-            />
-          </PayPalScriptProvider>
-          {/* PAYPAL END! */}
-
-
         {/* <button onClick={()=>{
                               setNumOfParticipants(numOfParticipants + 1); 
                               setParticipantsInfo([...participantsInfo, {name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
@@ -283,10 +253,37 @@ function RegisterForm() {
 
       </Modal.Content>
       <Modal.Actions>
+
+        {/* PAYPAL START! */}
+        <PayPalScriptProvider options={{ "client-id": "test"}}>
+            <PayPalButtons
+                createOrder={(data, actions) => {
+                    return actions.order.create({
+                        purchase_units: [
+                            {
+                                amount: {
+                                    value: event.price*numOfParticipants,
+                                },
+                            },
+                        ],
+                    });
+                }}
+                onApprove={(data, actions) => {
+                  setDisabled(false);
+                        return actions.order.capture().then((details) => {
+                        const name = details.payer.name.given_name;
+                        alert(`Transaction completed by ${name}`);
+                    });
+                }}
+            />
+          </PayPalScriptProvider>
+          {/* PAYPAL END! */}
+          
         <Button color='black' onClick={() => setOpen(false)}>
-          Cancel
+        Cancel
         </Button>
-        <Button
+        <Button 
+          disabled = {disabled}
           content="Confirm Order"
           labelPosition='right'
           icon='checkmark'
