@@ -13,6 +13,7 @@ import { createOrder } from "../../api/Orders/ordersRoutes";
 // import emailjs from "emailjs"
 import { sendEmail } from '../../api/Email/sendEmail';
 
+
 // import {ATH}
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
@@ -22,7 +23,48 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 // const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
 
+let ATHM_Checkout = {
 
+  env: 'sandbox', //change this to "production" for deployment
+  publicToken: 'sandboxtoken01875617264', //change this to our business account public token for deployment
+
+  timeout: 600, //cancels payment processs if the payment isn't completed in this many seconds
+
+  theme: 'btn', //options here are btn, btn-black & btn-light
+  lang: 'en', //change this to es for spanish
+
+  total: 25.00,
+
+  metadata1: 'metadata1 test', //we can add information about the website here
+  metadata2: 'metadata2 test', //We can add additional information here
+
+  // items: [ //technically optional but adding this makes for cleaner checkout
+  //     {
+  //         "name":"Sample Event",
+  //         "description":"This is the description to a sample event",
+  //         "quantity":"1",
+  //         "price":"25.00",
+  //         "tax":"0.00",
+  //         "metadata":"sample event metadata" //we can add event information here
+  //     },
+  // ],
+  
+onCompletedPayment: function (response)
+{
+  
+  //Handle response
+},
+onCancelledPayment: function (response)
+{
+  
+  //Handle response
+},
+onExpiredPayment: function (response)
+{
+  
+  //Handle response
+}
+}
 
 function RegisterForm() {
 
@@ -179,7 +221,7 @@ function RegisterForm() {
 
 
   return (
-
+    
     
     // console.log(event)
     
@@ -253,7 +295,8 @@ function RegisterForm() {
 
       </Modal.Content>
       <Modal.Actions>
-
+        <Button id="ATHMovil_Checkout_Button"></Button>
+        <div id="ATHMovil_Checkout_Button"></div>
         {/* PAYPAL START! */}
         <PayPalScriptProvider options={{ "client-id": "test"}}>
             <PayPalButtons
@@ -300,7 +343,8 @@ function RegisterForm() {
         />
       </Modal.Actions>
     </Modal>
-      
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://www.athmovil.com/api/js/v3/athmovilV3.js"></script>
     </div>):<>Loading Event</>
   );
 }
