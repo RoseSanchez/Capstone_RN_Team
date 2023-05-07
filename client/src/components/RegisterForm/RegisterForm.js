@@ -84,6 +84,7 @@ function RegisterForm() {
   const [numOfParticipants, setNumOfParticipants] = useState(1)
 
   const [disabled, setDisabled] = useState(true)
+  const [paymentMethod, setPaymentMehtod] = useState("")
 
   const onDateChange=(e, i)=>{
     console.log(new Date(e))
@@ -192,7 +193,7 @@ function RegisterForm() {
     console.log(participantInfoEmail)
     emailData["template_params"]["participants"] = participantInfoEmail
     // create order
-    const orderResponse = await createOrder({orderemail: orderCreator, paymentdetails:""})
+    const orderResponse = await createOrder({orderemail: orderCreator, paymentdetails:paymentMethod})
     // console.log(listOfParticipantId)
 
     const orderId = orderResponse.newOrder.order.id
@@ -296,6 +297,7 @@ function RegisterForm() {
       </Modal.Content>
       <Modal.Actions>
         <Button id="ATHMovil_Checkout_Button"></Button>
+        <html> <div id="ATHMovil_Checkout_Button"></div>  </html>
         <div id="ATHMovil_Checkout_Button"></div>
         {/* PAYPAL START! */}
         <PayPalScriptProvider options={{ "client-id": "test"}}>
@@ -316,6 +318,7 @@ function RegisterForm() {
                         return actions.order.capture().then((details) => {
                         const name = details.payer.name.given_name;
                         alert(`Transaction completed by ${name}`);
+                        setPaymentMehtod("PayPal");
                     });
                 }}
             />
