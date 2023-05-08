@@ -431,7 +431,7 @@ app.post('/numberOfParticipants', async(req,res)=>{
     }
 })
 // end rose
-
+//Leonel
 app.get('/getAllEvents', async(req, res)=>{
     try {
         const events = await eventControllerObj.showAllEvents()
@@ -559,7 +559,7 @@ app.post('/deleteWaiver',async(req, res)=>{
         console.log(error)
     }
 })
-
+//Leonel End
 // dbListeners = async ()=>{
 //     const db = await pool.connect()
 //     try {

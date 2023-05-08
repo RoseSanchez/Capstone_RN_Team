@@ -83,8 +83,8 @@ function RegisterForm() {
   const [event, setEvent] = useState()
   const [numOfParticipants, setNumOfParticipants] = useState(1)
 
-  const [disabled, setDisabled] = useState(true)
-  const [paymentMethod, setPaymentMehtod] = useState("")
+  const [disabled, setDisabled] = useState(true) //this controls the clickability of the order confirmation button
+  const [paymentMethod, setPaymentMehtod] = useState("") //this controls what payment method the order receives
 
   const onDateChange=(e, i)=>{
     console.log(new Date(e))
@@ -202,6 +202,8 @@ function RegisterForm() {
     })
     console.log(emailData)
     await sendEmail(emailData)
+    setPaymentMehtod("") //resets the payment method back to blank
+    setDisabled(true) //disables the order confirmation button after a successful confirmation
     setNumOfParticipants(1)
     setParticipantsInfo([{name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
     window.location.reload()
@@ -296,28 +298,28 @@ function RegisterForm() {
 
       </Modal.Content>
       <Modal.Actions>
-        <Button id="ATHMovil_Checkout_Button"></Button>
+        {/* <Button id="ATHMovil_Checkout_Button"></Button> */}
         <html> <div id="ATHMovil_Checkout_Button"></div>  </html>
         <div id="ATHMovil_Checkout_Button"></div>
         {/* PAYPAL START! */}
-        <PayPalScriptProvider options={{ "client-id": "test"}}>
+        <PayPalScriptProvider options={{ "client-id": "test"}}> {/* Has to changed to a PayPal Business ID */}
             <PayPalButtons
                 createOrder={(data, actions) => {
                     return actions.order.create({
                         purchase_units: [
                             {
                                 amount: {
-                                    value: event.price*numOfParticipants,
+                                    value: event.price*numOfParticipants, //controls the price
                                 },
                             },
                         ],
                     });
                 }}
                 onApprove={(data, actions) => {
-                  setDisabled(false);
+                  setDisabled(false); //makes the order confirmation button clickable
                         return actions.order.capture().then((details) => {
                         const name = details.payer.name.given_name;
-                        alert(`Transaction completed by ${name}`);
+                        alert(`Transaction completed by ${name}, please confirm your order`);
                         setPaymentMehtod("PayPal");
                     });
                 }}
