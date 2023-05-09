@@ -13,8 +13,6 @@ import { createOrder } from "../../api/Orders/ordersRoutes";
 // import emailjs from "emailjs"
 import { sendEmail } from '../../api/Email/sendEmail';
 
-
-// import {ATH}
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 // const { useJsApiLoader } = require("@react-google-maps/api");
@@ -22,49 +20,6 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 
 // const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
-
-let ATHM_Checkout = {
-
-  env: 'sandbox', //change this to "production" for deployment
-  publicToken: 'sandboxtoken01875617264', //change this to our business account public token for deployment
-
-  timeout: 600, //cancels payment processs if the payment isn't completed in this many seconds
-
-  theme: 'btn', //options here are btn, btn-black & btn-light
-  lang: 'en', //change this to es for spanish
-
-  total: 25.00,
-
-  metadata1: 'metadata1 test', //we can add information about the website here
-  metadata2: 'metadata2 test', //We can add additional information here
-
-  // items: [ //technically optional but adding this makes for cleaner checkout
-  //     {
-  //         "name":"Sample Event",
-  //         "description":"This is the description to a sample event",
-  //         "quantity":"1",
-  //         "price":"25.00",
-  //         "tax":"0.00",
-  //         "metadata":"sample event metadata" //we can add event information here
-  //     },
-  // ],
-  
-onCompletedPayment: function (response)
-{
-  
-  //Handle response
-},
-onCancelledPayment: function (response)
-{
-  
-  //Handle response
-},
-onExpiredPayment: function (response)
-{
-  
-  //Handle response
-}
-}
 
 function RegisterForm() {
 
@@ -202,8 +157,10 @@ function RegisterForm() {
     })
     console.log(emailData)
     await sendEmail(emailData)
+
     setPaymentMehtod("") //resets the payment method back to blank
     setDisabled(true) //disables the order confirmation button after a successful confirmation
+
     setNumOfParticipants(1)
     setParticipantsInfo([{name:"", email:"", phone:"", address:"",birthdate:new Date(), category:""}])
     window.location.reload()
@@ -298,18 +255,16 @@ function RegisterForm() {
 
       </Modal.Content>
       <Modal.Actions>
-        {/* <Button id="ATHMovil_Checkout_Button"></Button> */}
-        <html> <div id="ATHMovil_Checkout_Button"></div>  </html>
-        <div id="ATHMovil_Checkout_Button"></div>
+
         {/* PAYPAL START! */}
-        <PayPalScriptProvider options={{ "client-id": "test"}}> {/* Has to changed to a PayPal Business ID */}
+        <PayPalScriptProvider options={{ "client-id": "test"}}> {/* Has to changed to a PayPal Business ID for deployment */}
             <PayPalButtons
                 createOrder={(data, actions) => {
                     return actions.order.create({
                         purchase_units: [
                             {
                                 amount: {
-                                    value: event.price*numOfParticipants, //controls the price
+                                    value: event.price*numOfParticipants, //controls the price charged on PayPal
                                 },
                             },
                         ],
@@ -320,7 +275,7 @@ function RegisterForm() {
                         return actions.order.capture().then((details) => {
                         const name = details.payer.name.given_name;
                         alert(`Transaction completed by ${name}, please confirm your order`);
-                        setPaymentMehtod("PayPal");
+                        setPaymentMehtod("PayPal"); //Sets the Payment Method type for the order
                     });
                 }}
             />
@@ -348,17 +303,8 @@ function RegisterForm() {
         />
       </Modal.Actions>
     </Modal>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://www.athmovil.com/api/js/v3/athmovilV3.js"></script>
     </div>):<>Loading Event</>
   );
 }
-
-
-
-<html>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://www.athmovil.com/api/js/v3/athmovilV3.js"></script>
-</html>
 
 export default RegisterForm;

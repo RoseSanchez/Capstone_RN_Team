@@ -432,6 +432,9 @@ app.post('/numberOfParticipants', async(req,res)=>{
 })
 // end rose
 //Leonel
+/**
+ * get all events, no params. directly calls the controller and the model to get all events from the database
+ */
 app.get('/getAllEvents', async(req, res)=>{
     try {
         const events = await eventControllerObj.showAllEvents()
@@ -440,7 +443,11 @@ app.get('/getAllEvents', async(req, res)=>{
         console.log(error)
     }
 })
-
+/**
+ * get single event from the database
+ *
+ * @param {*} req.body.id - id of the event to be queried.
+ */
 app.post('/getEvent', async(req, res)=>{
     try {
         const {id} = req.body
@@ -473,7 +480,18 @@ app.post('/createEvent',async(req, res)=>{
         console.log(error)
     }
 })
-
+/**
+ * update an event
+ *
+ * @param {*} req.body.id - id of the event to be updated.
+ * @param {optional} req.body.promoterid - promoterid of the event to be updated.
+ * @param {optional} req.body.details - details of the event to be updated.
+ * @param {optional} req.body.price - price of the event to be updated.
+ * @param {optional} req.body.location - name of the event to be updated.
+ * @param {optional} req.body.photo - photo of the participant to be updated.
+ * @param {optional} req.body.date - date of the participant to be updated.
+ * @param {optional} req.body.title - title of the participant to be updated.
+ */
 app.post('/updateEvent',async(req, res)=>{
     try {
         const {id, promoterid, details, price, location, photo, date, title} = req.body
@@ -507,6 +525,9 @@ app.post('/participantsByEvent', async(req, res)=>{
     }
 })
 
+/**
+ * get all waivers, no params. directly calls the controller and the model to get all waivers from the database
+ */
 app.get('/getAllWaivers', async(req, res)=>{
     try {
         const waivers = await waiverControllerObj.showAllWaivers()
@@ -549,6 +570,11 @@ app.post('/updateWaiver',async(req, res)=>{
     }
 })
 
+/**
+ * delete single waiver from the database
+ *
+ * @param {*} req.body.participantid - partcipantid of the waiver to be deleted.
+ */
 app.post('/deleteWaiver',async(req, res)=>{
     try {
         const {participantid} = req.body

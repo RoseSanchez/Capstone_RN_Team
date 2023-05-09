@@ -135,9 +135,11 @@ const [date, time] = datetime.split('T');
         <div className={styles.dtls}>
         {/* <p className={styles.title}>{event.title}</p>  */}
 
+        {/* The following section enables and controls the Social Media Buttons  */}
         <div className='container' id='contact'>
         <link
           rel='stylesheet'
+          //Here's the host for the Font Awesome icons we're using
           href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
         />
         </div>

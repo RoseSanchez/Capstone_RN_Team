@@ -1,3 +1,4 @@
+/* This section of code controls the aesthetics of the page, things like fonts and colors are controlled here */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -12,6 +13,7 @@ code {
     monospace;
 }
 
+/* All the .fa functions written here control the size, location and colors for the social media buttons*/
 .fa {
   /* padding: 20px; */
   padding: 0.2em;
@@ -31,31 +33,21 @@ code {
 }
 
 .fa-facebook {
-  /* background: #3b5998;
-  color: white; */
   color: #4267B2;
 }
 
 .fa-twitter {
-  /* background: #55acee;
-  color: white; */
   color: #1DA1F2;
 }
 
 .fa-google {
-  /* background: #dd4b39;
-  color: white; */
   color: #DB4437;
 }
 
 .fa-whatsapp {
-  /* background: #dd4b39;
-  color: white; */
   color: #25D366;
 }
 
 .fa-facebook-square {
-  /* background: #dd4b39;
-  color: white; */
   color: #00B2FF;
 }
