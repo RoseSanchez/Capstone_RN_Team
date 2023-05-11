@@ -88,9 +88,11 @@ function CalendarP() {
       <Calendar 
       value={dateState}
       onChange={changeDate }
-      tileClassName={({ date, view }) => {
-        if(doesHaveEvent(date) == 0){
-         return 'highlight' /*style={{"margin-top": "auto"}}*/
+      tileClassName={async({ date, view }) => {
+        const thinf = await doesHaveEvent(date)
+        if( thinf > 0){
+          console.log("weeeeeeeeeeeeee")
+          return {style:{"backgroundColor": '#88C9E8'}} 
         }
       }}
       />

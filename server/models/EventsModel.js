@@ -139,7 +139,17 @@ class EventsModel{
         return new Promise(async(resolve, reject)=>{
             try{
                 //const db = await this.pool.connect()
-                (await this.db).query(`delete FROM events where id=${id};`, (err, response)=>{
+                (await this.db).query(`
+                do $$
+
+                        BEGIN
+                        delete from orders where id IN (select orderid  from tickets where eventid = ${id});
+                        delete from participants where id IN ( select participantid from tickets where eventid = ${id});
+                        delete from events where id = 116;
+
+                        end;
+                $$`
+                , (err, response)=>{
                     console.log('query response', response)
                     let insertResult = response.rowCount
                     let result = insertResult > 0 ? "success":"failed"

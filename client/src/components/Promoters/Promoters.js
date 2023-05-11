@@ -550,12 +550,12 @@ function Promoters() {
           icon='checkmark'
           onClick={async() => {
 
-            const{date, details, location, photo ,price, title}= eventToUpdateInfo
+            const{date, details, location, photo ,price, title}= eventInfo
             let eventBodySend = {id:eventToEditID }
             if(date || details || location || photo || price || title){
               if(details.length<=1000 || location.length<=200 || title.length<=1000){
-                console.log("Location",eventToUpdateInfo)
-                
+                console.log("Location event to update",eventToUpdateInfo)
+                console.log("Location event info",eventInfo)
                 if(date){
                   eventBodySend = {...eventBodySend,date: date}
                 }
@@ -567,14 +567,16 @@ function Promoters() {
                  const { lat, lng } = geoCodeResponse.results[0].geometry.location
                  console.log("Locationg geo code",geoCodeResponse.results[0].geometry.location)
                  eventBodySend = {...eventBodySend, location: JSON.stringify({lat: lat, lng:lng})}
+                 console.log("Location event to update",eventToUpdateInfo)
 
                 }
                  let photoURL
+                 console.log("what aare",photo)
                 if(photo){
-                  // console.log("what aare",photo)
-                  // const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
-                  // photoURL = photoUploadResponse.data
-                  // eventBodySend = {...eventBodySend,photo: photoURL}
+                  
+                  const photoUploadResponse = await uploadPhoto(eventInfo.photo[0])
+                  photoURL = photoUploadResponse.data
+                  eventBodySend = {...eventBodySend,photo: photoURL}
                 }
                 if(price){
                   eventBodySend = {...eventBodySend,price: price}
