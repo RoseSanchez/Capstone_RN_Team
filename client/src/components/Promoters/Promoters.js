@@ -12,6 +12,8 @@ import DatePicker from 'react-date-picker';
 import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import StyledDropzone from '../FileUpload/FileUpload'
+// import Image from '../Image/Image.js'
+import ResizableImage from '../ResizableImage/ResizableImage'
 
 
 
@@ -28,7 +30,8 @@ function Promoters() {
       
       let tempLst = [];
       let response = await getEventsByPromoter({id: Number(JSON.parse(localStorage.getItem('user')).id)})
-      let allEvents = response.events.reverse()
+      // let allEvents = response.events.reverse()
+      let allEvents = response.events.sort((a, b) => new Date(b.date) - new Date(a.date));
       console.log('evnts', allEvents)
       allEvents.forEach((evnt, i)=>{
         // console.log(evnt)
@@ -260,19 +263,27 @@ function Promoters() {
         <Button className={styles.sbmtBtn} type='submit'>SignUp</Button>
       </nav> */}
       <div className={styles.events}>
-        <Grid>
-          <Grid.Row className={styles.eventsHeader}>
+      <div className={styles.eventsHeader}>
             {/* <Grid.Column> */}
               <p className={styles.title}>Events</p>
             {/* </Grid.Column> */}
             {/* <Grid.Column> */}
             <Button onClick={()=>{setOpen(true)}} className={styles.sbmtBtn} type='submit'>Create New Event</Button>
             {/* </Grid.Column> */}
-          </Grid.Row>
+          </div>
+        <Grid>
+          {/* <Grid.Row className={styles.eventsHeader}> */}
+            {/* <Grid.Column> */}
+              {/* <p className={styles.title}>Events</p> */}
+            {/* </Grid.Column> */}
+            {/* <Grid.Column> */}
+            {/* <Button onClick={()=>{setOpen(true)}} className={styles.sbmtBtn} type='submit'>Create New Event</Button> */}
+            {/* </Grid.Column> */}
+          {/* </Grid.Row> */}
           {/* <Grid.Row> */}
 
             {
-
+          <div className={styles.eventsContainer}>{
               eventsLst.map(eventRow =>{
                 // console.log(eventRow)
                 return(
@@ -283,7 +294,9 @@ function Promoters() {
                         <Card onClick={(e)=>{e.stopPropagation();navigate(`/event/${event.id}`)}}>
                           {/* <img  src={mainLogo} alt="fireSpot"/> */}
                           {/* <img src='https://storage.googleapis.com/capstone-event-photos/default-image.png' /> */}
-                          <img src={event.photo} alt='some'></img>
+                          {/* <img src={event.photo} alt='some'></img> */}
+                          <ResizableImage src={event.photo} aspectRatio={1/1}/>
+                          {/* <Image src={event.photo} width={200} height={400}/> */}
                           <Card.Content>
                           <Card.Header>{event.title}</Card.Header>
                             <Card.Meta>
@@ -330,6 +343,7 @@ function Promoters() {
                 )
 
               })
+            }</div>
 
               // events[0].map(event=>{
               //   return(
@@ -406,9 +420,9 @@ function Promoters() {
 
             <Form.Group widths='equal' className={styles.eventForm}>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, title:e.target.value})}} fluid label='Title' placeholder='Title' />
-                <p> 1000 Character limit.</p>
+                <p style={{marginLeft:"0.5rem"}}>{eventInfo.title.length}/1000</p>
                 <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, details:e.target.value})}} fluid label='Details' placeholder='Details' />
-                <p> 1000 Character limit.</p>
+                <p style={{marginLeft:"0.5rem"}}>{eventInfo.details.length}/1000</p>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, price:Number(e.target.value)})}} type='number' fluid label='Price' placeholder='Price' /> */}
                 <Form.Input onChange={(e)=>{handlePriceChange(e)}} fluid label='Price' placeholder='Price' value={eventInfo.price}/>
                 {/* <Form.Input onChange={(e)=>{setEventInfo({...eventInfo, location:e.target.value})}} fluid label='Location' placeholder='Location' /> */}

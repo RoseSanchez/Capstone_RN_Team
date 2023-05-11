@@ -12,22 +12,53 @@ import Register from "./components/Regitser/Register.js"
 import PromoterProfile from "./components/PromoterProfile/PromoterProfile.js";
 import CalendarP from "./components/Calendar/Calendar.js"
 import RegisterForm from "./components/RegisterForm/RegisterForm.js";
+// import DropdownButton from "./components/DropdownButton/DropdownButton.js";
+// import { useState, useEffect } from "react";
 
 function App() {
   const navigate = useNavigate()
   const pathName = window.location.pathname
+
+
+
+
+
+  // const [showMenu, setShowMenu] = useState(false)
+
+
+  // useEffect(()=>{
+  //   if(window.innerWidth < 450){
+  //     setShowMenu(true)
+  //   }
+  //   const handleResize = ()=>{
+  //     if(window.innerWidth < 450){
+  //       setShowMenu(true)
+  //     }else{
+  //       setShowMenu(false)
+  //     }
+  //   }
+    
+  //   window.addEventListener('resize', handleResize)
+  // },[])
+
+
+
   // console.log(pathName)
   return (
     <>
-      {pathName !=="/login" && pathName!=="/signup"?(<nav className="navBar">
-          <p className="title">PURCycling</p>
-          <div className="btns">
-            <Button className="btn" onClick={()=>{navigate("signup")}}>SignUp</Button>
-            <Button className="myevntsbtn" onClick={()=>{navigate("promoters")}}>MyEvents</Button>
-            <Button className= "calendarbtn" onClick={()=> {navigate("calendar")}}>Calendar</Button>
+      {pathName !=="/login" && pathName!=="/signup"?(<nav className="navBar">   
+          <a className="title" href="/">PURCycling</a>
+          { pathName!=="/" && pathName.split("registerParticipant").length === 1 ? <div className="btns">
+            {/* <Button className="btn" onClick={()=>{navigate("signup")}}>SignUp</Button> */}
+            {/* <Button className="myevntsbtn" onClick={()=>{navigate("promoters")}}>MyEvents</Button> */}
             <Button className="profile" onClick={()=>{navigate("profile")}}>Profile</Button>
             <Button className="signout" onClick={()=>{localStorage.clear(); window.location.reload()}}>SignOut</Button>
-          </div>
+            <Button className= "calendarbtn" onClick={()=> {navigate("calendar")}}>Calendar</Button>
+      
+
+          </div>:null}
+          {/* {showMenu && <DropdownButton className="menu" buttons={[{title: "Profile", onClick: ()=>navigate("profile")},
+    {title: "SignOut", onClick: ()=>{localStorage.clear(); window.location.reload()}}]} />} */}
       </nav>):null}
       <Routes>
         {/* <Route path="/" element={<></>} /> */}

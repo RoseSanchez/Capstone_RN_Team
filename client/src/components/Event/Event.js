@@ -6,10 +6,11 @@ import { numberOfParticipants } from "../../api/Participants/participantsRoute";
 import CsvDownloader from 'react-csv-downloader';
 import { getAllParticipantsByEvent } from "../../api/Events/eventsRoutes";
 import MyMapComponent from "../Map/MyMapComponent";
-import Image from "../Image/Image";
+// import Image from "../Image/Image";
 // const { GoogleMap, LoadScript, DirectionsService, DirectionsRenderer, useJsApiLoader } = require("@react-google-maps/api");
 import { useJsApiLoader } from '@react-google-maps/api';
 import { Button } from "semantic-ui-react";
+import ResizableImage from "../ResizableImage/ResizableImage";
 
 
 
@@ -125,7 +126,7 @@ function Event() {
     // eslint-disable-next-line
   },[])
   const datetime = event ? event.date:"";
-const [date, time] = datetime.split('T');
+const [date] = datetime.split('T');
   return (
     // console.log(event)
     // {event ? <>{event.details}</>:<>Loading Event</>}
@@ -141,13 +142,13 @@ const [date, time] = datetime.split('T');
           
         </div>
         <div className={styles.details}>
-          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date}</p> 
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date} (YYYY-MM-DD)</p> 
           
         </div>
-        <div className={styles.details}>
+        {/* <div className={styles.details}>
           <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Time:</p> {time.slice(0, -5)}</p> 
           
-        </div>
+        </div> */}
         <div>
         <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Participants:</p> {numberParticipants}</p> 
 
@@ -198,7 +199,8 @@ const [date, time] = datetime.split('T');
 
         
         {/* <button>show or export participants</button> */}
-        <Image src={event.photo} width={800} height={800}/>
+        {/* <Image src={event.photo} width={800} height={800}/> */}
+        <ResizableImage src={event.photo} aspectRatio={1/1}/>
 
         {/* <img  src={event.photo} alt="fireSpot"/> */}
         {/* <CsvDownloader className='export-container' datas={asyncGetParticipants} filename='participants-export.csv' >
