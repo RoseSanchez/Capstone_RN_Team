@@ -10,6 +10,7 @@ import "./App.css"
 import Event from "./components/Event/Event.js";
 import Register from "./components/Regitser/Register.js"
 import PromoterProfile from "./components/PromoterProfile/PromoterProfile.js";
+import CalendarP from "./components/Calendar/Calendar.js"
 import RegisterForm from "./components/RegisterForm/RegisterForm.js";
 // import DropdownButton from "./components/DropdownButton/DropdownButton.js";
 // import { useState, useEffect } from "react";
@@ -64,6 +65,7 @@ function App() {
         <Route path="/profile" element={<PromoterProfile/>} />
         <Route path="/promoters" element={<ProtectedRoute><Promoters /></ProtectedRoute>} />
         <Route path="/login" element={<Login />} />
+        <Route path="/calendar" element={<CalendarP />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/event/:id" element={<ProtectedRoute><Event/></ProtectedRoute>}/>
         <Route path="/registerParticipant/:eventId" element={<Register/>} />

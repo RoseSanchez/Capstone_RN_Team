@@ -104,3 +104,17 @@ export const deleteEvent = async (eventBodySend) => {
         console.log(error)
     }
 }
+export const getEventsByDate = async (eventBodySend) => {
+    try {
+        // console.log('get all from api call')
+        const eventResponse = await axios.post("http://localhost:3333" + "/getEventsByDate",
+        eventBodySend,
+            { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
+        )
+        const data = eventResponse.data
+        console.log(data)
+        return data
+    } catch (error) {
+        console.log(error)
+    }
+}
