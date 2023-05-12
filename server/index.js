@@ -459,6 +459,11 @@ app.post('/getEvent', async(req, res)=>{
     }
 })
 
+/**
+ * get all the events from a specific promoter from the database
+ *
+ * @param {*} req.body.id - promoterid of the event to be queried.
+ */
 app.post('/getEventsByPomoter', async(req, res)=>{
     try {
         const {id} = req.body
@@ -470,6 +475,18 @@ app.post('/getEventsByPomoter', async(req, res)=>{
     }
 })
 
+/**
+ * create an event
+ *
+ * @param {*} req.body.id - id of the event to be created.
+ * @param {*} req.body.promoterid - promoterid of the event to be created.
+ * @param {*} req.body.details - details of the event to be created.
+ * @param {*} req.body.price - price of the event to be created.
+ * @param {*} req.body.location - name of the event to be created.
+ * @param {*} req.body.photo - photo of the participant to be created.
+ * @param {*} req.body.date - date of the participant to be created.
+ * @param {*} req.body.title - title of the participant to be created.
+ */
 app.post('/createEvent',async(req, res)=>{
     console.log('create event endpoint call', req.body)
     try {
@@ -502,7 +519,11 @@ app.post('/updateEvent',async(req, res)=>{
         console.log(error)
     }
 })
-
+/**
+ * get single event from the database
+ *
+ * @param {*} req.body.id - id of the event to be queried.
+ */
 app.post('/deleteEvent',async(req, res)=>{
     try {
         const {id} = req.body
@@ -514,6 +535,11 @@ app.post('/deleteEvent',async(req, res)=>{
     }
 })
 
+/**
+ * get all the participants from a specific event from the database
+ *
+ * @param {*} req.body.id - id of the event to be queried.
+ */
 app.post('/participantsByEvent', async(req, res)=>{
     try {
         const {eventid} = req.body
@@ -537,6 +563,11 @@ app.get('/getAllWaivers', async(req, res)=>{
     }
 })
 
+/**
+ * get a specific waiver from the database
+ *
+ * @param {*} req.body.participantid - id of the waiver to be queried.
+ */
 app.post('/getWaiver', async(req, res)=>{
     try {
         const {participantid} = req.body
@@ -548,6 +579,12 @@ app.post('/getWaiver', async(req, res)=>{
     }
 })
 
+/**
+ * create a waiver
+ *
+ * @param {*} req.body.participantid - partcipantid of the waiver to be created.
+ * @param {*} req.body.esignature - esignature value of the waiver to be created.
+ */
 app.post('/createWaiver',async(req, res)=>{
     console.log('create waiver call', req.body)
     try {
@@ -559,6 +596,12 @@ app.post('/createWaiver',async(req, res)=>{
     }
 })
 
+/**
+ * update a specific waiver in the database
+ *
+ * @param {*} req.body.participantid - partcipantid of the waiver to be updated.
+ * @param {*} req.body.esignature - esignature value of the waiver to be updated.
+ */
 app.post('/updateWaiver',async(req, res)=>{
     try {
         const {esignature, participantid} = req.body
@@ -586,19 +629,3 @@ app.post('/deleteWaiver',async(req, res)=>{
     }
 })
 //Leonel End
-// dbListeners = async ()=>{
-//     const db = await pool.connect()
-//     try {
-//         await db.query('LISTEN update')
-//         await db.query('LISTEN insert')
-//         console.log('Listening for changes in datbase...')
-
-//         db.on('notification', (msg)=>{
-//             console.log(`Recieved notification, ${msg.channel} in: ${msg.payload} table`)
-//             wsServer.emit('insert')
-//         })
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-// dbListeners()
