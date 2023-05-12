@@ -11,10 +11,11 @@ import styles from "./Register.module.css"
 // import { createTicket } from "../../api/Tickets/ticketsRoutes";
 // import { createOrder } from "../../api/Orders/ordersRoutes";
 import MyMapComponent from "../Map/MyMapComponent";
-import Image from "../Image/Image.js";
+// import Image from "../Image/Image.js";
 
 // const { useJsApiLoader } = require("@react-google-maps/api");
 import { useJsApiLoader } from '@react-google-maps/api';
+import ResizableImage from "../ResizableImage/ResizableImage";
 
 
 // const initDate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()}`
@@ -29,6 +30,8 @@ function Event() {
   // const [changeState, setChangeState] = useState(false)
   const [open, setOpen] = useState(false)
   const navigate = useNavigate()
+
+  console.log(window.location)
 
 
 
@@ -153,7 +156,7 @@ function Event() {
   },[])
 
     const datetime = event ? event.date:"";
-const [date, time] = datetime.split('T');
+const [date] = datetime.split('T');
 
 // console.log('Date:', date); // Date: 2023-04-13
 // console.log('Time:', time.slice(0, -5)); // Time: 08:00:00
@@ -200,19 +203,20 @@ const [date, time] = datetime.split('T');
           
         </div>
         <div className={styles.details}>
-          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date}</p> 
+          <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Date:</p> {date} (YYYY-MM-DD)</p> 
           
         </div>
-        <div className={styles.details}>
+        {/* <div className={styles.details}>
           <p style={{display:"flex"}}><p style={{fontWeight:"bold", marginRight:"1rem"}}>Time:</p> {time.slice(0, -5)}</p> 
           
-        </div>
+        </div> */}
         <div style={{marginBottom: "1rem", marginTop:"1rem"}} className={styles.details}>
         <Button className={styles.rgtsBtn} onClick={()=>{navigate(`registerForm`)}}>Register</Button>
         </div>
         
 
-        <Image src={event.photo} width={800} height={800}/>
+        {/* <Image src={event.photo} width={800} height={800}/> */}
+        <ResizableImage src={event.photo} aspectRatio={1/1}/>
         {/* <img  src={event.photo} alt="some"/> */}
         
         {isLoaded ?<MyMapComponent position={position} location={event.location}/>:<></>}
