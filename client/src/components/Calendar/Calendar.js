@@ -1,30 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { Grid, Card, Icon, Button } from "semantic-ui-react";
-import styles from './Calendar.module.css'
 import { useNavigate, useParams } from "react-router-dom";
 import mainLogo from '../../assets/eventPhoto.jpeg'
-import { getEventsByDate } from "../../api/Events/eventsRoutes";
+import { getAllEvents, getEventsByDate} from "../../api/Events/eventsRoutes";
 import Calendar from "react-calendar";
 import 'react-calendar/dist/Calendar.css'; 
 import moment from 'moment'
+import "./Calendar.css"
 
 function CalendarP() {
-
+  const [date, setDate] = useState(new Date());
+  const [highlightedDates, setHighlightedDates] = useState([
+    new Date("2023-04-18 18:13:38.118000"),
+    new Date("2023-08-12 04:00:00.000000"),
+    new Date("2023-05-25"),
+  ]);
   const [dateState, setDateState] = useState(new Date())
   const [eventExists, setEventExists] = useState(new Date())
   const changeDate = async (e) => {
     let events = [];
     setDateState(e)
+    setEventExists(e)
+    //eventExists.set
     let tempLst = [];
     const response = await getEventsByDate({"timestamp": (moment(e).format('YYYY-MM-DD'))})
-      
-    console.log("what iis day",(moment(dateState).format('YYYY-MM-DD')))
-    console.log("response",response.events.length)
+    // let monthThing = moment(dateState).format('YYYY-MM-DD')
+    // let newMonthing = monthThing.replace(dateState.getMonth, dateState.getMonth+1)
+    // console.log('will this work?', newMonthing)
+
+    //const getEventsPerMonth = await getEventsByMonth({"timestampMin": (moment(e).format('YYYY-MM-DD')) , "timestampMin": "" })
+    //console.log("what iis day",(moment(dateState).format('YYYY-MM-DD')))
+    //console.log("response",response.events.length)
     let allEvents = response? response.events.reverse():null
     
     // const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
 
-    console.log('evnts', allEvents)
+    // console.log('evnts', allEvents)
     allEvents.forEach((evnt, i)=>{
       // console.log(evnt)
       if(tempLst.length < 3){
@@ -50,15 +61,31 @@ function CalendarP() {
 
   useEffect(()=>{
     let events = [];
+    let dateList = [];
     const evnts =async()=>{
       
       let tempLst = [];
+      
       // let response = await getEventsByPromoter({id: Number(JSON.parse(localStorage.getItem('user')).id)})
       // let response = allEvenherots
       const response = await getEventsByDate({"timestamp": (moment(dateState).format('YYYY-MM-DD'))})
+      const allEventsResponse = await getAllEvents()
+      let dates = allEventsResponse.events
       
-      console.log("what iis day",(moment(dateState).format('YYYY-MM-DD')))
-      console.log("response",response)
+      dates.forEach((dates,i)=>{
+        const d= new Date(dates.date) 
+        dateList.push(d)
+        // console.log(dates.date)
+        // console.log(d.getDate)
+      })
+      // console.log("is the list a list?",dateList)
+      // console.log("what does this list look like??",highlightedDates)
+      
+      setHighlightedDates(dateList)
+
+      // console.log("what does this list look like??",highlightedDates)
+      //console.log("what iis day",(moment(dateState).format('YYYY-MM-DD')))
+      //console.log("response",response)
       let allEvents = response? response.events.reverse():null
       
       // const allEvents = [{name:"event1", photo:"url"}, {name:"event2", photo:"url"}, {name:"event3", photo:"url"}, {name:"event4", photo:"url"}, {name:"event5", photo:"url"}, {name:"event6", photo:"url"}, {name:"event7", photo:"url"}, {name:"event8", photo:"url"}, {name:"event9", photo:"url"}, {name:"event10", photo:"url"}]
@@ -82,22 +109,31 @@ function CalendarP() {
   }, [])
 
 
+  const tileClassName = ({ date, view }) => {
+    // Check if the current date is in the highlightedDates array
+    if (
+      view === "month" &&
+      highlightedDates.find((highlightedDate) => {
+        return (
+          highlightedDate.getDate() === date.getDate() &&
+          highlightedDate.getMonth() === date.getMonth() &&
+          highlightedDate.getFullYear() === date.getFullYear()
+        );
+      })
+    ) {
+      return "highlighted-date";
+    }
+  };
   return (
     <Grid textAlign="center" style={{"margin-top": "auto"}}>
     <div >
       <Calendar 
-      value={dateState}
+      value={date}
       onChange={changeDate }
-      tileClassName={async({ date, view }) => {
-        const thinf = await doesHaveEvent(date)
-        if( thinf > 0){
-          console.log("weeeeeeeeeeeeee")
-          return {style:{"backgroundColor": '#88C9E8'}} 
-        }
-      }}
+      tileClassName={tileClassName}
       />
-    <p>Current selected date  <b>{moment(dateState).format('MMMM Do YYYY')}</b></p>
-    <div> events should show up here
+    <p>Current Event Listing for the selected date  <b>{moment(dateState).format('MMMM Do YYYY')}</b></p> 
+    <div> 
         {console.log(eventsLst)}
         {
           
@@ -105,7 +141,7 @@ function CalendarP() {
 eventsLst.map(eventRow =>{
   // console.log(eventRow)
   return(
-    <Grid.Row className={styles.eventRow}>
+    <Grid.Row className={"eventRow"}>
       {eventRow.map(event=>{
         // console.log(event)
         return(
@@ -127,7 +163,7 @@ eventsLst.map(eventRow =>{
                 <Icon name='user' />
               </a>
             </Card.Content>
-            <Button onClick={()=>{navigate(`/registerParticipant/${event.id}`)}} className={styles.sbmtBtn} type='submit'>Register</Button>
+            <Button onClick={()=>{navigate(`/registerParticipant/${event.id}`)}} className={"sbmtBtn"} type='submit'>Register</Button>
           </Card>
         )
       })}

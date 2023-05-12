@@ -69,7 +69,7 @@ export const getEventsByPromoter = async (eventBodySend) => {
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
         const data = eventResponse.data
-        console.log(data)
+        //console.log(data)
         return data
     } catch (error) {
         console.log(error)
@@ -83,7 +83,7 @@ export const updateEvent = async (eventBodySend) => {
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
         const data = eventResponse.data
-        console.log(data)
+        //console.log(data)
         return data
     } catch (error) {
         console.log(error)
@@ -98,7 +98,7 @@ export const deleteEvent = async (eventBodySend) => {
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
         const data = eventResponse.data
-        console.log(data)
+        //console.log(data)
         return data
     } catch (error) {
         console.log(error)
@@ -112,7 +112,7 @@ export const getEventsByDate = async (eventBodySend) => {
             { headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "true" } },
         )
         const data = eventResponse.data
-        console.log(data)
+        //console.log(data)
         return data
     } catch (error) {
         console.log(error)
