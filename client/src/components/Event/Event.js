@@ -176,7 +176,7 @@ const [date] = datetime.split('T');
         </div>
         <Button className={styles.export}>
           <CsvDownloader className='export-container' datas={asyncGetParticipants} filename='participants-export.csv' >
-              <i className="fa fa-download"></i> Export to CSV
+              Export to CSV
           </CsvDownloader>
           </Button>
         </div>
