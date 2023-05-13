@@ -629,6 +629,7 @@ function Promoters() {
               
               //console.log(eventInfo);
               setUpdate(false)
+              window.location.reload()
             }
           }
           positive

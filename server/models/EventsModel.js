@@ -145,7 +145,7 @@ class EventsModel{
                         BEGIN
                         delete from orders where id IN (select orderid  from tickets where eventid = ${id});
                         delete from participants where id IN ( select participantid from tickets where eventid = ${id});
-                        delete from events where id = 116;
+                        delete from events where id = ${id};
 
                         end;
                 $$`
