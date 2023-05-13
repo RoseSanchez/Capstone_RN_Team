@@ -272,7 +272,7 @@ function RegisterForm() {
       <Modal.Actions>
 
         {/* PAYPAL START! */}
-        <PayPalScriptProvider options={{ "client-id": "test"}}> {/* Has to changed to a PayPal Business ID for deployment */}
+        <PayPalScriptProvider options={{ "client-id": "test", "disable-funding":"venmo"}}> {/* Has to changed to a PayPal Business ID for deployment */}
             <PayPalButtons
                 createOrder={(data, actions) => {
                     return actions.order.create({
