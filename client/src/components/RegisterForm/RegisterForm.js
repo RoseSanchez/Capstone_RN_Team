@@ -12,6 +12,11 @@ import { createTicket } from "../../api/Tickets/ticketsRoutes";
 import { createOrder } from "../../api/Orders/ordersRoutes";
 // import emailjs from "emailjs"
 import { sendEmail } from '../../api/Email/sendEmail';
+import StripeCheckoutButton from '../StripeBtn/StripeBtn';
+import PayPalCheckout from '../PayPalBtn/PayPalBtn';
+import AthMovilCheckoutForm from '../AthMovil/AthMovil'
+import ReactDOM from 'react-dom';
+import PayPal from '../PayPal/PayPal'
 
 // const { useJsApiLoader } = require("@react-google-maps/api");
 // import { useJsApiLoader } from '@react-google-maps/api';
@@ -29,6 +34,7 @@ function RegisterForm() {
   // const position = {lat:0, lng:0}
   const [changeState, setChangeState] = useState(false)
   const [open, setOpen] = useState(false)
+  // const [totlaDue, setTotalDue] = useState(event.price)
 
 
  
@@ -73,8 +79,13 @@ function RegisterForm() {
                 }} fluid label='Phone' placeholder='Phone' />
 
                 <Form.Input onChange={(e)=>{
-                  participantsInfo[i] = {...participantsInfo[i], gender:e.target.value}
-                  setParticipantsInfo(participantsInfo)
+                  console.log(e.target.value.length<=1)
+                  if(e.target.value.length<=1){
+
+                    participantsInfo[i] = {...participantsInfo[i], gender:e.target.value}
+                    setParticipantsInfo(participantsInfo)
+                }
+
                 }} fluid label='Gender' placeholder='Gender' />
 
           <div style={{display:"flex", flexDirection:"column"}}>
@@ -110,7 +121,9 @@ function RegisterForm() {
   //   participants creation, first it creates participants and collect their ids
   //   then it create the order and collect its id
   //   finally it create the tickets for the participants and the order
-  const handleSubmit =async(e)=>{
+  const handleSubmit =async()=>{
+    // e.preventDefault()
+
     let participantInfoEmail = ""
     let emailData = {
       "service_id": process.env.REACT_APP_service_id,
@@ -124,7 +137,6 @@ function RegisterForm() {
       }}
     // setOpen(true)
     let listOfParticipantId = []
-    e.preventDefault()
 
     console.log(participantsInfo)
     console.log(orderCreator)
@@ -172,6 +184,12 @@ function RegisterForm() {
     event().catch(console.error)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
+
+  const getTotalParticipants=()=>{
+    console.log(numOfParticipants)
+    return numOfParticipants
+  }
+
   return (
     // console.log(event)
     
@@ -204,7 +222,32 @@ function RegisterForm() {
         {/* {isLoaded ?<MyMapComponent position={position} location={event.location}/>:<></>} */}
         {/* <Form.Input onChange={(e)=>{setOrderCreator(e.target.value)}} className={styles.emailCreator} fluid label='Order confirmation email' placeholder='Order confirmation email' /> */}
         {renderParticipantsForm()}
+
+        {/* PASS HANDLE SUBMIT FUNCTION TO PAYMENT COMPONENTS AND 
+        CALL IT ON APPROVE FOR PAYPAL AND SUCCESS PAYMENT FOR STRIPE */}
+        <StripeCheckoutButton price={event.price} numOfParticipants={numOfParticipants} handleSubmit={handleSubmit}/>
+       <PayPal price={event.price*numOfParticipants} numOfParticipants={numOfParticipants} getTotalParticipants={getTotalParticipants}/>
+        {/* <PayPalCheckout
+          amount={event.price * numOfParticipants}
+          onSuccess={(details, data) => {
+            alert('Transaction completed by ' + details.payer.name.given_name + '!');
+          }}
+          onError={(error) => {
+            console.log(error);
+          }}
+        />
+         */}
+
+
+
+
+
+
+        {/* <AthMovilCheckoutForm/> */}
+
         <div className={styles.btnContainer}>
+        
+        {/* <AthMovil/> */}
         <Button className={styles.btns} onClick={(e)=>{setOpen(true)}}>submit</Button>
         </div>
         {/* <button onClick={()=>{
